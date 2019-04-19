@@ -1,0 +1,13 @@
+doctype html
+html
+    head
+        meta(charset="UTF-8")
+    body
+        h1 Sea
+        ul
+            if session
+                li: a(href="/settings") 設定
+                li: a(href="/logout") ログアウト
+            else
+                li: a(href="/login") ログイン
+                li: a(href="/register") 登録

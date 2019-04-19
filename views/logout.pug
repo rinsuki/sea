@@ -1,0 +1,11 @@
+doctype html
+html
+    head
+        meta(charset="UTF-8")
+    body
+        h1 ログアウト - Sea
+        form(method="POST")
+            p ほんとにしていい?
+            input(type="hidden", name="_csrf", value=session.getCookieValue())
+            input(type="submit", value="ログアウト")
+            a(href="/") だめ
