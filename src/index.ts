@@ -6,5 +6,8 @@ import webRouter from "./routers/web"
 const app = new Koa()
 app.use(webRouter.routes())
 createConnection().then(() => {
-    app.listen(3000 || process.env.PORT)
+    const port = process.env.PORT || 3000
+    app.listen(port, () => {
+        console.log(`live in http://localhost:${port}`)
+    })
 })

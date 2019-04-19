@@ -13,6 +13,7 @@ import { setUserSessionToState } from "../../utils/setUserSessionToState"
 import { checkReCaptcha } from "../../utils/checkReCaptcha"
 import { checkCsrf } from "../../utils/checkCsrf"
 import { UserSession } from "../../db/entities/userSessions"
+import { SESSION_COOKIE_NAME } from "../../constants"
 
 const router = new Router<
     { session?: UserSession },
@@ -84,7 +85,6 @@ router.post("/register", koaBody(), checkReCaptcha, async ctx => {
             .max(20)
             .match(/^[0-9A-Za-z_]+$/),
         password: $.str.min(8),
-        "g-recaptcha-response": $.str.makeOptional(),
     })
         .strict()
         .throw(ctx.request.body)
@@ -120,6 +120,33 @@ router.post("/logout", koaBody(), checkCsrf, async ctx => {
         }
     )
     ctx.cookies.set(SESSION_COOKIE_NAME)
+    ctx.redirect("/")
+})
+
+router.get("/login", async ctx => {
+    ctx.render("login")
+})
+
+router.post("/login", koaBody(), checkReCaptcha, async ctx => {
+    const body = $.obj({
+        screen_name: $.str
+            .min(1)
+            .max(20)
+            .match(/^[0-9A-Za-z_]+$/),
+        password: $.str.min(8),
+    })
+        .strict()
+        .throw(ctx.request.body)
+    const user = await getRepository(User).findOne({
+        screenName: body.screen_name,
+    })
+    if (user == null) return ctx.throw(400, "そんなユーザーいない")
+    const checkPasswordResult = await bcrypt.compare(
+        body.password,
+        user.encryptedPassword
+    )
+    if (!checkPasswordResult) return ctx.throw(400, "パスワードが違う")
+    await createUserSession(ctx, user)
     ctx.redirect("/")
 })
 

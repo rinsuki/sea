@@ -3,6 +3,7 @@ import { User } from "../db/entities/user"
 import { UserSession } from "../db/entities/userSessions"
 import { randomBytes, createHash } from "crypto"
 import { getRepository } from "typeorm"
+import { SESSION_COOKIE_NAME } from "../constants"
 
 export async function createUserSession(
     ctx: RouterContext<any, { [key: string]: any }>,
