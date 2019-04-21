@@ -3,6 +3,9 @@
     "version": "1.0.0",
     "main": "index.js",
     "license": "MIT",
+    "scripts": {
+        "build": "tsc"
+    },
     "dependencies": {
         "axios": "^0.18.0",
         "bcrypt": "^3.0.6",
