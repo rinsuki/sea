@@ -3,7 +3,7 @@ import { WebRouterState, WebRouterCustom } from "."
 import koaBody = require("koa-body")
 import { checkCsrf } from "../../utils/checkCsrf"
 import { getRepository } from "typeorm"
-import { UserSession } from "../../db/entities/userSessions"
+import { UserSession } from "../../db/entities/userSession"
 import { SESSION_COOKIE_NAME } from "../../constants"
 
 const router = new Router<WebRouterState, WebRouterCustom>()

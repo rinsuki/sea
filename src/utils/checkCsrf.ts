@@ -1,5 +1,5 @@
 import { RouterContext } from "koa-router"
-import { UserSession } from "../db/entities/userSessions"
+import { UserSession } from "../db/entities/userSession"
 import $ from "cafy"
 
 export async function checkCsrf(ctx: RouterContext, next: () => Promise<void>) {

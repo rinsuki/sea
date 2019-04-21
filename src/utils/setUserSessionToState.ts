@@ -1,6 +1,6 @@
 import { RouterContext } from "koa-router"
 import { getRepository } from "typeorm"
-import { UserSession } from "../db/entities/userSessions"
+import { UserSession } from "../db/entities/userSession"
 import { createHash } from "crypto"
 
 export async function setUserSessionToState(

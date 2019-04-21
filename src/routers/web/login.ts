@@ -6,7 +6,7 @@ import { User } from "../../db/entities/user"
 import bcrypt from "bcrypt"
 import { createUserSession } from "../../utils/createUserSession"
 import $ from "cafy"
-import { UserSession } from "../../db/entities/userSessions"
+import { UserSession } from "../../db/entities/userSession"
 import { WebRouterState, WebRouterCustom } from "."
 
 const router = new Router<WebRouterState, WebRouterCustom>()

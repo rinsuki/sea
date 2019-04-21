@@ -1,6 +1,6 @@
 import { RouterContext } from "koa-router"
 import { User } from "../db/entities/user"
-import { UserSession } from "../db/entities/userSessions"
+import { UserSession } from "../db/entities/userSession"
 import { randomBytes, createHash } from "crypto"
 import { getRepository } from "typeorm"
 import { SESSION_COOKIE_NAME } from "../constants"
