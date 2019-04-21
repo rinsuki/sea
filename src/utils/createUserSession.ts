@@ -17,6 +17,5 @@ export async function createUserSession(
     session.createdIpAddress = ctx.ip
     await getRepository(UserSession).insert(session)
     ctx.cookies.set(SESSION_COOKIE_NAME, session.getCookieValue())
-    console.log(session)
     return session
 }
