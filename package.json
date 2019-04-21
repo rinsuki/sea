@@ -1,28 +1,31 @@
 {
-  "name": "sea",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "dependencies": {
-    "axios": "^0.18.0",
-    "bcrypt": "^3.0.6",
-    "cafy": "^15.1.1",
-    "class-validator": "^0.9.1",
-    "koa": "^2.7.0",
-    "koa-body": "^4.1.0",
-    "koa-router": "^7.4.0",
-    "pg": "^7.9.0",
-    "pug": "^2.0.3",
-    "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.2.16"
-  },
-  "devDependencies": {
-    "@types/bcrypt": "^3.0.0",
-    "@types/koa": "^2.0.48",
-    "@types/koa-pug": "^3.0.4",
-    "@types/koa-router": "^7.0.40",
-    "@types/pug": "^2.0.4",
-    "prettier": "^1.17.0",
-    "typescript": "^3.4.3"
-  }
+    "name": "sea",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "dependencies": {
+        "axios": "^0.18.0",
+        "bcrypt": "^3.0.6",
+        "cafy": "^15.1.1",
+        "class-validator": "^0.9.1",
+        "koa": "^2.7.0",
+        "koa-body": "^4.1.0",
+        "koa-router": "^7.4.0",
+        "pg": "^7.9.0",
+        "pug": "^2.0.3",
+        "reflect-metadata": "^0.1.13",
+        "typeorm": "^0.2.16"
+    },
+    "resolutions": {
+        "@types/cookies": "^0.7.2"
+    },
+    "devDependencies": {
+        "@types/bcrypt": "^3.0.0",
+        "@types/koa": "^2.0.48",
+        "@types/koa-pug": "^3.0.4",
+        "@types/koa-router": "^7.0.40",
+        "@types/pug": "^2.0.4",
+        "prettier": "^1.17.0",
+        "typescript": "^3.4.3"
+    }
 }

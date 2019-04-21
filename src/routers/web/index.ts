@@ -14,11 +14,15 @@ import { checkReCaptcha } from "../../utils/checkReCaptcha"
 import { checkCsrf } from "../../utils/checkCsrf"
 import { UserSession } from "../../db/entities/userSessions"
 import { SESSION_COOKIE_NAME } from "../../constants"
+import loginRouter from "./login"
+import registerRouter from "./register"
+import logoutRouter from "./logout"
 
-const router = new Router<
-    { session?: UserSession },
-    { render: (name: string, locals?: {}) => void }
->()
+const router = new Router<WebRouterState, WebRouterCustom>()
+
+export type WebRouterState = { session?: UserSession }
+export type WebRouterCustom = { render: (name: string, locals?: {}) => void }
+
 const pugCompilerCache: { [key: string]: (locals: any) => string } = {}
 
 const pugGlobalLocals = {
@@ -73,81 +77,8 @@ router.get("/", async ctx => {
     ctx.render("index")
 })
 
-router.get("/register", async ctx => {
-    ctx.render("register")
-})
-
-router.post("/register", koaBody(), checkReCaptcha, async ctx => {
-    const body = $.obj({
-        name: $.str.min(1).max(20),
-        screen_name: $.str
-            .min(1)
-            .max(20)
-            .match(/^[0-9A-Za-z_]+$/),
-        password: $.str.min(8),
-    })
-        .strict()
-        .throw(ctx.request.body)
-    const user = new User()
-    user.name = body.name
-    user.screenName = body.screen_name
-    user.encryptedPassword = await bcrypt.hash(body.password, 14)
-    const repo = getRepository(User)
-    const res = await repo.insert(user).catch(e => {
-        if (e.name === "QueryFailedError") {
-            if (e.constraint === "UQ:users:screen_name") {
-                ctx.throw(400, "そのスクリーンネーム、もうすでに使われてますよ")
-            }
-        }
-        throw e
-    })
-    await createUserSession(ctx, user)
-    ctx.redirect("/")
-})
-
-router.get("/logout", async ctx => {
-    ctx.render("logout")
-})
-
-router.post("/logout", koaBody(), checkCsrf, async ctx => {
-    const session = ctx.state.session!
-    await getRepository(UserSession).update(
-        {
-            disabledAt: "NOW()",
-        },
-        {
-            id: session.id,
-        }
-    )
-    ctx.cookies.set(SESSION_COOKIE_NAME)
-    ctx.redirect("/")
-})
-
-router.get("/login", async ctx => {
-    ctx.render("login")
-})
-
-router.post("/login", koaBody(), checkReCaptcha, async ctx => {
-    const body = $.obj({
-        screen_name: $.str
-            .min(1)
-            .max(20)
-            .match(/^[0-9A-Za-z_]+$/),
-        password: $.str.min(8),
-    })
-        .strict()
-        .throw(ctx.request.body)
-    const user = await getRepository(User).findOne({
-        screenName: body.screen_name,
-    })
-    if (user == null) return ctx.throw(400, "そんなユーザーいない")
-    const checkPasswordResult = await bcrypt.compare(
-        body.password,
-        user.encryptedPassword
-    )
-    if (!checkPasswordResult) return ctx.throw(400, "パスワードが違う")
-    await createUserSession(ctx, user)
-    ctx.redirect("/")
-})
+router.use("/register", registerRouter.routes())
+router.use("/login", loginRouter.routes())
+router.use("/logout", logoutRouter.routes())
 
 export default router
