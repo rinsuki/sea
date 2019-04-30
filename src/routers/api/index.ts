@@ -31,6 +31,10 @@ router.use(async (ctx, next) => {
     await next()
 })
 
+router.options("*", async ctx => {
+    ctx.status = 204
+})
+
 router.use("/v1", v1Router.routes())
 
 export default router
