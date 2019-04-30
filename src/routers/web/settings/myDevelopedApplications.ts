@@ -50,9 +50,11 @@ router.get("/:id", async ctx => {
     const { id } = $.obj({
         id: $.str.match(/^[0-9]+$/),
     }).throw(ctx.params)
-    const app = await getRepository(Application).findOne(id)
-    console.log(app)
-
+    const app = await getRepository(Application).findOneOrFail(id, {
+        relations: ["ownerUser"],
+    })
+    if (app.ownerUser.id != ctx.state.session!.user.id)
+        return ctx.throw(403, "お前ownerじゃねえだろ")
     ctx.render("settings/my_developed_applications/show", { app })
 })
 
