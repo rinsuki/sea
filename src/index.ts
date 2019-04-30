@@ -8,21 +8,7 @@ import { isProductionMode } from "./config"
 
 const app = new Koa()
 const router = new Router<any, any>()
-router.use(
-    "/api",
-    async (ctx, next) => {
-        ctx.set("Access-Control-Allow-Origin", "*")
-        ctx.set(
-            "Access-Control-Allow-Methods",
-            "GET, HEAD, POST, PUT, DELETE, PATCH"
-        )
-        ctx.set("Access-Control-Allow-Headers", "Authorization")
-        ctx.set("Access-Control-Max-Age", (24 * 60 * 60).toString())
-
-        await next()
-    },
-    apiRouter.routes()
-)
+router.use("/api", apiRouter.routes())
 router.use(webRouter.routes())
 app.use(router.routes())
 
