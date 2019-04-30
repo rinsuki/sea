@@ -27,6 +27,9 @@ export class AccessToken extends EntityWithTimestamps {
     @JoinColumn({ name: "user_id", referencedColumnName: "id" })
     user!: User
 
+    @Column({ name: "revoked_at", type: "timestamp", nullable: true })
+    revokedAt!: Date | null
+
     generateToken() {
         this.token = randomBytes(32).toString("hex")
     }
