@@ -2,9 +2,14 @@ import "reflect-metadata"
 import Koa from "koa"
 import { createConnection, getConnectionOptions } from "typeorm"
 import webRouter from "./routers/web"
+import apiRouter from "./routers/api"
+import Router from "koa-router"
 
 const app = new Koa()
-app.use(webRouter.routes())
+const router = new Router<any, any>()
+router.use("/api", apiRouter.routes())
+router.use(webRouter.routes())
+app.use(router.routes())
 
 async function run() {
     const config = await getConnectionOptions()
