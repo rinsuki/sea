@@ -1,5 +1,5 @@
 import { AccessToken } from "../../db/entities/accessToken"
-import { getRepository } from "typeorm"
+import { getRepository, getCustomRepository } from "typeorm"
 import v1Router from "./v1"
 import { APIRouter } from "./router-class"
 
@@ -47,8 +47,20 @@ router.use(async (ctx, next) => {
     await next()
 })
 
-router.options("*", async ctx => {
-    ctx.status = 204
+router.use(async (ctx, next) => {
+    ctx.send = async (repo, input) => {
+        ctx.body = JSON.stringify(
+            await getCustomRepository(repo).pack(input, ctx.state.token)
+        )
+        ctx.type = "json"
+    }
+    ctx.sendMany = async (repo, input) => {
+        ctx.body = JSON.stringify(
+            await getCustomRepository(repo).packMany(input, ctx.state.token)
+        )
+        ctx.type = "json"
+    }
+    await next()
 })
 
 router.use("/v1", v1Router.routes())
