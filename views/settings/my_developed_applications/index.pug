@@ -1,0 +1,6 @@
+h1 君が作ったアプリケーションの一覧
+
+ul
+    each app in myOwnedApps
+        li
+            a(href="/settings/my_developed_applications/" + app.id) #{app.name}

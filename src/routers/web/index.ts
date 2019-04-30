@@ -1,22 +1,15 @@
 import Router from "koa-router"
 import pug from "pug"
-import { User } from "../../db/entities/user"
-import $ from "cafy"
-import koaBody from "koa-body"
-import bcrypt from "bcrypt"
 import { isProductionMode, RECAPTCHA } from "../../config"
-import { getRepository } from "typeorm"
 import { join } from "path"
 import fs from "fs"
-import { createUserSession } from "../../utils/createUserSession"
 import { setUserSessionToState } from "../../utils/setUserSessionToState"
-import { checkReCaptcha } from "../../utils/checkReCaptcha"
-import { checkCsrf } from "../../utils/checkCsrf"
 import { UserSession } from "../../db/entities/userSession"
-import { SESSION_COOKIE_NAME } from "../../constants"
 import loginRouter from "./login"
 import registerRouter from "./register"
 import logoutRouter from "./logout"
+import settingsRouter from "./settings"
+import oauthRouter from "./oauth"
 
 const router = new Router<WebRouterState, WebRouterCustom>()
 
@@ -66,6 +59,7 @@ router.use((ctx, next) => {
             ...ctx.state,
             ...locals,
         })
+        ctx.set("X-Frame-Options", "DENY")
         ctx.type = "text/html"
     }
     return next()
@@ -80,5 +74,7 @@ router.get("/", async ctx => {
 router.use("/register", registerRouter.routes())
 router.use("/login", loginRouter.routes())
 router.use("/logout", logoutRouter.routes())
+router.use("/settings", settingsRouter.routes())
+router.use("/oauth", oauthRouter.routes())
 
 export default router

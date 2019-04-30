@@ -1,12 +1,12 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm"
 import { timestampColumns } from "../../utils/timestampColumns"
 
-export class CreateUserSessionsTable1555610572643
+export class CreateApplicationsTable1555844204340
     implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<any> {
         await queryRunner.createTable(
             new Table({
-                name: "user_sessions",
+                name: "applications",
                 columns: [
                     {
                         name: "id",
@@ -15,36 +15,47 @@ export class CreateUserSessionsTable1555610572643
                         isGenerated: true,
                     },
                     {
-                        name: "secret",
+                        name: "name",
                         type: "varchar",
-                        length: "256",
+                        length: "32",
                         isNullable: false,
                     },
                     {
-                        name: "user_id",
-                        type: "int",
-                        isNullable: false,
-                    },
-                    {
-                        name: "user_agent",
+                        name: "description",
                         type: "text",
                         isNullable: false,
                     },
                     {
-                        name: "created_ip_address",
-                        type: "inet",
+                        name: "owner_user_id",
+                        type: "int",
                         isNullable: false,
+                    },
+                    {
+                        name: "client_id",
+                        type: "varchar",
+                        length: "64",
+                        isNullable: false,
+                    },
+                    {
+                        name: "client_secret",
+                        type: "varchar",
+                        length: "64",
+                        isNullable: false,
+                    },
+                    {
+                        name: "redirect_uri",
+                        type: "text",
+                        isNullable: false,
+                        default: "''",
                     },
                     ...timestampColumns.forMigrations,
                 ],
                 foreignKeys: [
                     {
-                        name: "FK:user_sessions:user_id::users:id",
-                        columnNames: ["user_id"],
+                        name: "FK:applications:owner_user_id::users:id",
+                        columnNames: ["owner_user_id"],
                         referencedTableName: "users",
                         referencedColumnNames: ["id"],
-                        onDelete: "CASCADE",
-                        onUpdate: "CASCADE",
                     },
                 ],
             })
@@ -52,6 +63,6 @@ export class CreateUserSessionsTable1555610572643
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.dropTable("user_sessions")
+        await queryRunner.dropTable("applications")
     }
 }

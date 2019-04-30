@@ -1,11 +1,12 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm"
 import { timestampColumns } from "../../utils/timestampColumns"
 
-export class CreateUsersTable1555359483422 implements MigrationInterface {
+export class CreateAccessTokensTable1556618516318
+    implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<any> {
         await queryRunner.createTable(
             new Table({
-                name: "users",
+                name: "access_tokens",
                 columns: [
                     {
                         name: "id",
@@ -14,28 +15,36 @@ export class CreateUsersTable1555359483422 implements MigrationInterface {
                         isGenerated: true,
                     },
                     {
-                        name: "name",
+                        name: "token",
                         type: "varchar",
-                        length: "20",
+                        length: "64",
                         isNullable: false,
                     },
                     {
-                        name: "screen_name",
-                        type: "citext",
+                        name: "application_id",
+                        type: "int",
                         isNullable: false,
                     },
                     {
-                        name: "encrypted_password",
-                        type: "text",
+                        name: "user_id",
+                        type: "int",
                         isNullable: false,
                     },
                     ...timestampColumns.forMigrations,
                 ],
-                indices: [
+                foreignKeys: [
                     {
-                        name: "UQ:users:screen_name",
-                        columnNames: ["screen_name"],
-                        isUnique: true,
+                        name:
+                            "FK:access_tokens:application_id::applications:id",
+                        columnNames: ["application_id"],
+                        referencedTableName: "applications",
+                        referencedColumnNames: ["id"],
+                    },
+                    {
+                        name: "FK:access_tokens:user_id::users:id",
+                        columnNames: ["user_id"],
+                        referencedTableName: "users",
+                        referencedColumnNames: ["id"],
                     },
                 ],
             })
@@ -43,6 +52,6 @@ export class CreateUsersTable1555359483422 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.dropTable("users")
+        await queryRunner.dropTable("access_tokens")
     }
 }

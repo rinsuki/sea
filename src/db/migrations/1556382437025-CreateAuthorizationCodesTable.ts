@@ -1,12 +1,12 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm"
 import { timestampColumns } from "../../utils/timestampColumns"
 
-export class CreateUserSessionsTable1555610572643
+export class CreateAuthorizationCodesTable1556382437025
     implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<any> {
         await queryRunner.createTable(
             new Table({
-                name: "user_sessions",
+                name: "authorization_codes",
                 columns: [
                     {
                         name: "id",
@@ -14,37 +14,35 @@ export class CreateUserSessionsTable1555610572643
                         isPrimary: true,
                         isGenerated: true,
                     },
+                    { name: "application_id", type: "int", isNullable: false },
+                    { name: "user_id", type: "int", isNullable: false },
                     {
-                        name: "secret",
+                        name: "code",
                         type: "varchar",
-                        length: "256",
+                        length: "16",
                         isNullable: false,
+                        isUnique: true,
                     },
                     {
-                        name: "user_id",
-                        type: "int",
-                        isNullable: false,
-                    },
-                    {
-                        name: "user_agent",
+                        name: "state",
                         type: "text",
-                        isNullable: false,
-                    },
-                    {
-                        name: "created_ip_address",
-                        type: "inet",
-                        isNullable: false,
+                        isNullable: true,
                     },
                     ...timestampColumns.forMigrations,
                 ],
                 foreignKeys: [
                     {
-                        name: "FK:user_sessions:user_id::users:id",
+                        name:
+                            "FK:authorization_codes:application_id::applications:id",
+                        columnNames: ["application_id"],
+                        referencedTableName: "applications",
+                        referencedColumnNames: ["id"],
+                    },
+                    {
+                        name: "FK:authorization_codes:user_id::users::id",
                         columnNames: ["user_id"],
                         referencedTableName: "users",
                         referencedColumnNames: ["id"],
-                        onDelete: "CASCADE",
-                        onUpdate: "CASCADE",
                     },
                 ],
             })
@@ -52,6 +50,6 @@ export class CreateUserSessionsTable1555610572643
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.dropTable("user_sessions")
+        await queryRunner.dropTable("authorization_codes")
     }
 }

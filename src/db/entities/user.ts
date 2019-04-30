@@ -1,14 +1,9 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    CreateDateColumn,
-    UpdateDateColumn,
-} from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
 import { Matches, MaxLength } from "class-validator"
+import { EntityWithTimestamps } from "../../utils/timestampColumns"
 
 @Entity("users")
-export class User {
+export class User extends EntityWithTimestamps {
     @PrimaryGeneratedColumn()
     id!: number
 
@@ -22,10 +17,4 @@ export class User {
 
     @Column({ name: "encrypted_password", nullable: false })
     encryptedPassword!: string
-
-    @CreateDateColumn({ name: "created_at" })
-    createdAt!: Date
-
-    @UpdateDateColumn({ name: "updated_at" })
-    updatedAt!: Date
 }

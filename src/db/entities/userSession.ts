@@ -4,14 +4,13 @@ import {
     Column,
     ManyToOne,
     JoinColumn,
-    CreateDateColumn,
-    UpdateDateColumn,
 } from "typeorm"
 import { User } from "./user"
 import { createHash } from "crypto"
+import { EntityWithTimestamps } from "../../utils/timestampColumns"
 
 @Entity("user_sessions")
-export class UserSession {
+export class UserSession extends EntityWithTimestamps {
     @PrimaryGeneratedColumn()
     id!: number
 
@@ -27,12 +26,6 @@ export class UserSession {
 
     @Column({ name: "created_ip_address", nullable: false })
     createdIpAddress!: string
-
-    @CreateDateColumn({ name: "created_at" })
-    createdAt!: Date
-
-    @UpdateDateColumn({ name: "updated_at" })
-    updatedAt!: Date
 
     @Column({ name: "disabled_at", type: "date", nullable: true })
     disabledAt!: Date | null

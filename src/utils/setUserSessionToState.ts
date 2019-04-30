@@ -14,7 +14,10 @@ export async function setUserSessionToState(
         if (sessionString.length != 2) return
         if (!/^[1-9][0-9]*$/.test(sessionString[0])) return
         const session = await getRepository(UserSession).findOne(
-            sessionString[0]
+            sessionString[0],
+            {
+                relations: ["user"],
+            }
         )
         if (!session) return
         if (sessionString.join(":") != session.getCookieValue()) return
