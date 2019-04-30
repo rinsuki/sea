@@ -30,7 +30,7 @@ async function run() {
     const config = await getConnectionOptions()
     await createConnection({
         ...config,
-        logging: isProductionMode ? ["query"] : [],
+        logging: isProductionMode ? [] : ["query"],
     })
     const port = process.env.PORT || 3000
     app.listen(port, () => {
