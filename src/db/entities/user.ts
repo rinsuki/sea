@@ -17,4 +17,7 @@ export class User extends EntityWithTimestamps {
 
     @Column({ name: "encrypted_password", nullable: false })
     encryptedPassword!: string
+
+    @Column({ name: "posts_count", type: "int", nullable: false })
+    postsCount!: number
 }
