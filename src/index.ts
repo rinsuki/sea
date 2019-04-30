@@ -4,6 +4,7 @@ import { createConnection, getConnectionOptions } from "typeorm"
 import webRouter from "./routers/web"
 import apiRouter from "./routers/api"
 import Router from "koa-router"
+import { isProductionMode } from "./config"
 
 const app = new Koa()
 const router = new Router<any, any>()
@@ -15,7 +16,7 @@ async function run() {
     const config = await getConnectionOptions()
     await createConnection({
         ...config,
-        logging: ["query"],
+        logging: isProductionMode ? ["query"] : [],
     })
     const port = process.env.PORT || 3000
     app.listen(port, () => {
