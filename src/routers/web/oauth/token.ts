@@ -7,6 +7,18 @@ import { AuthorizationCode } from "../../../db/entities/authorizationCode"
 import { AccessToken } from "../../../db/entities/accessToken"
 const router = new Router()
 
+router.use((ctx, next) => {
+    ctx.set("Access-Control-Allow-Origin", "*")
+    ctx.set(
+        "Access-Control-Allow-Methods",
+        "GET, HEAD, POST, PUT, DELETE, PATCH"
+    )
+    ctx.set("Access-Control-Allow-Headers", "Authorization")
+    ctx.set("Access-Control-Max-Age", (24 * 60 * 60).toString())
+
+    return next()
+})
+
 router.post("/", koaBody(), async ctx => {
     const body = $.obj({
         client_id: $.str,
