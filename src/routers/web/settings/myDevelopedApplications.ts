@@ -12,11 +12,9 @@ const router = new Router<WebRouterState, WebRouterCustom>()
 router.get("/", async ctx => {
     const session = ctx.state.session
     if (session == null) throw "please login"
-    console.log(session.user)
     const myOwnedApps = await getRepository(Application).find({
         ownerUser: session.user,
     })
-    console.log(myOwnedApps)
     ctx.render("settings/my_developed_applications/index", { myOwnedApps })
 })
 
