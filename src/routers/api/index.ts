@@ -11,7 +11,7 @@ router.use(async (ctx, next) => {
         "Access-Control-Allow-Methods",
         "GET, HEAD, POST, PUT, DELETE, PATCH"
     )
-    ctx.set("Access-Control-Allow-Headers", "Authorization")
+    ctx.set("Access-Control-Allow-Headers", "Authorization, Content-Type")
     ctx.set("Access-Control-Max-Age", (24 * 60 * 60).toString())
 
     await next()
