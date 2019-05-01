@@ -16,6 +16,8 @@ export async function createUserSession(
     session.userAgent = ctx.get("User-Agent")
     session.createdIpAddress = ctx.ip
     await getRepository(UserSession).insert(session)
-    ctx.cookies.set(SESSION_COOKIE_NAME, session.getCookieValue())
+    ctx.cookies.set(SESSION_COOKIE_NAME, session.getCookieValue(), {
+        expires: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000),
+    })
     return session
 }
