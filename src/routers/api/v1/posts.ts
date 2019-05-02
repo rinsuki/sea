@@ -5,6 +5,7 @@ import { Post } from "../../../db/entities/post"
 import { getRepository, getManager } from "typeorm"
 import { PostRepository } from "../../../db/repositories/post"
 import { User } from "../../../db/entities/user"
+import { redis } from "../../../redis"
 
 const router = new APIRouter()
 
@@ -32,6 +33,7 @@ router.post("/", koaBody(), async ctx => {
             await getRepository(Post).save(post)
         }
     )
+    redis.publish("timelines:public", post.id.toString())
     await ctx.send(PostRepository, post)
 })
 
