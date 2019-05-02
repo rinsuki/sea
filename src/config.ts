@@ -35,4 +35,4 @@ export const RECAPTCHA:
           }
         : undefined
 
-export const REDIS_URL = process.env.REDIS_ENV || "redis://localhost:6379"
+export const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379"
