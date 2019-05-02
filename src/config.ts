@@ -34,3 +34,5 @@ export const RECAPTCHA:
               SECRET_KEY: RECAPTCHA_SECRET_KEY,
           }
         : undefined
+
+export const REDIS_URL = process.env.REDIS_ENV || "redis://localhost:6379"

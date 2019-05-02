@@ -12,25 +12,27 @@
         "bcrypt": "^3.0.6",
         "cafy": "^15.1.1",
         "class-validator": "^0.9.1",
-        "ioredis": "^4.9.0",
         "koa": "^2.7.0",
         "koa-body": "^4.1.0",
         "koa-router": "^7.4.0",
         "pg": "^7.9.0",
         "pug": "^2.0.3",
+        "redis": "^2.8.0",
         "reflect-metadata": "^0.1.13",
-        "typeorm": "^0.2.16"
+        "typeorm": "^0.2.16",
+        "ws": "^7.0.0"
     },
     "resolutions": {
         "@types/cookies": "^0.7.2"
     },
     "devDependencies": {
         "@types/bcrypt": "^3.0.0",
-        "@types/ioredis": "^4.0.10",
         "@types/koa": "^2.0.48",
         "@types/koa-pug": "^3.0.4",
         "@types/koa-router": "^7.0.40",
         "@types/pug": "^2.0.4",
+        "@types/redis": "^2.8.12",
+        "@types/ws": "^6.0.1",
         "prettier": "^1.17.0",
         "typescript": "^3.4.3"
     }
