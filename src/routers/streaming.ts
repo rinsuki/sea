@@ -113,6 +113,8 @@ export function streamingConnectionCallback(ws: WebSocket) {
                         ws.close()
                 }
                 break
+            case "ping":
+                return
             default:
                 send({
                     type: "error",
