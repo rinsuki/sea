@@ -17,11 +17,22 @@ type Message<T> =
           type: "message"
           content: T
       }
+    | {
+          type: "ping"
+      }
 
 export function streamingConnectionCallback(ws: WebSocket) {
     function send<T>(msg: Message<T>) {
         ws.send(JSON.stringify(msg))
     }
+    const pingTimer = setInterval(() => {
+        send({
+            type: "ping",
+        })
+    }, 45 * 1000)
+    ws.on("close", () => {
+        clearInterval(pingTimer)
+    })
     ws.on("message", async rawData => {
         if (typeof rawData !== "string") {
             send({
