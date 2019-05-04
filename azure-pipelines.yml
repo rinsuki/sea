@@ -16,7 +16,7 @@ steps:
     - script: |
           sudo apt-get update &&
           sudo apt-get install postgresql &&
-          echo "ci\nci\n" | sudo -u postgres createuser --encrypted --pwprompt --superuser vsts &&
+          sudo -u postgres psql -c "CREATE USER vsts WITH PASSWORD 'ci';"
           sudo -u postgres psql -c "CREATE DATABASE sea_test WITH OWNER 'vsts';"
       displayName: "Install and Setup PostgreSQL"
     - task: NodeTool@0
