@@ -4,12 +4,20 @@ import { createConnection, getConnectionOptions } from "typeorm"
 import webRouter from "./routers/web"
 import apiRouter from "./routers/api"
 import Router from "koa-router"
-import { isProductionMode } from "./config"
+import { isProductionMode, FORCE_HTTPS } from "./config"
 import WebSocket from "ws"
 import http from "http"
 import { streamingConnectionCallback } from "./routers/streaming"
 
 const app = new Koa()
+if (FORCE_HTTPS)
+    app.use(async (ctx, next) => {
+        if (ctx.request.headers["x-forwarded-proto"] !== "https") {
+            const url = ctx.request.URL
+            url.protocol = "https"
+            ctx.redirect(url.toString())
+        }
+    })
 const server = http.createServer(app.callback())
 const ws = new WebSocket.Server({ server })
 ws.addListener("connection", streamingConnectionCallback)
