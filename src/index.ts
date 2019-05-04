@@ -16,7 +16,9 @@ if (FORCE_HTTPS)
             const url = ctx.request.URL
             url.protocol = "https"
             ctx.redirect(url.toString())
+            return
         }
+        await next()
     })
 const server = http.createServer(app.callback())
 const ws = new WebSocket.Server({ server })
