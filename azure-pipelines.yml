@@ -12,7 +12,8 @@ pool:
     setup:
         - bash: |
               sudo apt-get update &&
-              sudo apt-get install postgresql
+              sudo apt-get install postgresql &&
+              echo $USER
           displayName: Install & Setup PostgreSQL
 
 steps:
