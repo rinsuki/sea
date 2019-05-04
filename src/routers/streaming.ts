@@ -66,17 +66,30 @@ export function streamingConnectionCallback(ws: WebSocket) {
                     return
                 }
 
-                const token = await getRepository(AccessToken).findOne({
-                    token: tokenString,
-                })
+                const token = await getRepository(AccessToken).findOne(
+                    {
+                        token: tokenString,
+                    },
+                    {
+                        relations: ["user", "user.inviteCode"],
+                    }
+                )
                 if (token == null) {
                     send({
                         type: "error",
                         message: "authorization failed",
                     })
                     ws.close()
+                    return
                 }
-
+                if (token.user.inviteCode == null) {
+                    send({
+                        type: "error",
+                        message: "please check web interface of sea.",
+                    })
+                    ws.close()
+                    return
+                }
                 switch (data.stream) {
                     case "v1/timelines/public":
                         const redis = getRedisConnection()
