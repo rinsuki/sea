@@ -5,7 +5,9 @@
     "license": "MIT",
     "scripts": {
         "build": "tsc",
-        "migration:up": "typeorm migration:run"
+        "migration:up": "typeorm migration:run",
+        "migration:downall": "node ./dist/cliUtils/migrationDownAll.js",
+        "test": "yarn migration:up && yarn migration:downall"
     },
     "dependencies": {
         "axios": "^0.18.0",
