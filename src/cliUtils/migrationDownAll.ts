@@ -14,6 +14,16 @@ async function main() {
     while (--count) {
         await migrationExecutor.undoLastMigration()
     }
+    const remainTables: { tablename: string }[] = await queryRunner.query(
+        "SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname='public' AND tablename!='migrations'"
+    )
+    if (remainTables.length) {
+        console.error("いくつかのテーブルがまだ残っています:")
+        for (const { tablename: table } of remainTables) {
+            console.log(`- ${table}`)
+        }
+        process.exit(1)
+    }
     process.exit(0)
 }
 
