@@ -1,8 +1,12 @@
-import { getConnection, createConnection } from "typeorm"
+import { getConnection, createConnection, getConnectionOptions } from "typeorm"
 import { MigrationExecutor } from "typeorm/migration/MigrationExecutor"
 
 async function main() {
-    await createConnection()
+    const config = await getConnectionOptions()
+    await createConnection({
+        ...config,
+        logging: ["query"],
+    })
     const connection = getConnection()
     const queryRunner = connection.createQueryRunner("master")
     let count = parseInt(
