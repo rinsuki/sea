@@ -12,14 +12,13 @@ pool:
 variables:
     DATABASE_URL: postgres://postgres@localhost/sea_development
 
-setup:
-    - bash: |
-            sudo apt-get update &&
-            sudo apt-get install postgresql &&
-            echo $USER
-    displayName: Install & Setup PostgreSQL
 
 steps:
+    - script: |
+          sudo apt-get update &&
+          sudo apt-get install postgresql &&
+          echo $USER
+    displayName: Install & Setup PostgreSQL
     - task: NodeTool@0
       inputs:
           versionSpec: "10.x"
