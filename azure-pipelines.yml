@@ -9,12 +9,14 @@ trigger:
 pool:
     vmImage: "Ubuntu-16.04"
 
-variables: DATABASE_URL: postgres://postgres@localhost/sea_development
+variables:
+    DATABASE_URL: postgres://postgres@localhost/sea_development
+
 setup:
     - bash: |
-        sudo apt-get update &&
-        sudo apt-get install postgresql &&
-        echo $USER
+            sudo apt-get update &&
+            sudo apt-get install postgresql &&
+            echo $USER
     displayName: Install & Setup PostgreSQL
 
 steps:
