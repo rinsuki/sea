@@ -10,7 +10,7 @@ pool:
     vmImage: "Ubuntu-16.04"
 
 variables:
-    DATABASE_URL: postgres://vsts@localhost/sea_test
+    DATABASE_URL: postgres://vsts@/sea_test
 
 steps:
     - script: |
