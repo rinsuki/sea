@@ -18,7 +18,7 @@ steps:
           sudo apt-get update &&
           sudo apt-get install postgresql &&
           echo $USER
-    displayName: Install & Setup PostgreSQL
+    displayName: "Install and Setup PostgreSQL"
     - task: NodeTool@0
       inputs:
           versionSpec: "10.x"
