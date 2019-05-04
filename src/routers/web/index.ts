@@ -8,8 +8,10 @@ import { UserSession } from "../../db/entities/userSession"
 import loginRouter from "./login"
 import registerRouter from "./register"
 import logoutRouter from "./logout"
+import inputInviteCodeRouter from "./inputInviteCode"
 import settingsRouter from "./settings"
 import oauthRouter from "./oauth"
+import { requireVerifyInviteCode } from "../../utils/requireVerifyInviteCode"
 
 const router = new Router<WebRouterState, WebRouterCustom>()
 
@@ -74,7 +76,8 @@ router.get("/", async ctx => {
 router.use("/register", registerRouter.routes())
 router.use("/login", loginRouter.routes())
 router.use("/logout", logoutRouter.routes())
-router.use("/settings", settingsRouter.routes())
-router.use("/oauth", oauthRouter.routes())
+router.use("/input_invite_code", inputInviteCodeRouter.routes())
+router.use("/settings", requireVerifyInviteCode, settingsRouter.routes())
+router.use("/oauth", requireVerifyInviteCode, oauthRouter.routes())
 
 export default router

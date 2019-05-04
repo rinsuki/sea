@@ -1,6 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    OneToOne,
+    JoinColumn,
+} from "typeorm"
 import { Matches, MaxLength } from "class-validator"
 import { EntityWithTimestamps } from "../../utils/timestampColumns"
+import { InviteCode } from "./inviteCode"
 
 @Entity("users")
 export class User extends EntityWithTimestamps {
@@ -20,4 +27,16 @@ export class User extends EntityWithTimestamps {
 
     @Column({ name: "posts_count", type: "int", nullable: false })
     postsCount!: number
+
+    @OneToOne(type => InviteCode)
+    @JoinColumn({ name: "invite_code_id", referencedColumnName: "id" })
+    inviteCode!: InviteCode | null
+
+    @Column({
+        name: "can_make_invite_code",
+        type: "boolean",
+        default: "FALSE",
+        nullable: false,
+    })
+    canMakeInviteCode!: boolean
 }

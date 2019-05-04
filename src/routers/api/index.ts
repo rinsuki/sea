@@ -34,12 +34,14 @@ router.use(async (ctx, next) => {
             token: tokenSearchResult[2],
         },
         {
-            relations: ["user", "application"],
+            relations: ["user", "user.inviteCode", "application"],
         }
     )
     if (token == null) throw ctx.throw(400, "Authorize failed")
     if (token.revokedAt != null)
         throw ctx.throw(403, "This token is already revoked")
+    if (token.user.inviteCode == null)
+        throw ctx.throw(400, "Please check web interface")
     // TODO: 凍結されてたらここで蹴る
     ctx.state = {
         token,

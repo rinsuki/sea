@@ -16,7 +16,7 @@ export async function setUserSessionToState(
         const session = await getRepository(UserSession).findOne(
             sessionString[0],
             {
-                relations: ["user"],
+                relations: ["user", "user.inviteCode"],
             }
         )
         if (!session) return
