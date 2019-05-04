@@ -4,18 +4,27 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- master
+    - master
 
 pool:
-  vmImage: 'Ubuntu-16.04'
+    vmImage: "Ubuntu-16.04"
+    variants: DATABASE_URL: postgres://postgres@localhost/sea_development
+    setup:
+        - bash: |
+              sudo apt-get update &&
+              sudo apt-get install postgresql
+          displayName: Install & Setup PostgreSQL
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+    - task: NodeTool@0
+      inputs:
+          versionSpec: "10.x"
+      displayName: "Install Node.js"
 
-- script: |
-    yarn install
-    yarn build
-  displayName: 'npm install and build'
+    - script: |
+          yarn install
+          yarn build
+      displayName: "yarn install and build"
+    - script: |
+          yarn test
+      displayName: "yarn test"
