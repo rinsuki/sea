@@ -10,13 +10,13 @@ pool:
     vmImage: "Ubuntu-16.04"
 
 variables:
-    DATABASE_URL: postgres://vsts@/sea_test
+    DATABASE_URL: postgres://vsts:ci@localhost/sea_test
 
 steps:
     - script: |
           sudo apt-get update &&
           sudo apt-get install postgresql &&
-          sudo -u postgres psql -c "CREATE USER vsts;"
+          sudo -u postgres psql -c "CREATE USER vsts WITH PASSWORD 'ci';"
           sudo -u postgres psql -c "CREATE DATABASE sea_test WITH OWNER 'vsts';"
       displayName: "Install and Setup PostgreSQL"
     - task: NodeTool@0
