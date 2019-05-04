@@ -12,18 +12,16 @@ pool:
 variables:
     DATABASE_URL: postgres://postgres@localhost/sea_development
 
-
 steps:
     - script: |
           sudo apt-get update &&
           sudo apt-get install postgresql &&
           echo $USER
-    displayName: "Install and Setup PostgreSQL"
+      displayName: "Install and Setup PostgreSQL"
     - task: NodeTool@0
       inputs:
           versionSpec: "10.x"
       displayName: "Install Node.js"
-
     - script: |
           yarn install
           yarn build
