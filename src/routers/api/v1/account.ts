@@ -10,7 +10,7 @@ const router = new APIRouter()
 router.get("/", async ctx => {
     await ctx.send(UserRepository, ctx.state.token.user)
 })
-router.redirect("/verify_credentials", "/api/v1/account", 301)
+router.redirect("/verify_credentials", "/api/v1/account", 308)
 
 router.patch("/", koaBody(), async ctx => {
     const body = $.obj({
