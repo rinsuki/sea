@@ -96,8 +96,11 @@ router.post("/files", bodyParser, async ctx => {
         case "image/jpeg":
             // image
             const image = sharp(buffer)
-            const webpOptions = {
+            const webpLossyOptions = {
                 quality: 80,
+            }
+            const webpLosslessOptions = {
+                lossless: true,
             }
             const jpegOptions = {
                 quality: 80,
@@ -106,18 +109,20 @@ router.post("/files", bodyParser, async ctx => {
 
             // orig画質
             if (isLossless || meta.hasAlpha) {
-                promises.push(upload("image", "png", 100, image.png().toBuffer()))
+                promises.push(upload("image", "png", 90, image.png().toBuffer()))
             } else {
                 promises.push(upload("image", "jpg", 90, image.jpeg(jpegOptions).toBuffer()))
             }
-            promises.push(upload("image", "webp", isLossless ? 90 : 100, image.webp(webpOptions).toBuffer()))
+            promises.push(
+                upload("image", "webp", 100, image.webp(isLossless ? webpLosslessOptions : webpLossyOptions).toBuffer())
+            )
 
             // サムネイル
             const thumb = image.resize(128, 128, {
                 fit: "inside",
             })
             promises.push(upload("thumbnail", "png", isLossless ? 25 : 0, thumb.png().toBuffer()))
-            promises.push(upload("thumbnail", "webp", 50, thumb.webp(webpOptions).toBuffer()))
+            promises.push(upload("thumbnail", "webp", 50, thumb.webp(webpLossyOptions).toBuffer()))
             if (meta.hasAlpha === false) {
                 promises.push(upload("thumbnail", "jpg", 10, thumb.jpeg(jpegOptions).toBuffer()))
             }
