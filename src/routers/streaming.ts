@@ -109,13 +109,11 @@ export function streamingConnectionCallback(ws: WebSocket) {
                                     id: parseInt(message),
                                 },
                                 {
-                                    relations: ["user", "application"],
+                                    relations: ["user", "application", "files", "files.albumFile", "files.albumFile.variants"],
                                 }
                             )
                             if (rawPost == null) return
-                            const post = await getCustomRepository(
-                                PostRepository
-                            ).pack(rawPost)
+                            const post = await getCustomRepository(PostRepository).pack(rawPost)
                             send({
                                 type: "message",
                                 content: post,

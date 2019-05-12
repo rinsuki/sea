@@ -10,10 +10,12 @@
         "test": "yarn migration:up && yarn migration:downall"
     },
     "dependencies": {
+        "aws-sdk": "^2.453.0",
         "axios": "^0.18.0",
         "bcrypt": "^3.0.6",
         "cafy": "^15.1.1",
         "class-validator": "^0.9.1",
+        "file-type": "^11.0.0",
         "koa": "^2.7.0",
         "koa-body": "^4.1.0",
         "koa-router": "^7.4.0",
@@ -21,6 +23,7 @@
         "pug": "^2.0.3",
         "redis": "^2.8.0",
         "reflect-metadata": "^0.1.13",
+        "sharp": "^0.22.1",
         "typeorm": "^0.2.16",
         "ws": "^7.0.0"
     },
@@ -34,6 +37,7 @@
         "@types/koa-router": "^7.0.40",
         "@types/pug": "^2.0.4",
         "@types/redis": "^2.8.12",
+        "@types/sharp": "^0.22.1",
         "@types/ws": "^6.0.1",
         "prettier": "^1.17.0",
         "typescript": "^3.4.3"
