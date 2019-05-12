@@ -1,8 +1,7 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm"
 import { timestampColumns } from "../../utils/timestampColumns"
 
-export class CreateAlbumFileVariantsTable1557574235101
-    implements MigrationInterface {
+export class CreateAlbumFileVariantsTable1557574235101 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<any> {
         await queryRunner.createTable(
             new Table({
@@ -54,5 +53,7 @@ export class CreateAlbumFileVariantsTable1557574235101
         )
     }
 
-    public async down(queryRunner: QueryRunner): Promise<any> {}
+    public async down(queryRunner: QueryRunner): Promise<any> {
+        await queryRunner.dropTable("album_file_variants")
+    }
 }

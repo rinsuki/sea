@@ -44,5 +44,7 @@ export class CreatePostsAttachedFilesTable1557673345858 implements MigrationInte
         )
     }
 
-    public async down(queryRunner: QueryRunner): Promise<any> {}
+    public async down(queryRunner: QueryRunner): Promise<any> {
+        await queryRunner.dropTable("posts_attached_files")
+    }
 }
