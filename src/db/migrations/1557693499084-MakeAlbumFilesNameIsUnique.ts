@@ -15,11 +15,15 @@ export class MakeAlbumFilesNameIsUnique1557693499084 implements MigrationInterfa
             })
         )
         await queryRunner.query(
-            `UPDATE album_files SET 
-                _backup_name=name,
-                name=name || ' - Auto Renamed (name conflict) (' || to_char(created_at, 'YYYY-MM-DD_HH24-MI-SS_US') || ')' 
-            WHERE id IN 
-                (SELECT unnest((array_agg(id ORDER BY id ASC))[2:]) FROM album_files GROUP BY name, user_id HAVING COUNT(*) > 1)`
+            [
+                "UPDATE album_files SET",
+                [
+                    "_backup_name=name",
+                    "name=name || ' - Auto Renamed (name conflict) (' || to_char(created_at, 'YYYY-MM-DD_HH24-MI-SS_US') || ')'",
+                ].join(", "),
+                "WHERE id IN",
+                "(SELECT unnest((array_agg(id ORDER BY id ASC))[2:]) FROM album_files GROUP BY name, user_id HAVING COUNT(*) > 1)",
+            ].join(" ")
         )
         await queryRunner.createIndex(
             "album_files",
