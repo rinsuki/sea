@@ -49,7 +49,7 @@ router.post("/files", bodyParser, async ctx => {
     if (type == null) return ctx.throw(400, "Unknown file type")
     var isLossless = false
 
-    if (await getRepository(AlbumFile).findOne({ name: name, user: ctx.state.token.user })) {
+    if (await getRepository(AlbumFile).findOne({ name: body.name, user: ctx.state.token.user })) {
         switch (body.ifNameConflicted) {
             case "add-date-string":
                 body.name += ` (${new Date()})`
