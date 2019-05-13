@@ -7,6 +7,7 @@ import { createHash } from "crypto"
 import { checkCsrf } from "../../../utils/checkCsrf"
 import koaBody = require("koa-body")
 import { AuthorizationCode } from "../../../db/entities/authorizationCode"
+import { URL } from "url"
 
 const router = new Router<WebRouterState, WebRouterCustom>()
 
@@ -21,12 +22,7 @@ router.get("/", async ctx => {
     })
     const sign = createHash("sha512")
         .update(
-            [
-                ctx.state.session!.secret,
-                app.clientId,
-                query.response_type,
-                query.state || "",
-            ]
+            [ctx.state.session!.secret, app.clientId, query.response_type, query.state || ""]
                 .map(s =>
                     createHash("sha256")
                         .update(s)
@@ -57,12 +53,7 @@ router.post("/", koaBody(), checkCsrf, async ctx => {
     })
     const sign = createHash("sha512")
         .update(
-            [
-                ctx.state.session!.secret,
-                app.clientId,
-                query.response_type,
-                query.state || "",
-            ]
+            [ctx.state.session!.secret, app.clientId, query.response_type, query.state || ""]
                 .map(s =>
                     createHash("sha256")
                         .update(s)

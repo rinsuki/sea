@@ -2,11 +2,9 @@ import { RouterContext } from "koa-router"
 import $ from "cafy"
 import { RECAPTCHA } from "../config"
 import axios from "axios"
+import { URLSearchParams } from "url"
 
-export async function checkReCaptcha(
-    ctx: RouterContext,
-    next: () => Promise<void>
-) {
+export async function checkReCaptcha(ctx: RouterContext, next: () => Promise<void>) {
     const body = $.obj({
         "g-recaptcha-response": $.str.makeOptional(),
     }).throw(ctx.request.body)
@@ -24,10 +22,7 @@ export async function checkReCaptcha(
             params.append("secret", RECAPTCHA.SECRET_KEY)
             params.append("response", recaptchaResponse)
 
-            const res = await axios.post<{ success: boolean }>(
-                "https://www.google.com/recaptcha/api/siteverify",
-                params
-            )
+            const res = await axios.post<{ success: boolean }>("https://www.google.com/recaptcha/api/siteverify", params)
 
             // STAGE FAILED
             if (res.data.success === false) {
