@@ -13,6 +13,7 @@ import { S3_BUCKET, S3_ENDPOINT, S3_FORCE_USE_PATH_STYLE } from "../../../config
 import { promisify } from "util"
 import { AlbumFileRepository } from "../../../db/repositories/albumFile"
 import { EXT2MIME } from "../../../constants"
+import { ConstContext } from "../../../utils/constContext"
 
 const s3 = new AWS.S3({
     endpoint: S3_ENDPOINT,
@@ -27,6 +28,9 @@ const bodyParser = koaBody({
     json: false,
     text: false,
 })
+
+const ifNameConflictedConst = ["add-date-string", "error"] as const
+
 router.post("/files", bodyParser, async ctx => {
     const { file } = $.obj({
         file: $.obj({
@@ -35,15 +39,25 @@ router.post("/files", bodyParser, async ctx => {
             size: $.num,
         }),
     }).throw(ctx.request.files)
-    const { name, folderId } = $.obj({
-        name: $.str,
+    const body = $.obj({
+        name: $.str.min(1),
         folderId: $.num.makeOptional(),
+        ifNameConflicted: $.either($.type(ConstContext("add-date-string")), $.type(ConstContext("error"))),
     }).throw(ctx.request.body)
     const buffer = await fs.promises.readFile(file.path)
     const type = fileType(buffer)
     if (type == null) return ctx.throw(400, "Unknown file type")
     var isLossless = false
 
+    if (await getRepository(AlbumFile).findOne({ name: name, user: ctx.state.token.user })) {
+        switch (body.ifNameConflicted) {
+            case "add-date-string":
+                body.name += ` (${new Date()})`
+                break
+            case "error":
+                throw ctx.error(400, "This name is already exists.")
+        }
+    }
     const [{ nextval: fileId }] = await getConnection().query("SELECT nextval(pg_get_serial_sequence('album_files', 'id'))")
     const albumFile = new AlbumFile()
     albumFile.id = parseInt(fileId)
