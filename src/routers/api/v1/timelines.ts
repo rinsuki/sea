@@ -30,14 +30,16 @@ router.get("/public", async ctx => {
         .orderBy("post.createdAt", "DESC")
     if (query.sinceId) fetch = fetch.andWhere("post.id > :sinceId", { sinceId: query.sinceId })
     const result = await fetch.getMany()
-    var files = await getRepository(PostAttachedFile)
-        .createQueryBuilder("attached_files")
-        .leftJoinAndSelect("attached_files.albumFile", "album_files")
-        .leftJoinAndSelect("album_files.variants", "variants")
-        .where("attached_files.post_id IN (:...post_ids)", {
-            post_ids: result.map(p => p.id),
-        })
-        .getMany()
+    var files = result.length // IN (:...hoge) に 無を渡すとsyntax errorが発生するので回避する
+        ? await getRepository(PostAttachedFile)
+              .createQueryBuilder("attached_files")
+              .leftJoinAndSelect("attached_files.albumFile", "album_files")
+              .leftJoinAndSelect("album_files.variants", "variants")
+              .where("attached_files.post_id IN (:...post_ids)", {
+                  post_ids: result.map(p => p.id),
+              })
+              .getMany()
+        : []
     await ctx.sendMany(
         PostRepository,
         result.map(post => {
