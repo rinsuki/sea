@@ -55,7 +55,7 @@ router.post("/files", bodyParser, async ctx => {
                 body.name += ` (${new Date()})`
                 break
             case "error":
-                throw ctx.error(400, "This name is already exists.")
+                throw ctx.throw(400, "This name is already exists.")
         }
     }
     const [{ nextval: fileId }] = await getConnection().query("SELECT nextval(pg_get_serial_sequence('album_files', 'id'))")
