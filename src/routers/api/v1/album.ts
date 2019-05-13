@@ -136,8 +136,10 @@ router.post("/files", bodyParser, async ctx => {
             const thumb = image.resize(128, 128, {
                 fit: "inside",
             })
-            promises.push(upload("thumbnail", "png", isLossless ? 25 : 0, thumb.png().toBuffer()))
             promises.push(upload("thumbnail", "webp", 50, thumb.webp(webpLossyOptions).toBuffer()))
+            if (isLossless || meta.hasAlpha) {
+                promises.push(upload("thumbnail", "png", isLossless ? 25 : 0, thumb.png().toBuffer()))
+            }
             if (meta.hasAlpha === false) {
                 promises.push(upload("thumbnail", "jpg", 10, thumb.jpeg(jpegOptions).toBuffer()))
             }
