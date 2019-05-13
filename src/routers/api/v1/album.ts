@@ -61,7 +61,7 @@ router.post("/files", bodyParser, async ctx => {
     const [{ nextval: fileId }] = await getConnection().query("SELECT nextval(pg_get_serial_sequence('album_files', 'id'))")
     const albumFile = new AlbumFile()
     albumFile.id = parseInt(fileId)
-    albumFile.name = name
+    albumFile.name = body.name
     albumFile.user = ctx.state.token.user
 
     async function upload(
