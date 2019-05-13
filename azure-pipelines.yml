@@ -15,7 +15,7 @@ variables:
 steps:
     - script: |
           sudo apt-get update &&
-          sudo apt-get install postgresql &&
+          sudo apt-get install postgresql-10 &&
           sudo -u postgres psql -c "CREATE USER vsts WITH PASSWORD 'ci' SUPERUSER;"
           sudo -u postgres psql -c "CREATE DATABASE sea_test WITH OWNER 'vsts';"
       displayName: "Install and Setup PostgreSQL"
