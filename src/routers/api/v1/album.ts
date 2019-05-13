@@ -14,6 +14,7 @@ import { promisify } from "util"
 import { AlbumFileRepository } from "../../../db/repositories/albumFile"
 import { EXT2MIME } from "../../../constants"
 import { ConstContext } from "../../../utils/constContext"
+import moment from "moment"
 
 const s3 = new AWS.S3({
     endpoint: S3_ENDPOINT,
@@ -52,7 +53,7 @@ router.post("/files", bodyParser, async ctx => {
     if (await getRepository(AlbumFile).findOne({ name: body.name, user: ctx.state.token.user })) {
         switch (body.ifNameConflicted) {
             case "add-date-string":
-                body.name += ` (${new Date()})`
+                body.name += ` (${moment().format("YYYY-MM-DD_HH-mm-ss")})`
                 break
             case "error":
                 throw ctx.throw(400, "This name is already exists.")
