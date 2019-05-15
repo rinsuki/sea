@@ -13,6 +13,9 @@ export class AlbumFileVariant extends EntityWithTimestamps {
     @JoinColumn({ name: "album_file_id", referencedColumnName: "id" })
     albumFile!: AlbumFile
 
+    @Column({ name: "album_file_id", type: "int", nullable: false })
+    albumFileId!: number
+
     @Column({ type: "smallint", nullable: false })
     score!: number
 

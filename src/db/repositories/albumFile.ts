@@ -1,6 +1,7 @@
-import { EntityRepository, Repository, getCustomRepository } from "typeorm"
+import { EntityRepository, Repository, getCustomRepository, getRepository, In } from "typeorm"
 import { AlbumFile } from "../entities/albumFile"
 import { AlbumFileVariantRepository } from "./albumFileVariant"
+import { AlbumFileVariant } from "../entities/albumFileVariant"
 
 @EntityRepository(AlbumFile)
 export class AlbumFileRepository extends Repository<AlbumFile> {
@@ -9,29 +10,37 @@ export class AlbumFileRepository extends Repository<AlbumFile> {
     }
 
     async packMany(files: AlbumFile[]) {
-        var allVariants = await getCustomRepository(AlbumFileVariantRepository).packMany(
-            files
-                .map(f =>
-                    f.variants.map(v => {
-                        v.albumFile = f
+        const requireVariantsFiles = files.filter(f => f.variants == null)
+        let variants = files
+            .filter(f => f.variants != null)
+            .map(f =>
+                f.variants.map(v => {
+                    v.albumFile = f
+                    return v
+                })
+            )
+            .reduce((arr, now) => {
+                return arr.concat(...now)
+            }, [])
+        if (requireVariantsFiles.length) {
+            variants = variants.concat(
+                (await getRepository(AlbumFileVariant).find({ albumFileId: In(requireVariantsFiles.map(f => f.id)) })).map(
+                    v => {
+                        v.albumFile = requireVariantsFiles.find(({ id }) => v.albumFileId === id)!
                         return v
-                    })
+                    }
                 )
-                .reduce((arr, now) => {
-                    return arr.concat(...now)
-                }, [])
-        )
+            )
+        }
+        const packedVariants = await getCustomRepository(AlbumFileVariantRepository).packMany(variants)
         return files.map(file => {
-            const variantIds = file.variants.map(v => v.id)
+            const variantIds = variants.filter(v => v.albumFileId === file.id).map(v => v.id)
             return {
                 id: file.id,
                 name: file.name,
-                variants: allVariants
-                    .filter(v => variantIds.includes(v.id))
-                    .sort((a, b) => (a.score === b.score ? a.id - b.id : b.score - a.score))
-                    .map(v => {
-                        return v
-                    }),
+                variants: packedVariants
+                    .filter(({ id }) => variantIds.includes(id))
+                    .sort((a, b) => (a.score === b.score ? a.id - b.id : b.score - a.score)),
             }
         })
     }

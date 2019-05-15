@@ -1,13 +1,8 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    OneToOne,
-    JoinColumn,
-} from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm"
 import { Matches, MaxLength } from "class-validator"
 import { EntityWithTimestamps } from "../../utils/timestampColumns"
 import { InviteCode } from "./inviteCode"
+import { AlbumFile } from "./albumFile"
 
 @Entity("users")
 export class User extends EntityWithTimestamps {
@@ -39,4 +34,8 @@ export class User extends EntityWithTimestamps {
         nullable: false,
     })
     canMakeInviteCode!: boolean
+
+    @OneToOne(type => AlbumFile)
+    @JoinColumn({ name: "avatar_file_id", referencedColumnName: "id" })
+    avatarFile?: AlbumFile
 }

@@ -3,6 +3,7 @@ import { Post } from "../entities/post"
 import { UserRepository } from "./user"
 import { ApplicationRepository } from "./application"
 import { AlbumFileRepository } from "./albumFile"
+import { onlyUnique } from "../../utils/onlyUnique"
 
 @EntityRepository(Post)
 export class PostRepository extends Repository<Post> {
@@ -11,11 +12,12 @@ export class PostRepository extends Repository<Post> {
     }
 
     async packMany(posts: Post[]) {
+        const users = await getCustomRepository(UserRepository).packMany(onlyUnique(posts.map(p => p.user), "id"))
         return Promise.all(
             posts.map(async post => ({
                 id: post.id,
                 text: post.text,
-                user: await getCustomRepository(UserRepository).pack(post.user),
+                user: users.find(u => u.id === post.user.id),
                 application: await getCustomRepository(ApplicationRepository).pack(post.application),
                 createdAt: post.createdAt,
                 updatedAt: post.updatedAt,

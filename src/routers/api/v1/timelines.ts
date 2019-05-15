@@ -25,6 +25,7 @@ router.get("/public", async ctx => {
     var fetch = getRepository(Post)
         .createQueryBuilder("post")
         .leftJoinAndSelect("post.user", "users")
+        .leftJoinAndSelect("users.avatarFile", "avatar_file")
         .leftJoinAndSelect("post.application", "applications")
         .limit(query.count || 20)
         .orderBy("post.createdAt", "DESC")

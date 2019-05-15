@@ -4,6 +4,7 @@ import koaBody = require("koa-body")
 import $ from "cafy"
 import { getRepository } from "typeorm"
 import { User } from "../../../db/entities/user"
+import { AlbumFile } from "../../../db/entities/albumFile"
 
 const router = new APIRouter()
 
@@ -18,10 +19,15 @@ router.patch("/", koaBody(), async ctx => {
             .makeOptional()
             .min(1)
             .max(20),
+        avatarFileId: $.num.makeOptional(),
     }).throw(ctx.request.body)
-
     const user = ctx.state.token.user
     if (body.name != null) user.name = body.name
+    if (body.avatarFileId != null)
+        user.avatarFile = await getRepository(AlbumFile).findOneOrFail({
+            id: body.avatarFileId,
+            user,
+        })
     await getRepository(User).save(user)
     await ctx.send(UserRepository, user)
 })
