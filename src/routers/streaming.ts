@@ -109,7 +109,14 @@ export function streamingConnectionCallback(ws: WebSocket) {
                                     id: parseInt(message),
                                 },
                                 {
-                                    relations: ["user", "application", "files", "files.albumFile", "files.albumFile.variants"],
+                                    relations: [
+                                        "user",
+                                        "user.avatarFile",
+                                        "application",
+                                        "files",
+                                        "files.albumFile",
+                                        "files.albumFile.variants",
+                                    ],
                                 }
                             )
                             if (rawPost == null) return
