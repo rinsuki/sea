@@ -1,10 +1,4 @@
-import {
-    MigrationInterface,
-    QueryRunner,
-    Table,
-    TableColumn,
-    TableForeignKey,
-} from "typeorm"
+import { MigrationInterface, QueryRunner, Table, TableColumn, TableForeignKey } from "typeorm"
 import { timestampColumns } from "../../utils/timestampColumns"
 
 export class CreateInviteCodesTable1556992632407 implements MigrationInterface {
@@ -43,7 +37,7 @@ export class CreateInviteCodesTable1556992632407 implements MigrationInterface {
                         length: "64",
                         isNullable: false,
                     },
-                    ...timestampColumns.forMigrations,
+                    ...timestampColumns.PLEASE_USE_ONLY_FOR_MIGRATION_BACKWARD_COMPATIBILITY_forMigrations,
                 ],
                 foreignKeys: [
                     {
@@ -92,10 +86,7 @@ export class CreateInviteCodesTable1556992632407 implements MigrationInterface {
 
     public async down(queryRunner: QueryRunner): Promise<any> {
         await queryRunner.dropColumn("users", "can_make_invite_code")
-        await queryRunner.dropForeignKey(
-            "users",
-            "FK:users:invite_code_id::invite_codes:id"
-        )
+        await queryRunner.dropForeignKey("users", "FK:users:invite_code_id::invite_codes:id")
         await queryRunner.dropColumn("users", "invite_code_id")
         await queryRunner.dropTable("invite_codes")
     }

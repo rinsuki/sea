@@ -40,7 +40,7 @@ export class CreateAlbumFileVariantsTable1557574235101 implements MigrationInter
                         type: "int",
                         isNullable: false,
                     },
-                    ...timestampColumns.forMigrations,
+                    ...timestampColumns.PLEASE_USE_ONLY_FOR_MIGRATION_BACKWARD_COMPATIBILITY_forMigrations,
                 ],
                 foreignKeys: [
                     {

@@ -1,11 +1,4 @@
-import {
-    Entity,
-    PrimaryColumn,
-    PrimaryGeneratedColumn,
-    Column,
-    ManyToOne,
-    JoinColumn,
-} from "typeorm"
+import { Entity, PrimaryColumn, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm"
 import { EntityWithTimestamps } from "../../utils/timestampColumns"
 import { User } from "./user"
 import { randomBytes } from "crypto"
@@ -27,7 +20,7 @@ export class AccessToken extends EntityWithTimestamps {
     @JoinColumn({ name: "user_id", referencedColumnName: "id" })
     user!: User
 
-    @Column({ name: "revoked_at", type: "timestamp", nullable: true })
+    @Column({ name: "revoked_at", type: "timestamptz", nullable: true })
     revokedAt!: Date | null
 
     generateToken() {

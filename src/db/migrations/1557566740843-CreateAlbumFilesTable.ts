@@ -24,7 +24,7 @@ export class CreateAlbumFilesTable1557566740843 implements MigrationInterface {
                         length: "256",
                         isNullable: false,
                     },
-                    ...timestampColumns.forMigrations,
+                    ...timestampColumns.PLEASE_USE_ONLY_FOR_MIGRATION_BACKWARD_COMPATIBILITY_forMigrations,
                 ],
                 foreignKeys: [
                     {

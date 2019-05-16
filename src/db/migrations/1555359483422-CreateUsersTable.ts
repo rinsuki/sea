@@ -29,7 +29,7 @@ export class CreateUsersTable1555359483422 implements MigrationInterface {
                         type: "text",
                         isNullable: false,
                     },
-                    ...timestampColumns.forMigrations,
+                    ...timestampColumns.PLEASE_USE_ONLY_FOR_MIGRATION_BACKWARD_COMPATIBILITY_forMigrations,
                 ],
                 indices: [
                     {

@@ -1,8 +1,7 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm"
 import { timestampColumns } from "../../utils/timestampColumns"
 
-export class CreateAuthorizationCodesTable1556382437025
-    implements MigrationInterface {
+export class CreateAuthorizationCodesTable1556382437025 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<any> {
         await queryRunner.createTable(
             new Table({
@@ -28,12 +27,11 @@ export class CreateAuthorizationCodesTable1556382437025
                         type: "text",
                         isNullable: true,
                     },
-                    ...timestampColumns.forMigrations,
+                    ...timestampColumns.PLEASE_USE_ONLY_FOR_MIGRATION_BACKWARD_COMPATIBILITY_forMigrations,
                 ],
                 foreignKeys: [
                     {
-                        name:
-                            "FK:authorization_codes:application_id::applications:id",
+                        name: "FK:authorization_codes:application_id::applications:id",
                         columnNames: ["application_id"],
                         referencedTableName: "applications",
                         referencedColumnNames: ["id"],

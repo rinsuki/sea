@@ -2,7 +2,7 @@ import { TableColumnOptions } from "typeorm/schema-builder/options/TableColumnOp
 import { CreateDateColumn, UpdateDateColumn } from "typeorm"
 
 export const timestampColumns = {
-    forMigrations: [
+    PLEASE_USE_ONLY_FOR_MIGRATION_BACKWARD_COMPATIBILITY_forMigrations: [
         {
             name: "created_at",
             type: "timestamp",
@@ -12,6 +12,20 @@ export const timestampColumns = {
         {
             name: "updated_at",
             type: "timestamp",
+            isNullable: false,
+            default: "NOW()",
+        },
+    ] as TableColumnOptions[],
+    forMigrations: [
+        {
+            name: "created_at",
+            type: "timestamptz",
+            isNullable: false,
+            default: "NOW()",
+        },
+        {
+            name: "updated_at",
+            type: "timestamptz",
             isNullable: false,
             default: "NOW()",
         },

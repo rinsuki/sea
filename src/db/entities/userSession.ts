@@ -1,10 +1,4 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    ManyToOne,
-    JoinColumn,
-} from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm"
 import { User } from "./user"
 import { createHash } from "crypto"
 import { EntityWithTimestamps } from "../../utils/timestampColumns"
@@ -27,7 +21,7 @@ export class UserSession extends EntityWithTimestamps {
     @Column({ name: "created_ip_address", nullable: false })
     createdIpAddress!: string
 
-    @Column({ name: "disabled_at", type: "date", nullable: true })
+    @Column({ name: "disabled_at", type: "timestamptz", nullable: true })
     disabledAt!: Date | null
 
     getCookieValue(): string {
