@@ -1,5 +1,8 @@
 extends ../../layout
 
+block init
+    - var page = `${app.name} - Authorize | OAuth`
+
 block content
     h1 #{app.name} を認証しますか?
 

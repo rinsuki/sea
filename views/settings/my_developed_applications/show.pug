@@ -1,5 +1,8 @@
 extends ../../layout
 
+block init
+    - var page = `${app.name} | Applications`
+
 block content
     h1 #{app.name}
 
