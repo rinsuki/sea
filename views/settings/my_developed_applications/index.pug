@@ -1,8 +1,11 @@
-h1 あなたが作ったアプリケーションの一覧
+extends ../../layout.pug
 
-a(href="/settings/my_developed_applications/new") もういっこつくる
+block content
+    h1 あなたが作ったアプリケーションの一覧
 
-ul
-    each app in myOwnedApps
-        li
-            a(href="/settings/my_developed_applications/" + app.id) #{app.name}
+    a(href="/settings/my_developed_applications/new") もういっこつくる
+
+    ul
+        each app in myOwnedApps
+            li
+                a(href="/settings/my_developed_applications/" + app.id) #{app.name}

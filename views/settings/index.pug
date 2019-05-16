@@ -1,6 +1,9 @@
-h1 設定
-a(href="/") トップ
+extends ../layout.pug
 
-ul
-    li: a(href="/settings/invite_codes") 招待コード
-    li: a(href="/settings/my_developed_applications") あなたが作ったアプリケーション一覧
+block content
+    h1 設定
+    a(href="/") トップ
+
+    ul
+        li: a(href="/settings/invite_codes") 招待コード
+        li: a(href="/settings/my_developed_applications") あなたが作ったアプリケーション一覧

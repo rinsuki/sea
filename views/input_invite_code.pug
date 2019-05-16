@@ -1,14 +1,17 @@
-h1 招待コードの入力
+extends layout.pug
 
-form(method="POST")
-    input(type="hidden", name="_csrf", value=session.getCookieValue())
-    if isFirstUserMode
-        p 通常は招待コードが必要ですが、あなたは最初に登録したユーザーのため、招待ツリーのルートになります。
-        p そのため、招待コードは必要ありません。
-        p 下の送信ボタンをクリックしてください。
-        input(type="hidden", name="code", value="sp!!!!first_user")
-    else
-        p 招待コードを入力してください。
-        p 招待コードを所持していない場合は、管理者に連絡してください。
-        input(type="text", name="code", placeholder="0123456789abcdef")
-    input(type="submit", value="送信")
+block content
+    h1 招待コードの入力
+
+    form(method="POST")
+        input(type="hidden", name="_csrf", value=session.getCookieValue())
+        if isFirstUserMode
+            p 通常は招待コードが必要ですが、あなたは最初に登録したユーザーのため、招待ツリーのルートになります。
+            p そのため、招待コードは必要ありません。
+            p 下の送信ボタンをクリックしてください。
+            input(type="hidden", name="code", value="sp!!!!first_user")
+        else
+            p 招待コードを入力してください。
+            p 招待コードを所持していない場合は、管理者に連絡してください。
+            input(type="text", name="code", placeholder="0123456789abcdef")
+        input(type="submit", value="送信")

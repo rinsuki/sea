@@ -1,13 +1,16 @@
-h1 #{app.name} を認証しますか?
+extends ../../layout.pug
 
-p 現在ログイン中のアカウント:&nbsp;
-    strong #{session.user.name}
-    | &nbsp;@#{session.user.screenName}&nbsp;
-    a(href="/logout", target="_blank") ログアウト
+block content
+    h1 #{app.name} を認証しますか?
 
-p #{app.description}
+    p 現在ログイン中のアカウント:&nbsp;
+        strong #{session.user.name}
+        | &nbsp;@#{session.user.screenName}&nbsp;
+        a(href="/logout", target="_blank") ログアウト
 
-form(method="POST")
-    input(type="hidden", name="_csrf", value=session.getCookieValue())
-    input(type="hidden", name="sign", value=sign)
-    input(type="submit", value="認証")
+    p #{app.description}
+
+    form(method="POST")
+        input(type="hidden", name="_csrf", value=session.getCookieValue())
+        input(type="hidden", name="sign", value=sign)
+        input(type="submit", value="認証")

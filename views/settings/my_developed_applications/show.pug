@@ -1,11 +1,14 @@
-h1 #{app.name}
+extends ../../layout.pug
 
-p #{app.description}
+block content
+    h1 #{app.name}
 
-table
-    tr
-        th client_id
-        td: input(type="text", value=app.clientId, readonly)
-    tr
-        th client_secret
-        td: input(type="text", value=app.clientSecret, readonly)
+    p #{app.description}
+
+    table
+        tr
+            th client_id
+            td: input(type="text", value=app.clientId, readonly)
+        tr
+            th client_secret
+            td: input(type="text", value=app.clientSecret, readonly)
