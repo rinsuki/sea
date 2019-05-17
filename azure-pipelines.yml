@@ -11,6 +11,9 @@ pool:
 
 steps:
   - script: |
+      docker pull postgres:10-alpine rinsuki/sea:latest
+    displayName: "Pull some docker containers"
+  - script: |
       docker run --name postgres -e POSTGRES_PASSWORD=onlyfortesting -d postgres:10-alpine
     displayName: "Run PostgreSQL"
   - task: Docker@2
