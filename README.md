@@ -1,6 +1,8 @@
 # Sea :ocean:
 
-requires:
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
--   Node.js 10.x
+## Requires
+
+-   Node.js 12.x
 -   Postgres >= 10.x
