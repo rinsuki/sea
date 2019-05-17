@@ -13,6 +13,7 @@ const config = {
         migrationsDir: "src/db/migrations/",
         subscribersDir: "src/db/subscribers/",
     },
+    ssl: process.env.DATABASE_SSL_ENABLED == "yes" ? true : false,
 }
 
 module.exports = config
