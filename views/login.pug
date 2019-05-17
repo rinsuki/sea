@@ -1,9 +1,9 @@
 extends layout
 
 block init
-    - var page = "Login"
+    - var title = "Login"
 
-block metatag
+block head
     if recaptchaSiteKey != null
         script(src="https://www.google.com/recaptcha/api.js", async, defer)
 
