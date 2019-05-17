@@ -10,6 +10,9 @@ pool:
   vmImage: "Ubuntu-16.04"
 
 steps:
+  - script: |
+      docker run --name postgres -e POSTGRES_PASSWORD=onlyfortesting -d postgres:10-alpine
+    displayName: "Run PostgreSQL"
   - task: Docker@2
     displayName: "Login to DockerHub"
     inputs:
@@ -21,9 +24,6 @@ steps:
       command: build
       repository: rinsuki/sea
       tags: latest
-  - script: |
-      docker run --name postgres -e POSTGRES_PASSWORD=onlyfortesting postgres:10-alpine
-    displayName: "Run PostgreSQL"
   - script: |
       docker run --rm --link postgres:postgres -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" yarn test
     displayName: "Run yarn test"
