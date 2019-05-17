@@ -25,7 +25,7 @@ steps:
       repository: rinsuki/sea
       tags: latest
   - script: |
-      docker run --rm --link postgres:postgres -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" yarn test
+      docker run --rm --link postgres:postgres -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" rinsuki/sea yarn test
     displayName: "Run yarn test"
   - task: Docker@2
     displayName: "Push to DockerHub"
