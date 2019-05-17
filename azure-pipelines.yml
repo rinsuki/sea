@@ -14,6 +14,7 @@ steps:
     displayName: "Login to DockerHub"
     inputs:
       command: login
+      containerRegistry: dockerHub
   - task: Docker@2
     displayName: "Build docker container"
     inputs:
@@ -32,7 +33,9 @@ steps:
       command: push
       repository: rinsuki/sea
       tags: latest
+      containerRegistry: dockerHub
   - task: Docker@2
     displayName: "Log-out from DockerHub"
     inputs:
       command: logout
+      containerRegistry: dockerHub
