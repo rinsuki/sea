@@ -1,13 +1,19 @@
-h1 #{app.name} を認証しますか?
+extends ../../layout
 
-p 現在ログイン中のアカウント:&nbsp;
-    strong #{session.user.name}
-    | &nbsp;@#{session.user.screenName}&nbsp;
-    a(href="/logout", target="_blank") ログアウト
+block init
+    - var title = `${app.name} - Authorize | OAuth`
 
-p #{app.description}
+block content
+    h1 #{app.name} を認証しますか?
 
-form(method="POST")
-    input(type="hidden", name="_csrf", value=session.getCookieValue())
-    input(type="hidden", name="sign", value=sign)
-    input(type="submit", value="認証")
+    p 現在ログイン中のアカウント:&nbsp;
+        strong #{session.user.name}
+        | &nbsp;@#{session.user.screenName}&nbsp;
+        a(href="/logout", target="_blank") ログアウト
+
+    p #{app.description}
+
+    form(method="POST")
+        input(type="hidden", name="_csrf", value=session.getCookieValue())
+        input(type="hidden", name="sign", value=sign)
+        input(type="submit", value="認証")

@@ -1,8 +1,14 @@
-h1 招待コード
+extends ../../layout
 
-if session.user.canMakeInviteCode
-    a(href="/settings/invite_codes/new") 作成
+block init
+    - var title = "Invite | Settings"
 
-h2 招待ツリー
+block content
+    h1 招待コード
 
-p WIP どう実装すればいいんだ??????
+    if session.user.canMakeInviteCode
+        a(href="/settings/invite_codes/new") 作成
+
+    h2 招待ツリー
+
+    p WIP どう実装すればいいんだ??????

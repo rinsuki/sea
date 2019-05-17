@@ -1,25 +1,28 @@
-doctype html
-html
-    head
-        meta(charset="UTF-8")
+extends layout
+
+block init
+    - var title = "Register"
+
+block head
+    if recaptchaSiteKey != null
+        script(src="https://www.google.com/recaptcha/api.js", async, defer)
+
+block content
+    h1 新規登録 - Sea
+    form(method="POST")
+        table
+            tr
+                th 名前
+                td
+                    input(type="text", placeholder="ななし", name="name", required, maxlength=20)
+            tr
+                th スクリーンネーム
+                td
+                    input(type="text", placeholder="abcdefgh", name="screen_name", pattern="^[0-9A-Za-z_]{1,20}$", required, maxlength=20)
+            tr
+                th パスワード
+                td
+                    input(type="password", placeholder="パスワード", name="password", minlength=8, required)
         if recaptchaSiteKey != null
-            script(src="https://www.google.com/recaptcha/api.js", async, defer)
-    body
-        h1 新規登録 - Sea
-        form(method="POST")
-            table
-                tr
-                    th 名前
-                    td
-                        input(type="text", placeholder="ななし", name="name", required, maxlength=20)
-                tr
-                    th スクリーンネーム
-                    td
-                        input(type="text", placeholder="abcdefgh", name="screen_name", pattern="^[0-9A-Za-z_]{1,20}$", required, maxlength=20)
-                tr
-                    th パスワード
-                    td
-                        input(type="password", placeholder="パスワード", name="password", minlength=8, required)
-            if recaptchaSiteKey != null
-                div.g-recaptcha(data-sitekey=recaptchaSiteKey)
-            input(type="submit", value="登録")
+            div.g-recaptcha(data-sitekey=recaptchaSiteKey)
+        input(type="submit", value="登録")

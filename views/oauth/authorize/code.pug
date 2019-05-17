@@ -1,4 +1,10 @@
-h1 認証終了
+extends ../../layout
 
-p アプリケーションに戻って、以下のコードを入力してください。
-code= code
+block init
+    - var title = "Authorized | OAuth"
+
+block content
+    h1 認証終了
+
+    p アプリケーションに戻って、以下のコードを入力してください。
+    code= code

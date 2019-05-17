@@ -1,35 +1,41 @@
-h1 招待コードの作成
+extends ../../layout
 
-if createdCode
-    p 作成しました:&nbsp;
-        strong #{createdCode.code}
+block init
+    - var title = "Create | Invite | Settings"
 
-h2 作成済み
+block content
+    h1 招待コードの作成
 
-table(border=1)
-    tr
-        th コード
-        th 使用者
-        th メモ
-    for code in codes
+    if createdCode
+        p 作成しました:&nbsp;
+            strong #{createdCode.code}
+
+    h2 作成済み
+
+    table(border=1)
         tr
-            td= code.code
-            td
-                if code.toUser
-                    bdi #{code.toUser.name}
-                    | &nbsp;
-                    strong @#{code.toUser.screenName}
-                else
-                    | 未使用
-            td= code.memo
-
-h2 作成
-
-form(method="POST")
-    input(type="hidden", name="_csrf", value=session.getCookieValue())
-    table
-        tr
+            th コード
+            th 使用者
             th メモ
-            td
-                input(type="text", name="memo", placeholder="ほげほげさん用")
-    input(type="submit", value="作成")
+        for code in codes
+            tr
+                td= code.code
+                td
+                    if code.toUser
+                        bdi #{code.toUser.name}
+                        | &nbsp;
+                        strong @#{code.toUser.screenName}
+                    else
+                        | 未使用
+                td= code.memo
+
+    h2 作成
+
+    form(method="POST")
+        input(type="hidden", name="_csrf", value=session.getCookieValue())
+        table
+            tr
+                th メモ
+                td
+                    input(type="text", name="memo", placeholder="ほげほげさん用")
+        input(type="submit", value="作成")

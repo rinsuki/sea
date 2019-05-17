@@ -1,8 +1,14 @@
-h1 あなたが作ったアプリケーションの一覧
+extends ../../layout
 
-a(href="/settings/my_developed_applications/new") もういっこつくる
+block init
+    - var title = "Applications"
 
-ul
-    each app in myOwnedApps
-        li
-            a(href="/settings/my_developed_applications/" + app.id) #{app.name}
+block content
+    h1 あなたが作ったアプリケーションの一覧
+
+    a(href="/settings/my_developed_applications/new") もういっこつくる
+
+    ul
+        each app in myOwnedApps
+            li
+                a(href="/settings/my_developed_applications/" + app.id) #{app.name}

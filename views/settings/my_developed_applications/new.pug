@@ -1,17 +1,23 @@
-h1 アプリケーションを作る
+extends ../../layout
 
-p アプリケーションを作るぞ〜〜〜〜
+block init
+    - var title = "Create | Applications"
 
-form(method="POST")
-    input(type="hidden", name="_csrf", value=session.getCookieValue())
-    table
-        tr
-            th 名前
-            td: input(type="text", name="name")
-        tr
-            th 説明
-            td: textarea(name="description")
-        tr
-            th 認証が終わったときに行くとこ (指定しないとPIN表示)
-            td: input(type="text", name="redirect_uri")
-    input(type="submit", value="アプリを作成")
+block content
+    h1 アプリケーションを作る
+
+    p アプリケーションを作るぞ〜〜〜〜
+
+    form(method="POST")
+        input(type="hidden", name="_csrf", value=session.getCookieValue())
+        table
+            tr
+                th 名前
+                td: input(type="text", name="name")
+            tr
+                th 説明
+                td: textarea(name="description")
+            tr
+                th 認証が終わったときに行くとこ (指定しないとPIN表示)
+                td: input(type="text", name="redirect_uri")
+        input(type="submit", value="アプリを作成")
