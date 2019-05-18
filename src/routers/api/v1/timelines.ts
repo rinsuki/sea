@@ -10,6 +10,7 @@ const router = new APIRouter()
 router.get("/public", async ctx => {
     const queryBefore = $.obj({
         sinceId: $.str.match(/^[0-9]+$/).makeOptional(),
+        maxId: $.str.match(/^[0-9]+$/).makeOptional(),
         count: $.str.match(/^[0-9]+$/).makeOptional(),
     }).throw(ctx.query)
     const query = $.obj({
@@ -18,6 +19,7 @@ router.get("/public", async ctx => {
             .range(1, 100)
             .makeOptional(),
         sinceId: $.num.makeOptional(),
+        maxId: $.num.makeOptional(),
     }).throw({
         count: queryBefore.count == null ? undefined : parseInt(queryBefore.count),
         sinceId: queryBefore.sinceId == null ? undefined : parseInt(queryBefore.sinceId),
@@ -29,25 +31,11 @@ router.get("/public", async ctx => {
         .leftJoinAndSelect("post.application", "applications")
         .limit(query.count || 20)
         .orderBy("post.createdAt", "DESC")
+        .where("post.createdAt > :minReadableDate", { minReadableDate: ctx.state.token.user.minReadableDate })
     if (query.sinceId) fetch = fetch.andWhere("post.id > :sinceId", { sinceId: query.sinceId })
+    if (query.maxId) fetch = fetch.andWhere("post.id < :maxId", { maxId: query.maxId })
     const result = await fetch.getMany()
-    var files = result.length // IN (:...hoge) に 無を渡すとsyntax errorが発生するので回避する
-        ? await getRepository(PostAttachedFile)
-              .createQueryBuilder("attached_files")
-              .leftJoinAndSelect("attached_files.albumFile", "album_files")
-              .leftJoinAndSelect("album_files.variants", "variants")
-              .where("attached_files.post_id IN (:...post_ids)", {
-                  post_ids: result.map(p => p.id),
-              })
-              .getMany()
-        : []
-    await ctx.sendMany(
-        PostRepository,
-        result.map(post => {
-            post.files = files.filter(f => f.postId === post.id)
-            return post
-        })
-    )
+    await ctx.sendMany(PostRepository, result)
 })
 
 export default router

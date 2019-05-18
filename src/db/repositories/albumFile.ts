@@ -10,18 +10,16 @@ export class AlbumFileRepository extends Repository<AlbumFile> {
     }
 
     async packMany(files: AlbumFile[]) {
+        if (files.length === 0) return []
         const requireVariantsFiles = files.filter(f => f.variants == null)
         let variants = files
             .filter(f => f.variants != null)
-            .map(f =>
+            .flatMap(f =>
                 f.variants.map(v => {
                     v.albumFile = f
                     return v
                 })
             )
-            .reduce((arr, now) => {
-                return arr.concat(...now)
-            }, [])
         if (requireVariantsFiles.length) {
             variants = variants.concat(
                 (await getRepository(AlbumFileVariant).find({ albumFileId: In(requireVariantsFiles.map(f => f.id)) })).map(
