@@ -17,7 +17,8 @@ export class PostRepository extends Repository<Post> {
         if (posts.length === 0) return []
         const users = await getCustomRepository(UserRepository).packMany(onlyUnique(posts.map(p => p.user), "id"))
         const attachedFiles = await getRepository(PostAttachedFile).find({
-            where: { postId: In(posts.map(p => p.id)), relations: ["albumFile"] },
+            where: { postId: In(posts.map(p => p.id)) },
+            relations: ["albumFile"],
         })
 
         const allFiles = await getCustomRepository(AlbumFileRepository).packMany(
