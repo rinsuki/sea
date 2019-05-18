@@ -39,6 +39,7 @@ async function run() {
     server.listen(port, () => {
         console.log(`live in http://localhost:${port}`)
     })
+    console.log("にゃーん")
 }
 
 run()
