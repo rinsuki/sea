@@ -13,12 +13,9 @@ steps:
   - script: |
       docker run --name postgres -e POSTGRES_PASSWORD=onlyfortesting -d postgres:10-alpine
     displayName: "Run PostgreSQL"
-  - task: Docker@2
+  - script: |
+      docker build -t rinsuki/sea:latest .
     displayName: "Build docker container"
-    inputs:
-      command: build
-      repository: rinsuki/sea
-      tags: latest
   - script: |
       docker run --rm --link postgres:postgres -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" rinsuki/sea yarn test
     displayName: "Run yarn test"
