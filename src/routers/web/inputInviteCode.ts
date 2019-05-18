@@ -45,6 +45,7 @@ router.post("/", koaBody(), checkCsrf, async ctx => {
         await getRepository(InviteCode).save(inviteCode)
         firstUser.inviteCode = inviteCode
         firstUser.canMakeInviteCode = true
+        firstUser.minReadableDate = new Date("1970-01-01")
         await getRepository(User).save(firstUser)
     } else {
         // 2人目以降: 普通の確認
@@ -59,6 +60,7 @@ router.post("/", koaBody(), checkCsrf, async ctx => {
             inviteCode.toUser = user
             await manager.getRepository(InviteCode).save(inviteCode)
             user.inviteCode = inviteCode
+            user.minReadableDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
             await manager.getRepository(User).save(user)
         })
     }
