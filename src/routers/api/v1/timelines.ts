@@ -23,6 +23,7 @@ router.get("/public", async ctx => {
     }).throw({
         count: queryBefore.count == null ? undefined : parseInt(queryBefore.count),
         sinceId: queryBefore.sinceId == null ? undefined : parseInt(queryBefore.sinceId),
+        maxId: queryBefore.maxId == null ? undefined : parseInt(queryBefore.maxId),
     })
     var fetch = getRepository(Post)
         .createQueryBuilder("post")
