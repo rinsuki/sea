@@ -1,0 +1,50 @@
+{
+  "name": "sea",
+  "description": "🌊",
+  "repository": "https://github.com/rinsuki/sea",
+  "env": {
+    "DATABASE_SSL_ENABLED": {
+      "description": "yes/no",
+      "required": false
+    },
+    "RECAPTCHA_SITE_KEY": {
+      "description": "Google RECAPTCHA Site Key. This value is required if you use sea in a production environment.",
+      "required": false
+    },
+    "RECAPTCHA_SECRET_KEY": {
+      "description": "Google RECAPTCHA Secret Key. This value is required if you use sea in a production environment.",
+      "required": false
+    },
+    "S3_BUCKET": {
+      "description": "Amazon S3 Bucket",
+      "required": true
+    },
+    "S3_ENDPOINT": {
+      "description": "Amazon S3 Endpoint",
+      "required": true
+    },
+    "S3_PUBLIC_URL": {
+      "description": "Amazon S3 Endpoint",
+      "required": true
+    },
+    "S3_FORCE_USE_PATH_STYLE": {
+      "description": "yes/no",
+      "required": true
+    },
+    "AWS_ACCESS_KEY_ID": {
+      "description": "Amazon S3 Access Key",
+      "required": false
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+      "description": "Amazon S3 Secret Key",
+      "required": false
+    }
+  },
+  "buildpacks": [{
+    "url": "heroku/nodejs"
+  }],
+  "addons": [
+    "heroku-postgresql",
+    "heroku-redis"
+  ]
+}
