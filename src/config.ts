@@ -1,3 +1,5 @@
+require("dotenv").config()
+
 import $ from "cafy"
 
 export const isProductionMode = process.env.NODE_ENV === "production"
