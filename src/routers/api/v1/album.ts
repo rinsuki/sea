@@ -110,7 +110,7 @@ router.post("/files", bodyParser, async ctx => {
         case "image/webp":
         case "image/jpeg":
             // image
-            const image = sharp(buffer)
+            const image = sharp(buffer).rotate()
             const webpLossyOptions = {
                 quality: 80,
             }
