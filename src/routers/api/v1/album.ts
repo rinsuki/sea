@@ -45,6 +45,7 @@ router.post("/files", bodyParser, async ctx => {
         folderId: $.num.makeOptional(),
         ifNameConflicted: $.either($.type(ConstContext("add-date-string")), $.type(ConstContext("error"))),
     }).throw(ctx.request.body)
+    if (file.size >= 16 * 1024 * 1024) return ctx.throw(400, "file-too-big")
     const buffer = await fs.promises.readFile(file.path)
     const type = fileType(buffer)
     if (type == null) return ctx.throw(400, "Unknown file type")
@@ -75,6 +76,7 @@ router.post("/files", bodyParser, async ctx => {
             "SELECT nextval(pg_get_serial_sequence('album_file_variants', 'id'))"
         )
         const buffer = await bufferPromise
+        if (buffer.length >= 32 * 1024 * 1024) return ctx.throw(400, "file-too-complicated")
         const variant = new AlbumFileVariant()
         variant.id = parseInt(variantId)
         variant.albumFile = albumFile
