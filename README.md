@@ -1,11 +1,11 @@
 # Sea :ocean:
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/rinsuki/sea.svg)](https://greenkeeper.io/)
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=rinsuki/sea)](https://dependabot.com)
 
 ## Requires
 
-- Node.js 12.x
-- Postgres >= 10.x
+-   Node.js 12.x
+-   Postgres >= 10.x
 
 ## Deploy
 
