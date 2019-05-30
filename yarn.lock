@@ -1121,7 +1121,7 @@ js-stringify@^1.0.1:
   resolved "https://registry.yarnpkg.com/js-stringify/-/js-stringify-1.0.2.tgz#1736fddfd9724f28a3682adc6230ae7e4e9679db"
   integrity sha1-Fzb939lyTyijaCrcYjCufk6Weds=
 
-js-yaml@^3.12.2:
+js-yaml@^3.13.1:
   version "3.13.1"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.13.1.tgz#aff151b30bfdfa8e49e05da22e7415e9dfa37847"
   integrity sha512-YfbcO7jXDdyj0DGxYVSlSeQNHbD7XPWvrVWeVUujrQEoZzWJIRrCPoyk6kL6IAjAG2IolMK4T0hNUe0HOUs5Jw==
@@ -2331,10 +2331,10 @@ type-is@^1.6.14, type-is@^1.6.16:
     media-typer "0.3.0"
     mime-types "~2.1.18"
 
-typeorm@^0.2.16:
-  version "0.2.16"
-  resolved "https://registry.yarnpkg.com/typeorm/-/typeorm-0.2.16.tgz#cfc119254e21f37410a60616a726cad97a8d95f6"
-  integrity sha512-Ntx9Hjx2aJcPsbqTsqnhCZOG30bDQ8EalMa9J49CXMCatUuMbn9QTyreM9AuSQb2N91ENCRWPZIuzgRaSmC1Vw==
+typeorm@^0.2.17:
+  version "0.2.17"
+  resolved "https://registry.yarnpkg.com/typeorm/-/typeorm-0.2.17.tgz#eb98e9eeb2ce0dfc884620f49de0aeca3dc4e027"
+  integrity sha512-a2Yi6aG7qcSQNyYHjAZtRwhuMKt/ZPmNQg8PvpgF52Z3AgJ4LL4T5mtpfTzKgNzM4o4wP0JQcZNoGGlaRovKpw==
   dependencies:
     app-root-path "^2.0.1"
     buffer "^5.1.0"
@@ -2343,7 +2343,7 @@ typeorm@^0.2.16:
     debug "^4.1.1"
     dotenv "^6.2.0"
     glob "^7.1.2"
-    js-yaml "^3.12.2"
+    js-yaml "^3.13.1"
     mkdirp "^0.5.1"
     reflect-metadata "^0.1.13"
     tslib "^1.9.0"
