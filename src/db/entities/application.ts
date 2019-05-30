@@ -29,5 +29,5 @@ export class Application extends EntityWithTimestamps {
     redirectUri!: string
 
     @Column({ name: "is_automated" })
-    isAutomated: boolean
+    isAutomated!: boolean
 }
