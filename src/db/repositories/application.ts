@@ -11,6 +11,7 @@ export class ApplicationRepository extends Repository<Application> {
         return applications.map(app => ({
             id: app.id,
             name: app.name,
+            isAutomated: app.isAutomated,
         }))
     }
 }
