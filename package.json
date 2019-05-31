@@ -36,8 +36,8 @@
     "@types/cookies": "^0.7.2"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.3.3",
     "@types/bcrypt": "^3.0.0",
+    "@types/jest": "^24.0.13",
     "@types/koa": "^2.0.48",
     "@types/koa-pug": "^3.0.4",
     "@types/koa-router": "^7.0.40",
@@ -48,6 +48,7 @@
     "@types/ws": "^6.0.1",
     "jest": "^24.8.0",
     "prettier": "^1.17.0",
+    "ts-jest": "^24.0.2",
     "typescript": "^3.4.3"
   }
 }
