@@ -13,7 +13,7 @@
         "test": "yarn migration:up && yarn migration:downall"
     },
     "dependencies": {
-        "aws-sdk": "^2.465.0",
+        "aws-sdk": "^2.466.0",
         "axios": "^0.19.0",
         "bcrypt": "^3.0.6",
         "cafy": "^15.1.1",
