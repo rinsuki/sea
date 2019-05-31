@@ -23,6 +23,10 @@ steps:
   - script: |
       docker run --rm --link postgres:postgres -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" -v $(pwd)/coverage:/app/coverage rinsuki/sea sh -c 'yarn test --coverage --coverageReporters=cobertura --coverageReporters=html'
     displayName: "Run yarn test"
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: cobertura
+      summaryFileLocation: $(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml
   - script: |
       docker run --rm --link postgres:postgres -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" rinsuki/sea yarn migration:downall
     displayName: "Run yarn migration:downall"
