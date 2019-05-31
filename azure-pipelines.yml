@@ -40,3 +40,10 @@ steps:
     inputs:
       command: logout
       containerRegistry: dockerHub
+  - task: JenkinsQueueJob@2
+    displayName: "Deploy"
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    inputs:
+      serverEndpoint: jenkins
+      jobName: sea-sns
+      captureConsole: false
