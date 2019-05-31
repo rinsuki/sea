@@ -21,10 +21,8 @@ steps:
       docker run --rm --link postgres:postgres -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" rinsuki/sea yarn migration:up
     displayName: "Run yarn migration:up"
   - script: |
-      docker run --rm --link postgres:postgres -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" -v $(pwd)/coverage:/app/coverage rinsuki/sea sh -c 'yarn test --coverage --coverageReporters=cobertura --coverageReporters=html'
+      docker run --rm --link postgres:postgres --env-file ./ci-files/.env -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" -v $(pwd)/coverage:/app/coverage rinsuki/sea sh -c 'yarn test --coverage --coverageReporters=cobertura --coverageReporters=html'
     displayName: "Run yarn test"
-    env:
-      NODE_ENV: test
   - script: |
       sudo chown vsts ./coverage/cobertura-coverage.xml
       python3 -c 'import os;r=open("./coverage/cobertura-coverage.xml", "r").read().replace("/app", os.getcwd());open("./coverage/cobertura-coverage.xml", "w").write(r)'
