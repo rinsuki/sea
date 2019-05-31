@@ -21,7 +21,7 @@ steps:
       docker run --rm --link postgres:postgres -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" rinsuki/sea yarn migration:up
     displayName: "Run yarn migration:up"
   - script: |
-      docker run --rm --link postgres:postgres -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" -v $(pwd)/coverage:./coverage rinsuki/sea sh -c 'yarn test --coverage'
+      docker run --rm --link postgres:postgres -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" -v $(pwd)/coverage:/app/coverage rinsuki/sea sh -c 'yarn test --coverage'
     displayName: "Run yarn test"
   - script: |
       docker run --rm --link postgres:postgres -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" rinsuki/sea yarn migration:downall
