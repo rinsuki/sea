@@ -1,10 +1,4 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    ManyToOne,
-    JoinColumn,
-} from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm"
 import { User } from "./user"
 import { EntityWithTimestamps } from "../../utils/timestampColumns"
 
@@ -33,4 +27,7 @@ export class Application extends EntityWithTimestamps {
         name: "redirect_uri",
     })
     redirectUri!: string
+
+    @Column({ name: "is_automated" })
+    isAutomated!: boolean
 }
