@@ -25,6 +25,7 @@ steps:
     displayName: "Run yarn test"
     env:
       NODE_ENV: test
+      __FORCE_DISABLE_RECAPTCHA: YES_THIS_IS_UNSECURE
   - script: |
       sudo chown vsts ./coverage/cobertura-coverage.xml
       python3 -c 'import os;r=open("./coverage/cobertura-coverage.xml", "r").read().replace("/app", os.getcwd());open("./coverage/cobertura-coverage.xml", "w").write(r)'
