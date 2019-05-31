@@ -7,10 +7,9 @@ if (isProductionMode === false) {
     console.warn("productionモードじゃないで")
 }
 
-const __FORCE_DISABLE_RECAPTCHA = process.env.__FORCE_DISABLE_RECAPTCHA === "YES_THIS_IS_UNSECURE"
 const RECAPTCHA_SITE_KEY = process.env.RECAPTCHA_SITE_KEY
 if (RECAPTCHA_SITE_KEY == null) {
-    if (isProductionMode && !__FORCE_DISABLE_RECAPTCHA) {
+    if (isProductionMode) {
         throw "reCAPTCHAの設定がされていません。productionモードではreCAPTCHAは必須です。"
     } else {
         console.warn("reCAPTCHAの設定がされていません。新規登録やログインのCSRF攻撃に対して脆弱です。")
