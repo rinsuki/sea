@@ -51,9 +51,30 @@ router.get("/:id", async ctx => {
     const app = await getRepository(Application).findOneOrFail(id, {
         relations: ["ownerUser"],
     })
-    if (app.ownerUser.id != ctx.state.session!.user.id)
-        return ctx.throw(403, "お前ownerじゃねえだろ")
+    if (app.ownerUser.id != ctx.state.session!.user.id) return ctx.throw(403, "お前ownerじゃねえだろ")
     ctx.render("settings/my_developed_applications/show", { app })
+})
+
+router.post("/:id", koaBody(), checkCsrf, async ctx => {
+    const { id } = $.obj({
+        id: $.str.match(/^[0-9]+$/),
+    }).throw(ctx.params)
+    const body = $.obj({
+        name: $.str.min(1).max(32),
+        description: $.str.min(1),
+        redirect_uri: $.str,
+        is_automated: $.str.or("1").makeOptional(),
+    }).throw(ctx.request.body)
+    const app = await getRepository(Application).findOneOrFail(id, {
+        relations: ["ownerUser"],
+    })
+    if (app.ownerUser.id != ctx.state.session!.user.id) return ctx.throw(403, "お前ownerじゃねえだろ")
+    app.name = body.name
+    app.description = body.description
+    app.redirectUri = body.redirect_uri
+    app.isAutomated = body.is_automated != undefined
+    await getRepository(Application).save(app)
+    ctx.redirect("/settings/my_developed_applications/" + app.id)
 })
 
 export default router
