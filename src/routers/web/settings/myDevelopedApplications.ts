@@ -6,7 +6,6 @@ import $ from "cafy"
 import { randomBytes } from "crypto"
 import koaBody = require("koa-body")
 import { checkCsrf } from "../../../utils/checkCsrf"
-import { ApplicationRepository } from "../../../db/repositories/application"
 
 const router = new Router<WebRouterState, WebRouterCustom>()
 
