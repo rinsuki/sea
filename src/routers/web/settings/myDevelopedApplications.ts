@@ -72,7 +72,7 @@ router.post("/:id", koaBody(), checkCsrf, async ctx => {
     app.name = body.name
     app.description = body.description
     app.redirectUri = body.redirect_uri
-    app.isAutomated = body.is_automated != undefined ? true : false
+    app.isAutomated = body.is_automated != undefined
     await getRepository(Application).save(app)
     ctx.redirect("/settings/my_developed_applications/" + app.id)
 })
