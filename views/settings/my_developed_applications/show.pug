@@ -38,8 +38,5 @@ block content
             tr
                 th isAutomated?
                 td
-                    input(type="radio", name="is_automated" checked=app.isAutomated value='1')
-                    label true
-                    input(type="radio", name="is_automated" checked=!app.isAutomated value='0')
-                    label false
+                    input(type="checkbox", name="is_automated" checked=app.isAutomated value='1')
         input(type="submit", value="Update app")
