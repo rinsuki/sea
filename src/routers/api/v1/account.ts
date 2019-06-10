@@ -19,11 +19,12 @@ router.patch("/", koaBody(), async ctx => {
             .makeOptional()
             .min(1)
             .max(20),
-        avatarFileId: $.num.makeOptional(),
+        avatarFileId: $.num.makeOptionalNullable(),
     }).throw(ctx.request.body)
     const user = ctx.state.token.user
     if (body.name != null) user.name = body.name
-    if (body.avatarFileId != null)
+    if (body.avatarFileId == null) user.avatarFile = null
+    else if (body.avatarFileId)
         user.avatarFile = await getRepository(AlbumFile).findOneOrFail({
             id: body.avatarFileId,
             user,
