@@ -6,7 +6,9 @@ block init
 block content
     h1 #{app.name}
 
-    p #{app.description}
+    p description: #{app.description}
+
+    p isAutomated: #{app.isAutomated}
 
     table
         tr
@@ -15,3 +17,26 @@ block content
         tr
             th client_secret
             td: input(type="text", value=app.clientSecret, readonly)
+
+    hr
+
+    form(method="POST")
+        input(type="hidden", name="_csrf", value=session.getCookieValue())
+        table
+            tr
+                th name
+                td: input(type="text", name="name" value=app.name)
+
+            tr
+                th description
+                td: input(type="text", name="description" value=app.description)
+
+            tr
+                th redirectUri
+                td: input(type="text", name="redirect_uri" value=app.redirectUri)
+
+            tr
+                th isAutomated?
+                td
+                    input(type="checkbox", name="is_automated" checked=app.isAutomated value='1')
+        input(type="submit", value="Update app")
