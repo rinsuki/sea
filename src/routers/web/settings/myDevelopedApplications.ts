@@ -6,6 +6,7 @@ import $ from "cafy"
 import { randomBytes } from "crypto"
 import koaBody = require("koa-body")
 import { checkCsrf } from "../../../utils/checkCsrf"
+import { ApplicationRepository } from "../../../db/repositories/application"
 
 const router = new Router<WebRouterState, WebRouterCustom>()
 
@@ -51,9 +52,41 @@ router.get("/:id", async ctx => {
     const app = await getRepository(Application).findOneOrFail(id, {
         relations: ["ownerUser"],
     })
-    if (app.ownerUser.id != ctx.state.session!.user.id)
-        return ctx.throw(403, "お前ownerじゃねえだろ")
+    if (app.ownerUser.id != ctx.state.session!.user.id) return ctx.throw(403, "お前ownerじゃねえだろ")
     ctx.render("settings/my_developed_applications/show", { app })
+})
+
+router.post("/:id", koaBody(), checkCsrf, async ctx => {
+    const { id } = $.obj({
+        id: $.str.match(/^[0-9]+$/),
+    }).throw(ctx.params)
+    const body = $.obj({
+        name: $.str
+            .min(1)
+            .max(32)
+            .makeOptional(),
+        description: $.str.min(1).makeOptional(),
+        redirect_uri: $.str.makeOptional(),
+        is_automated: $.str.or("on|off").makeOptional(),
+    }).throw(ctx.request.body)
+    const app = await getRepository(Application).findOneOrFail(id, {
+        relations: ["ownerUser"],
+    })
+    if (app.ownerUser.id != ctx.state.session!.user.id) return ctx.throw(403, "お前ownerじゃねえだろ")
+    if (body.name) app.name = body.name
+    if (body.description) app.description = body.description
+    if (body.redirect_uri) app.redirectUri = body.redirect_uri
+    if (body.is_automated != null)
+        switch (body.is_automated) {
+            case "on":
+                app.isAutomated = true
+                break
+            case "off":
+                app.isAutomated = false
+                break
+        }
+    await getRepository(Application).save(app)
+    ctx.redirect("/settings/my_developed_applications/" + app.id)
 })
 
 export default router
