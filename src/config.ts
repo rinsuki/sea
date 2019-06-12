@@ -1,11 +1,7 @@
-<<<<<<< HEAD
 require("dotenv").config()
 
-import $ from "cafy"
-=======
 import $ = require("transform-ts")
 import { $literal } from "./utils/transformers"
->>>>>>> master
 
 export const isProductionMode = process.env.NODE_ENV === "production"
 if (isProductionMode === false) {
