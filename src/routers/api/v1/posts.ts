@@ -2,7 +2,7 @@ import { APIRouter } from "../router-class"
 import koaBody = require("koa-body")
 import $ = require("transform-ts")
 import { Post } from "../../../db/entities/post"
-import { getRepository, getManager, Not } from "typeorm"
+import { getRepository, getManager, Not, getCustomRepository } from "typeorm"
 import { PostRepository } from "../../../db/repositories/post"
 import { User } from "../../../db/entities/user"
 import { publishRedisConnection } from "../../../utils/getRedisConnection"
@@ -10,7 +10,8 @@ import { PostAttachedFile } from "../../../db/entities/postAttachedFile"
 import { AlbumFile } from "../../../db/entities/albumFile"
 import { Subscription } from "../../../db/entities/subscription"
 import webpush from "web-push"
-import { WP_OPTIONS } from "../../../config"
+import { WP_OPTIONS, S3_PUBLIC_URL } from "../../../config"
+import { UserRepository } from "../../../db/repositories/user"
 
 const router = new APIRouter()
 
@@ -59,9 +60,9 @@ router.post("/", koaBody(), async ctx => {
     publishRedisConnection.publish("timelines:public", post.id.toString())
     console.log(post.files)
     if (WP_OPTIONS) {
+        const author = await getCustomRepository(UserRepository).pack(post.user)
         await new Promise(async (res, rej) => {
             const replies = new Set(post.text.match(repliesRegex))
-            console.log("replies!", replies)
             Array.from(replies).map(async reply => {
                 const target = await getRepository(User).findOne({
                     screenName: reply.replace("@", ""),
@@ -79,10 +80,18 @@ router.post("/", koaBody(), async ctx => {
                                 auth: subscription.authenticationSecret,
                             },
                         }
-                        const payload = post.text
+                        const payload = {
+                            title: `${post.user.name} (@${post.user.screenName})`,
+                            body: post.text,
+                            icon: author.avatarFile
+                                ? `${S3_PUBLIC_URL}${
+                                      author.avatarFile.variants.filter(variant => variant.type == "thumbnail")[0].url
+                                  }`
+                                : null,
+                        }
+                        console.log(payload)
                         try {
-                            const pushed = await webpush.sendNotification(subscriptionOptions, payload, WP_OPTIONS)
-                            console.log(pushed)
+                            await webpush.sendNotification(subscriptionOptions, JSON.stringify(payload), WP_OPTIONS)
                         } catch (error) {
                             console.warn(`failed: ${subscription.endpoint}`)
                             subscription.revokedAt = new Date()
