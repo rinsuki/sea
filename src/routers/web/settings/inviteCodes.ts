@@ -4,7 +4,8 @@ import koaBody = require("koa-body")
 import { checkCsrf } from "../../../utils/checkCsrf"
 import { getRepository } from "typeorm"
 import { InviteCode } from "../../../db/entities/inviteCode"
-import $ from "cafy"
+import $ from "transform-ts"
+import { $length } from "../../../utils/transformers"
 
 const router = new Router<WebRouterState, WebRouterCustom>()
 
@@ -26,9 +27,8 @@ router.get("/new", async ctx => {
 
 router.post("/new", koaBody(), checkCsrf, async ctx => {
     const user = ctx.state.session!.user
-    if (user.canMakeInviteCode == false)
-        return ctx.throw(400, "お前は権限がない")
-    const { memo } = $.obj({ memo: $.str.max(64) }).throw(ctx.request.body)
+    if (user.canMakeInviteCode == false) return ctx.throw(400, "お前は権限がない")
+    const { memo } = $.obj({ memo: $.string.compose($length({ max: 64 })) }).transformOrThrow(ctx.request.body)
     const code = new InviteCode()
     code.fromUser = user
     code.generateCode()

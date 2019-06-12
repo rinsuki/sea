@@ -3,11 +3,12 @@ import { WebRouterState, WebRouterCustom } from "."
 import { getRepository, getManager } from "typeorm"
 import { User } from "../../db/entities/user"
 import { checkCsrf } from "../../utils/checkCsrf"
-import $ from "cafy"
+import $ from "transform-ts"
 import { InviteCode } from "../../db/entities/inviteCode"
 import { createHash } from "crypto"
 import koaBody = require("koa-body")
 import { UrlSafeBase64 } from "../../utils/urlSafeBase64"
+import { $length } from "../../utils/transformers"
 
 const router = new Router<WebRouterState, WebRouterCustom>()
 
@@ -24,7 +25,7 @@ router.get("/", async ctx => {
 })
 
 router.post("/", koaBody(), checkCsrf, async ctx => {
-    const { code } = $.obj({ code: $.str.length(16) }).throw(ctx.request.body)
+    const { code } = $.obj({ code: $.string.compose($length(16)) }).transformOrThrow(ctx.request.body)
     const user = ctx.state.session!.user
     if (user.inviteCode != null) return ctx.throw(400, "お前もう招待されただろ")
     if (code === "sp!!!!first_user") {
@@ -68,10 +69,10 @@ router.post("/", koaBody(), checkCsrf, async ctx => {
     try {
         if (ctx.request.query.back == null) return ctx.redirect("/")
         const { back: backUrl, r: randomizer, s } = $.obj({
-            back: $.str,
-            r: $.str.length(16),
-            s: $.str.length(43),
-        }).throw(ctx.request.query)
+            back: $.string,
+            r: $.string.compose($length(16)),
+            s: $.string.compose($length(43)),
+        }).transformOrThrow(ctx.request.query)
         console.log(ctx.request.query)
         const seed = createHash("sha512")
             .update(randomizer)

@@ -1,20 +1,18 @@
 import { APIRouter } from "../router-class"
 import koaBody = require("koa-body")
-import $ from "cafy"
 import fileType from "file-type"
 import fs from "fs"
 import sharp from "sharp"
 import { getConnection, getRepository, getManager } from "typeorm"
 import { AlbumFileVariant } from "../../../db/entities/albumFileVariant"
 import { AlbumFile } from "../../../db/entities/albumFile"
-import path from "path"
 import AWS from "aws-sdk"
 import { S3_BUCKET, S3_ENDPOINT, S3_FORCE_USE_PATH_STYLE } from "../../../config"
-import { promisify } from "util"
 import { AlbumFileRepository } from "../../../db/repositories/albumFile"
 import { EXT2MIME } from "../../../constants"
-import { ConstContext } from "../../../utils/constContext"
 import moment from "moment"
+import $ from "transform-ts"
+import { $length, $literal } from "../../../utils/transformers"
 
 const s3 = new AWS.S3({
     endpoint: S3_ENDPOINT,
@@ -30,21 +28,28 @@ const bodyParser = koaBody({
     text: false,
 })
 
-const ifNameConflictedConst = ["add-date-string", "error"] as const
+const ifNameConflictedConst = {
+    addDateString: "add-date-string",
+    error: "error",
+} as const
+
+declare const a: typeof ifNameConflictedConst[keyof typeof ifNameConflictedConst]
 
 router.post("/files", bodyParser, async ctx => {
     const { file } = $.obj({
         file: $.obj({
-            name: $.str.makeOptional(),
-            path: $.str,
-            size: $.num,
+            name: $.optional($.string),
+            path: $.string,
+            size: $.number,
         }),
-    }).throw(ctx.request.files)
+    }).transformOrThrow(ctx.request.files)
+
     const body = $.obj({
-        name: $.str.min(1),
-        folderId: $.num.makeOptional(),
-        ifNameConflicted: $.either($.type(ConstContext("add-date-string")), $.type(ConstContext("error"))),
-    }).throw(ctx.request.body)
+        name: $.string.compose($length({ min: 1 })),
+        folderId: $.optional($.number),
+        ifNameConflicted: $literal(ifNameConflictedConst),
+    }).transformOrThrow(ctx.request.body)
+
     if (file.size >= 16 * 1024 * 1024) return ctx.throw(400, "file-too-big")
     const buffer = await fs.promises.readFile(file.path)
     const type = fileType(buffer)

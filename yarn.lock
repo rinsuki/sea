@@ -413,11 +413,6 @@ cache-content-type@^1.0.0:
     mime-types "^2.1.18"
     ylru "^1.2.0"
 
-cafy@^15.1.1:
-  version "15.1.1"
-  resolved "https://registry.yarnpkg.com/cafy/-/cafy-15.1.1.tgz#565c7e4331c0335f9de67946fc9e1fa366a310e1"
-  integrity sha512-iq/+Xte81FJyW9zMiv8aSQ9oYP3jdSJlBT4B0aEuIRKOuO38RB6us0qPdGQnZJ0ZDx6vfhk38VAeHCG4fQOyag==
-
 camelcase@^1.0.2:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-1.2.1.tgz#9bb5304d2e0b56698b2c758b08a3eaa9daa58a39"

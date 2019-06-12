@@ -1,13 +1,13 @@
 import { RouterContext } from "koa-router"
-import $ from "cafy"
+import $ from "transform-ts"
 import { RECAPTCHA } from "../config"
 import axios from "axios"
 import { URLSearchParams } from "url"
 
 export async function checkReCaptcha(ctx: RouterContext, next: () => Promise<void>) {
     const body = $.obj({
-        "g-recaptcha-response": $.str.makeOptional(),
-    }).throw(ctx.request.body)
+        "g-recaptcha-response": $.optional($.string),
+    }).transformOrThrow(ctx.request.body)
     const recaptchaResponse = body["g-recaptcha-response"]
     delete ctx.request.body["g-recaptcha-response"]
     // reCAPTCHAが設定で有効なのにない || 無効なのにある 場合を検出

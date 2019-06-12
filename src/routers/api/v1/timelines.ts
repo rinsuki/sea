@@ -2,29 +2,18 @@ import { APIRouter } from "../router-class"
 import { getRepository } from "typeorm"
 import { Post } from "../../../db/entities/post"
 import { PostRepository } from "../../../db/repositories/post"
-import $ from "cafy"
+import $ from "transform-ts"
 import { PostAttachedFile } from "../../../db/entities/postAttachedFile"
+import { $stringNumber, $safeNumber, $range } from "../../../utils/transformers"
 
 const router = new APIRouter()
 
 router.get("/public", async ctx => {
-    const queryBefore = $.obj({
-        sinceId: $.str.match(/^[0-9]+$/).makeOptional(),
-        maxId: $.str.match(/^[0-9]+$/).makeOptional(),
-        count: $.str.match(/^[0-9]+$/).makeOptional(),
-    }).throw(ctx.query)
     const query = $.obj({
-        count: $.num
-            .int()
-            .range(1, 100)
-            .makeOptional(),
-        sinceId: $.num.makeOptional(),
-        maxId: $.num.makeOptional(),
-    }).throw({
-        count: queryBefore.count == null ? undefined : parseInt(queryBefore.count),
-        sinceId: queryBefore.sinceId == null ? undefined : parseInt(queryBefore.sinceId),
-        maxId: queryBefore.maxId == null ? undefined : parseInt(queryBefore.maxId),
-    })
+        sinceId: $.optional($stringNumber.compose($safeNumber)),
+        maxId: $.optional($stringNumber.compose($safeNumber)),
+        count: $.optional($stringNumber.compose($safeNumber).compose($range({ min: 1, max: 100 }))),
+    }).transformOrThrow(ctx.query)
     var fetch = getRepository(Post)
         .createQueryBuilder("post")
         .leftJoinAndSelect("post.user", "users")

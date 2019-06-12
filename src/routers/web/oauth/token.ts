@@ -1,32 +1,34 @@
 import Router from "koa-router"
-import $ from "cafy"
+import $ from "transform-ts"
 import koaBody = require("koa-body")
 import { getRepository, getManager } from "typeorm"
 import { Application } from "../../../db/entities/application"
 import { AuthorizationCode } from "../../../db/entities/authorizationCode"
 import { AccessToken } from "../../../db/entities/accessToken"
+import { $literal } from "../../../utils/transformers"
 const router = new Router()
 
 router.use((ctx, next) => {
     ctx.set("Access-Control-Allow-Origin", "*")
-    ctx.set(
-        "Access-Control-Allow-Methods",
-        "GET, HEAD, POST, PUT, DELETE, PATCH"
-    )
+    ctx.set("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, DELETE, PATCH")
     ctx.set("Access-Control-Allow-Headers", "Authorization")
     ctx.set("Access-Control-Max-Age", (24 * 60 * 60).toString())
 
     return next()
 })
 
+const OAuthGrantType = {
+    authorizationCode: "authorization_code",
+} as const
+
 router.post("/", koaBody(), async ctx => {
     const body = $.obj({
-        client_id: $.str,
-        client_secret: $.str,
-        code: $.str,
-        grant_type: $.str.match(/^authorization_code$/),
-        state: $.str.makeOptional(),
-    }).throw(ctx.request.body)
+        client_id: $.string,
+        client_secret: $.string,
+        code: $.string,
+        grant_type: $literal(OAuthGrantType),
+        state: $.optional($.string),
+    }).transformOrThrow(ctx.request.body)
     const application = await getRepository(Application).findOne({
         clientId: body.client_id,
         clientSecret: body.client_secret,
@@ -44,10 +46,7 @@ router.post("/", koaBody(), async ctx => {
         },
         { relations: ["user"] }
     )
-    if (
-        code == null ||
-        new Date().getTime() - code.createdAt.getTime() > 10 * 60 * 1000
-    )
+    if (code == null || new Date().getTime() - code.createdAt.getTime() > 10 * 60 * 1000)
         throw ctx.throw(400, {
             error: "invalid_grant",
             error_description: "Failed to find authorization code information",

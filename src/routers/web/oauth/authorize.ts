@@ -1,6 +1,6 @@
 import Router from "koa-router"
 import { WebRouterState, WebRouterCustom } from ".."
-import $ from "cafy"
+import $ from "transform-ts"
 import { getRepository } from "typeorm"
 import { Application } from "../../../db/entities/application"
 import { createHash } from "crypto"
@@ -8,15 +8,20 @@ import { checkCsrf } from "../../../utils/checkCsrf"
 import koaBody = require("koa-body")
 import { AuthorizationCode } from "../../../db/entities/authorizationCode"
 import { URL } from "url"
+import { $regexp, $literal } from "../../../utils/transformers"
 
 const router = new Router<WebRouterState, WebRouterCustom>()
 
+const OAuthResponseType = {
+    code: "code",
+} as const
+
 router.get("/", async ctx => {
     const query = $.obj({
-        client_id: $.str,
-        response_type: $.str.match(/^code$/),
-        state: $.str.makeOptional(),
-    }).throw(ctx.query)
+        client_id: $.string,
+        response_type: $literal(OAuthResponseType),
+        state: $.optional($.string),
+    }).transformOrThrow(ctx.query)
     const app = await getRepository(Application).findOneOrFail({
         clientId: query.client_id,
     })
@@ -40,13 +45,13 @@ router.get("/", async ctx => {
 
 router.post("/", koaBody(), checkCsrf, async ctx => {
     const query = $.obj({
-        client_id: $.str,
-        response_type: $.str.match(/^code$/),
-        state: $.str.makeOptional(),
-    }).throw(ctx.query)
+        client_id: $.string,
+        response_type: $literal(OAuthResponseType),
+        state: $.optional($.string),
+    }).transformOrThrow(ctx.query)
     const body = $.obj({
-        sign: $.str,
-    }).throw(ctx.request.body)
+        sign: $.string,
+    }).transformOrThrow(ctx.request.body)
 
     const app = await getRepository(Application).findOneOrFail({
         clientId: query.client_id,
