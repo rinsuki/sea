@@ -1,6 +1,6 @@
 import { APIRouter } from "../router-class"
 import koaBody = require("koa-body")
-import $ from "cafy"
+import $ = require("transform-ts")
 import { Post } from "../../../db/entities/post"
 import { getRepository, getManager } from "typeorm"
 import { PostRepository } from "../../../db/repositories/post"
@@ -13,11 +13,9 @@ const router = new APIRouter()
 
 router.post("/", koaBody(), async ctx => {
     const body = $.obj({
-        text: $.str,
-        fileIds: $.arr($.num).makeOptional(),
-    })
-        .strict()
-        .throw(ctx.request.body)
+        text: $.string,
+        fileIds: $.optional($.array($.number)),
+    }).transformOrThrow(ctx.request.body)
     const post = new Post()
     post.text = body.text
     post.application = ctx.state.token.application

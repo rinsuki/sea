@@ -5,9 +5,10 @@ import { getRepository } from "typeorm"
 import { User } from "../../db/entities/user"
 import bcrypt from "bcrypt"
 import { createUserSession } from "../../utils/createUserSession"
-import $ from "cafy"
+import $ = require("transform-ts")
 import { UserSession } from "../../db/entities/userSession"
 import { WebRouterState, WebRouterCustom } from "."
+import { $regexp, $length } from "../../utils/transformers"
 
 const router = new Router<WebRouterState, WebRouterCustom>()
 
@@ -17,22 +18,14 @@ router.get("/", async ctx => {
 
 router.post("/", koaBody(), checkReCaptcha, async ctx => {
     const body = $.obj({
-        screen_name: $.str
-            .min(1)
-            .max(20)
-            .match(/^[0-9A-Za-z_]+$/),
-        password: $.str.min(8),
-    })
-        .strict()
-        .throw(ctx.request.body)
+        screen_name: $.string.compose($length({ min: 1, max: 20 })).compose($regexp(/^[0-9A-Za-z_]+$/)),
+        password: $.string.compose($length({ min: 8 })),
+    }).transformOrThrow(ctx.request.body)
     const user = await getRepository(User).findOne({
         screenName: body.screen_name,
     })
     if (user == null) return ctx.throw(400, "そんなユーザーいない")
-    const checkPasswordResult = await bcrypt.compare(
-        body.password,
-        user.encryptedPassword
-    )
+    const checkPasswordResult = await bcrypt.compare(body.password, user.encryptedPassword)
     if (!checkPasswordResult) return ctx.throw(400, "パスワードが違う")
     await createUserSession(ctx, user)
     ctx.redirect("/")
