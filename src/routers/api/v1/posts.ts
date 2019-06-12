@@ -84,7 +84,7 @@ router.post("/", koaBody(), async ctx => {
                             const pushed = await webpush.sendNotification(subscriptionOptions, payload, WP_OPTIONS)
                             console.log(pushed)
                         } catch (error) {
-                            console.warn(error)
+                            console.warn(`failed: ${subscription.endpoint}`)
                             subscription.revokedAt = new Date()
                             await getRepository(Subscription).save(subscription)
                         }
