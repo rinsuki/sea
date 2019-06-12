@@ -4,7 +4,7 @@ import koaBody = require("koa-body")
 import { checkCsrf } from "../../../utils/checkCsrf"
 import { getRepository } from "typeorm"
 import { InviteCode } from "../../../db/entities/inviteCode"
-import $ from "transform-ts"
+import $ = require("transform-ts")
 import { $length } from "../../../utils/transformers"
 
 const router = new Router<WebRouterState, WebRouterCustom>()

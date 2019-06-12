@@ -1,6 +1,6 @@
 import { APIRouter } from "../router-class"
 import koaBody = require("koa-body")
-import $ from "transform-ts"
+import $ = require("transform-ts")
 import { Post } from "../../../db/entities/post"
 import { getRepository, getManager } from "typeorm"
 import { PostRepository } from "../../../db/repositories/post"

@@ -4,7 +4,7 @@ import koaBody = require("koa-body")
 import { getRepository } from "typeorm"
 import { User } from "../../../db/entities/user"
 import { AlbumFile } from "../../../db/entities/albumFile"
-import $ from "transform-ts"
+import $ = require("transform-ts")
 import { $length } from "../../../utils/transformers"
 
 const router = new APIRouter()

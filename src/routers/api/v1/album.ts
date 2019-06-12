@@ -11,7 +11,7 @@ import { S3_BUCKET, S3_ENDPOINT, S3_FORCE_USE_PATH_STYLE } from "../../../config
 import { AlbumFileRepository } from "../../../db/repositories/albumFile"
 import { EXT2MIME } from "../../../constants"
 import moment from "moment"
-import $ from "transform-ts"
+import $ = require("transform-ts")
 import { $length, $literal } from "../../../utils/transformers"
 
 const s3 = new AWS.S3({

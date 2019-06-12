@@ -5,7 +5,7 @@ import { getRepository } from "typeorm"
 import { User } from "../../db/entities/user"
 import bcrypt from "bcrypt"
 import { createUserSession } from "../../utils/createUserSession"
-import $ from "transform-ts"
+import $ = require("transform-ts")
 import { UserSession } from "../../db/entities/userSession"
 import { WebRouterState, WebRouterCustom } from "."
 import { $regexp, $length } from "../../utils/transformers"

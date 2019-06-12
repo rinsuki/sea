@@ -1,6 +1,6 @@
 import Router from "koa-router"
 import { WebRouterState, WebRouterCustom } from ".."
-import $ from "transform-ts"
+import $ = require("transform-ts")
 import { getRepository } from "typeorm"
 import { Application } from "../../../db/entities/application"
 import { createHash } from "crypto"

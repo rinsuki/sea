@@ -1,4 +1,4 @@
-import $ from "transform-ts"
+import $ = require("transform-ts")
 import { $literal } from "./utils/transformers"
 
 export const isProductionMode = process.env.NODE_ENV === "production"

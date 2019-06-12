@@ -1,4 +1,4 @@
-import $, { string, number } from "transform-ts"
+import $ = require("transform-ts")
 
 export function $length<T extends { length: number }>(p: { min?: number; max?: number } | number) {
     return new $.Transformer<T, T>(

@@ -3,7 +3,7 @@ import { WebRouterState, WebRouterCustom } from "."
 import { createUserSession } from "../../utils/createUserSession"
 import { getRepository } from "typeorm"
 import { User } from "../../db/entities/user"
-import $ from "transform-ts"
+import $ = require("transform-ts")
 import koaBody = require("koa-body")
 import { checkReCaptcha } from "../../utils/checkReCaptcha"
 import bcrypt from "bcrypt"

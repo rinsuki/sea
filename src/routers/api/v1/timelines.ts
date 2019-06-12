@@ -2,7 +2,7 @@ import { APIRouter } from "../router-class"
 import { getRepository } from "typeorm"
 import { Post } from "../../../db/entities/post"
 import { PostRepository } from "../../../db/repositories/post"
-import $ from "transform-ts"
+import $ = require("transform-ts")
 import { PostAttachedFile } from "../../../db/entities/postAttachedFile"
 import { $stringNumber, $safeNumber, $range } from "../../../utils/transformers"
 

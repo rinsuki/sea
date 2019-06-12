@@ -1,6 +1,6 @@
 import { RouterContext } from "koa-router"
 import { UserSession } from "../db/entities/userSession"
-import $ from "transform-ts"
+import $ = require("transform-ts")
 
 export async function checkCsrf(ctx: RouterContext, next: () => Promise<void>) {
     const body = $.obj({
