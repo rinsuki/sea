@@ -2,14 +2,19 @@ import { APIRouter } from "../router-class"
 import koaBody = require("koa-body")
 import $ = require("transform-ts")
 import { Post } from "../../../db/entities/post"
-import { getRepository, getManager } from "typeorm"
+import { getRepository, getManager, Not } from "typeorm"
 import { PostRepository } from "../../../db/repositories/post"
 import { User } from "../../../db/entities/user"
 import { publishRedisConnection } from "../../../utils/getRedisConnection"
 import { PostAttachedFile } from "../../../db/entities/postAttachedFile"
 import { AlbumFile } from "../../../db/entities/albumFile"
+import { Subscription } from "../../../db/entities/subscription"
+import webpush from "web-push"
+import { WP_OPTIONS } from "../../../config"
 
 const router = new APIRouter()
+
+const repliesRegex = new RegExp(/(@[A-Za-z0-9]+)[^A-Za-z0-9]*?/g)
 
 router.post("/", koaBody(), async ctx => {
     const body = $.obj({
@@ -53,6 +58,42 @@ router.post("/", koaBody(), async ctx => {
     })
     publishRedisConnection.publish("timelines:public", post.id.toString())
     console.log(post.files)
+    if (WP_OPTIONS) {
+        await new Promise(async (res, rej) => {
+            const replies = new Set(post.text.match(repliesRegex))
+            console.log("replies!", replies)
+            Array.from(replies).map(async reply => {
+                const target = await getRepository(User).findOne({
+                    screenName: reply.replace("@", ""),
+                })
+                if (target != null) {
+                    const subscriptions = await getRepository(Subscription).find({
+                        user: target,
+                        revokedAt: null,
+                    })
+                    subscriptions.map(async subscription => {
+                        const subscriptionOptions = {
+                            endpoint: subscription.endpoint,
+                            keys: {
+                                p256dh: subscription.publicKey,
+                                auth: subscription.authenticationSecret,
+                            },
+                        }
+                        const payload = post.text
+                        try {
+                            const pushed = await webpush.sendNotification(subscriptionOptions, payload, WP_OPTIONS)
+                            console.log(pushed)
+                        } catch (error) {
+                            console.warn(error)
+                            subscription.revokedAt = new Date()
+                            await getRepository(Subscription).save(subscription)
+                        }
+                    })
+                }
+            })
+            res()
+        })
+    }
     await ctx.send(PostRepository, post)
 })
 
