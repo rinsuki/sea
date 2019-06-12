@@ -59,50 +59,48 @@ router.post("/", koaBody(), async ctx => {
     })
     publishRedisConnection.publish("timelines:public", post.id.toString())
     console.log(post.files)
-    if (WP_OPTIONS) {
-        const author = await getCustomRepository(UserRepository).pack(post.user)
-        await new Promise(async (res, rej) => {
-            const replies = new Set(post.text.match(repliesRegex))
-            Array.from(replies).map(async reply => {
-                const target = await getRepository(User).findOne({
-                    screenName: reply.replace("@", ""),
-                })
-                if (target != null) {
-                    const subscriptions = await getRepository(Subscription).find({
-                        user: target,
-                        revokedAt: null,
-                    })
-                    subscriptions.map(async subscription => {
-                        const subscriptionOptions = {
-                            endpoint: subscription.endpoint,
-                            keys: {
-                                p256dh: subscription.publicKey,
-                                auth: subscription.authenticationSecret,
-                            },
-                        }
-                        const payload = {
-                            title: `${post.user.name} (@${post.user.screenName})`,
-                            body: post.text,
-                            icon: author.avatarFile
-                                ? `${S3_PUBLIC_URL}${
-                                      author.avatarFile.variants.filter(variant => variant.type == "thumbnail")[0].url
-                                  }`
-                                : null,
-                        }
-                        console.log(payload)
-                        try {
-                            await webpush.sendNotification(subscriptionOptions, JSON.stringify(payload), WP_OPTIONS)
-                        } catch (error) {
-                            console.warn(`failed: ${subscription.endpoint}`)
-                            subscription.revokedAt = new Date()
-                            await getRepository(Subscription).save(subscription)
-                        }
-                    })
-                }
+    const author = await getCustomRepository(UserRepository).pack(post.user)
+    await new Promise(async (res, rej) => {
+        const replies = new Set(post.text.match(repliesRegex))
+        Array.from(replies).map(async reply => {
+            const target = await getRepository(User).findOne({
+                screenName: reply.replace("@", ""),
             })
-            res()
+            if (target != null) {
+                const subscriptions = await getRepository(Subscription).find({
+                    user: target,
+                    revokedAt: null,
+                })
+                subscriptions.map(async subscription => {
+                    const subscriptionOptions = {
+                        endpoint: subscription.endpoint,
+                        keys: {
+                            p256dh: subscription.publicKey,
+                            auth: subscription.authenticationSecret,
+                        },
+                    }
+                    const payload = {
+                        title: `${post.user.name} (@${post.user.screenName})`,
+                        body: post.text,
+                        icon: author.avatarFile
+                            ? `${S3_PUBLIC_URL}${
+                                  author.avatarFile.variants.filter(variant => variant.type == "thumbnail")[0].url
+                              }`
+                            : null,
+                    }
+                    console.log(payload)
+                    try {
+                        await webpush.sendNotification(subscriptionOptions, JSON.stringify(payload), WP_OPTIONS)
+                    } catch (error) {
+                        console.warn(`failed: ${subscription.endpoint}`)
+                        subscription.revokedAt = new Date()
+                        await getRepository(Subscription).save(subscription)
+                    }
+                })
+            }
         })
-    }
+        res()
+    })
     await ctx.send(PostRepository, post)
 })
 
