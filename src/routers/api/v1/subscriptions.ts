@@ -1,6 +1,7 @@
 import { APIRouter } from "../router-class"
 import koaBody = require("koa-body")
-import $ from "cafy"
+import $ = require("transform-ts")
+import { $length } from "../../../utils/transformers"
 import { getRepository } from "typeorm"
 import { Subscription } from "../../../db/entities/subscription"
 import { WP_OPTIONS } from "../../../config"
@@ -18,12 +19,12 @@ router.get("/", koaBody(), async ctx => {
 
 router.post("/", koaBody(), async ctx => {
     const body = $.obj({
-        endpoint: $.str.min(1),
+        endpoint: $.string.compose($length({ min: 1 })),
         keys: $.obj({
-            p256dh: $.str.min(1),
-            auth: $.str.min(1),
+            p256dh: $.string.compose($length({ min: 1 })),
+            auth: $.string.compose($length({ min: 1 })),
         }),
-    }).throw(ctx.request.body)
+    }).transformOrThrow(ctx.request.body)
     const subscription = new Subscription()
     const user = ctx.state.token.user
     subscription.user = user
