@@ -1,5 +1,6 @@
-import { EntityRepository, Repository } from "typeorm"
+import { EntityRepository, Repository, getCustomRepository } from "typeorm"
 import { Subscription } from "../entities/subscription"
+import { ApplicationRepository } from "./application"
 
 @EntityRepository(Subscription)
 export class SubscriptionRepository extends Repository<Subscription> {
@@ -8,13 +9,18 @@ export class SubscriptionRepository extends Repository<Subscription> {
     }
 
     async packMany(subscriptions: Subscription[]) {
-        return subscriptions.map(subscription => ({
-            id: subscription.id,
-            name: subscription.description,
-            endpoint: subscription.endpoint,
-            failedAt: subscription.failedAt,
-            createdAt: subscription.createdAt,
-            updatedAt: subscription.updatedAt,
-        }))
+        return Promise.all(
+            subscriptions.map(async subscription => {
+                return {
+                    id: subscription.id,
+                    name: subscription.description,
+                    endpoint: subscription.endpoint,
+                    failedAt: subscription.failedAt,
+                    application: await getCustomRepository(ApplicationRepository).pack(subscription.application),
+                    createdAt: subscription.createdAt,
+                    updatedAt: subscription.updatedAt,
+                }
+            })
+        )
     }
 }
