@@ -28,7 +28,11 @@ router.post("/", koaBody(), async ctx => {
     await getManager().transaction("SERIALIZABLE", async transactionalEntityManager => {
         var user = ctx.state.token.user
         const res = await transactionalEntityManager.increment(User, { id: user.id }, "postsCount", 1)
-        user = await transactionalEntityManager.findOneOrFail(User, user.id)
+        user = await transactionalEntityManager.findOneOrFail(
+            User,
+            { id: user.id },
+            { relations: ["avatarFile", "avatarFile.variants"] }
+        )
         post.user = user
         await transactionalEntityManager.save(post)
         if (body.fileIds != null && body.fileIds.length) {
@@ -59,8 +63,7 @@ router.post("/", koaBody(), async ctx => {
     })
     publishRedisConnection.publish("timelines:public", post.id.toString())
     console.log(post.files)
-    const author = await getCustomRepository(UserRepository).pack(post.user)
-    await new Promise(async (res, rej) => {
+    new Promise(async (res, rej) => {
         const replies = new Set(post.text.match(repliesRegex))
         Array.from(replies).map(async reply => {
             const target = await getRepository(User).findOne({
@@ -82,13 +85,13 @@ router.post("/", koaBody(), async ctx => {
                     const payload = {
                         title: `${post.user.name} (@${post.user.screenName})`,
                         body: post.text,
-                        icon: author.avatarFile
-                            ? `${S3_PUBLIC_URL}${
-                                  author.avatarFile.variants.filter(variant => variant.type == "thumbnail")[0].url
-                              }`
+                        icon: post.user.avatarFile
+                            ? `${S3_PUBLIC_URL}${post.user.avatarFile.variants
+                                  .filter(variant => variant.type == "thumbnail")
+                                  .sort(variant => variant.score)[0]
+                                  .toPath()}`
                             : null,
                     }
-                    console.log(payload)
                     try {
                         await webpush.sendNotification(subscriptionOptions, JSON.stringify(payload), WP_OPTIONS)
                     } catch (error) {
