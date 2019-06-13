@@ -1,17 +1,60 @@
-import { MigrationInterface, QueryRunner } from "typeorm"
+import { MigrationInterface, QueryRunner, Table } from "typeorm"
+import { timestampColumns } from "../../utils/timestampColumns"
 
 export class CreateSubscriptionsTable1560322139588 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.query(
-            `CREATE TABLE "subscriptions" ("created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "id" SERIAL NOT NULL, "endpoint" character varying NOT NULL, "public_key" character varying NOT NULL, "authentication_secret" character varying NOT NULL, "revoked_at" TIMESTAMP WITH TIME ZONE, "user_id" integer, CONSTRAINT "PK_a87248d73155605cf782be9ee5e" PRIMARY KEY ("id"))`
-        )
-        await queryRunner.query(
-            `ALTER TABLE "subscriptions" ADD CONSTRAINT "FK_d0a95ef8a28188364c546eb65c1" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
+        await queryRunner.createTable(
+            new Table({
+                name: "subscriptions",
+                columns: [
+                    {
+                        name: "id",
+                        type: "int",
+                        isPrimary: true,
+                        isGenerated: true,
+                    },
+                    {
+                        name: "endpoint",
+                        type: "text",
+                        isNullable: false,
+                    },
+                    {
+                        name: "public_key",
+                        type: "text",
+                        isNullable: false,
+                    },
+                    {
+                        name: "authentication_secret",
+                        type: "text",
+                        isNullable: false,
+                    },
+                    {
+                        name: "user_id",
+                        type: "int",
+                        isNullable: false,
+                    },
+                    {
+                        name: "revoked_at",
+                        type: "timestamp",
+                        isNullable: true,
+                    },
+                    ...timestampColumns.PLEASE_USE_ONLY_FOR_MIGRATION_BACKWARD_COMPATIBILITY_forMigrations,
+                ],
+                foreignKeys: [
+                    {
+                        name: "FK:subscriptions:user_id::users:id",
+                        columnNames: ["user_id"],
+                        referencedTableName: "users",
+                        referencedColumnNames: ["id"],
+                        onDelete: "CASCADE",
+                        onUpdate: "CASCADE",
+                    },
+                ],
+            })
         )
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.query(`ALTER TABLE "subscriptions" DROP CONSTRAINT "FK_d0a95ef8a28188364c546eb65c1"`)
-        await queryRunner.query(`DROP TABLE "subscriptions"`)
+        await queryRunner.dropTable("subscriptions")
     }
 }
