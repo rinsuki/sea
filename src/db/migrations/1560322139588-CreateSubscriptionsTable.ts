@@ -50,7 +50,7 @@ export class CreateSubscriptionsTable1560322139588 implements MigrationInterface
                         type: "timestamptz",
                         isNullable: true,
                     },
-                    ...timestampColumns.PLEASE_USE_ONLY_FOR_MIGRATION_BACKWARD_COMPATIBILITY_forMigrations,
+                    ...timestampColumns.forMigrations,
                 ],
                 foreignKeys: [
                     {
