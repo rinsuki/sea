@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm"
-import { User } from "./user"
 import { EntityWithTimestamps } from "../../utils/timestampColumns"
+import { User } from "./user"
+import { Application } from "./application"
 
 @Entity("subscriptions")
 export class Subscription extends EntityWithTimestamps {
@@ -19,6 +20,10 @@ export class Subscription extends EntityWithTimestamps {
     @ManyToOne(type => User)
     @JoinColumn({ name: "user_id", referencedColumnName: "id" })
     user!: User
+
+    @ManyToOne(type => Application)
+    @JoinColumn({ name: "application_id", referencedColumnName: "id" })
+    application!: Application
 
     @Column({ name: "revoked_at", type: "timestamptz", nullable: true })
     revokedAt!: Date | null

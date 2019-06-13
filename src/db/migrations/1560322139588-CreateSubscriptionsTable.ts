@@ -20,12 +20,14 @@ export class CreateSubscriptionsTable1560322139588 implements MigrationInterface
                     },
                     {
                         name: "public_key",
-                        type: "text",
+                        type: "varchar",
+                        length: "87",
                         isNullable: false,
                     },
                     {
                         name: "authentication_secret",
-                        type: "text",
+                        type: "varchar",
+                        length: "22",
                         isNullable: false,
                     },
                     {
@@ -34,8 +36,13 @@ export class CreateSubscriptionsTable1560322139588 implements MigrationInterface
                         isNullable: false,
                     },
                     {
+                        name: "application_id",
+                        type: "int",
+                        isNullable: false,
+                    },
+                    {
                         name: "revoked_at",
-                        type: "timestamp",
+                        type: "timestamptz",
                         isNullable: true,
                     },
                     ...timestampColumns.PLEASE_USE_ONLY_FOR_MIGRATION_BACKWARD_COMPATIBILITY_forMigrations,
@@ -46,8 +53,12 @@ export class CreateSubscriptionsTable1560322139588 implements MigrationInterface
                         columnNames: ["user_id"],
                         referencedTableName: "users",
                         referencedColumnNames: ["id"],
-                        onDelete: "CASCADE",
-                        onUpdate: "CASCADE",
+                    },
+                    {
+                        name: "FK:subscriptions:application_id::applications:id",
+                        columnNames: ["application_id"],
+                        referencedTableName: "applications",
+                        referencedColumnNames: ["id"],
                     },
                 ],
             })
