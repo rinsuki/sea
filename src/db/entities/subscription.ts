@@ -8,6 +8,9 @@ export class Subscription extends EntityWithTimestamps {
     @PrimaryGeneratedColumn()
     id!: number
 
+    @Column({ nullable: true })
+    description!: string
+
     @Column({ nullable: false })
     endpoint!: string
 
@@ -17,9 +20,6 @@ export class Subscription extends EntityWithTimestamps {
     @Column({ name: "authentication_secret", nullable: false })
     authenticationSecret!: string
 
-    @Column({ name: "fall_count", type: "int", nullable: false })
-    fallCount!: number
-
     @ManyToOne(type => User)
     @JoinColumn({ name: "user_id", referencedColumnName: "id" })
     user!: User
@@ -27,6 +27,9 @@ export class Subscription extends EntityWithTimestamps {
     @ManyToOne(type => Application)
     @JoinColumn({ name: "application_id", referencedColumnName: "id" })
     application!: Application
+
+    @Column({ name: "failed_at", type: "timestamptz", nullable: true })
+    failedAt!: Date | null
 
     @Column({ name: "revoked_at", type: "timestamptz", nullable: true })
     revokedAt!: Date | null

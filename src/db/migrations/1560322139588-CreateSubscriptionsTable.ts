@@ -14,6 +14,11 @@ export class CreateSubscriptionsTable1560322139588 implements MigrationInterface
                         isGenerated: true,
                     },
                     {
+                        name: "description",
+                        type: "text",
+                        isNullable: true,
+                    },
+                    {
                         name: "endpoint",
                         type: "text",
                         isNullable: false,
@@ -31,11 +36,6 @@ export class CreateSubscriptionsTable1560322139588 implements MigrationInterface
                         isNullable: false,
                     },
                     {
-                        name: "fall_count",
-                        type: "int",
-                        default: 0,
-                    },
-                    {
                         name: "user_id",
                         type: "int",
                         isNullable: false,
@@ -44,6 +44,11 @@ export class CreateSubscriptionsTable1560322139588 implements MigrationInterface
                         name: "application_id",
                         type: "int",
                         isNullable: false,
+                    },
+                    {
+                        name: "failed_at",
+                        type: "timestamptz",
+                        isNullable: true,
                     },
                     {
                         name: "revoked_at",

@@ -2,7 +2,7 @@ import { APIRouter } from "../router-class"
 import koaBody = require("koa-body")
 import $ = require("transform-ts")
 import { Post } from "../../../db/entities/post"
-import { getRepository, getManager, Not, getCustomRepository } from "typeorm"
+import { getManager } from "typeorm"
 import { PostRepository } from "../../../db/repositories/post"
 import { User } from "../../../db/entities/user"
 import { publishRedisConnection } from "../../../utils/getRedisConnection"
@@ -11,7 +11,6 @@ import { AlbumFile } from "../../../db/entities/albumFile"
 import { Subscription } from "../../../db/entities/subscription"
 import webpush, { WebPushError } from "web-push"
 import { WP_OPTIONS, S3_PUBLIC_URL } from "../../../config"
-import { UserRepository } from "../../../db/repositories/user"
 
 const router = new APIRouter()
 
@@ -60,6 +59,11 @@ router.post("/", koaBody(), async ctx => {
         } else {
             post.files = []
         }
+    })
+    publishRedisConnection.publish("timelines:public", post.id.toString())
+    console.log(post.files)
+    const now = new Date()
+    getManager().transaction("SERIALIZABLE", async transactionalEntityManager => {
         const replies = new Set(post.text.match(repliesRegex))
         for (const reply of replies) {
             const target = await transactionalEntityManager.findOne(User, {
@@ -79,44 +83,41 @@ router.post("/", koaBody(), async ctx => {
                         },
                     }
                     const icon = post.user.avatarFile
-                        ? post.user.avatarFile.variants
+                        ? `${S3_PUBLIC_URL}${post.user.avatarFile.variants
                               .filter(variant => variant.type == "thumbnail")
                               .sort(variant => variant.score)[0]
+                              .toPath()}`
                         : null
                     const payload = {
                         title: `${post.user.name} (@${post.user.screenName})`,
                         body: post.text,
                         icon: icon,
+                        type: "mention",
                     }
                     try {
                         await webpush.sendNotification(subscriptionOptions, JSON.stringify(payload), WP_OPTIONS)
+                        if (subscription.failedAt != null) {
+                            await transactionalEntityManager.update(Subscription, { id: subscription.id }, { failedAt: null })
+                        }
                     } catch (error) {
-                        if (error instanceof WebPushError) {
-                            console.log(`failed: ${subscription.endpoint}`)
-                            if (3 <= subscription.fallCount) {
+                        console.log(`failed: ${subscription.endpoint}`)
+                        if (subscription.failedAt != null) {
+                            if (604800000 <= now.getTime() - subscription.failedAt.getTime()) {
+                                // 1000*60*60*24*7 = a week
                                 await transactionalEntityManager.update(
                                     Subscription,
                                     { id: subscription.id },
-                                    { revokedAt: new Date() }
-                                )
-                            } else {
-                                await transactionalEntityManager.increment(
-                                    Subscription,
-                                    { id: subscription.id },
-                                    "fallCount",
-                                    1
+                                    { revokedAt: now }
                                 )
                             }
                         } else {
-                            console.error(error)
+                            await transactionalEntityManager.update(Subscription, { id: subscription.id }, { failedAt: now })
                         }
                     }
                 }
             }
         }
     })
-    publishRedisConnection.publish("timelines:public", post.id.toString())
-    console.log(post.files)
     await ctx.send(PostRepository, post)
 })
 
