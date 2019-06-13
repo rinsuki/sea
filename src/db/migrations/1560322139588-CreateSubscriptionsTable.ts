@@ -31,6 +31,11 @@ export class CreateSubscriptionsTable1560322139588 implements MigrationInterface
                         isNullable: false,
                     },
                     {
+                        name: "fall_count",
+                        type: "int",
+                        default: 0,
+                    },
+                    {
                         name: "user_id",
                         type: "int",
                         isNullable: false,

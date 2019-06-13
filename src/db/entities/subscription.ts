@@ -17,6 +17,9 @@ export class Subscription extends EntityWithTimestamps {
     @Column({ name: "authentication_secret", nullable: false })
     authenticationSecret!: string
 
+    @Column({ name: "fall_count", type: "int", nullable: false })
+    fallCount!: number
+
     @ManyToOne(type => User)
     @JoinColumn({ name: "user_id", referencedColumnName: "id" })
     user!: User

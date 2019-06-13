@@ -60,21 +60,17 @@ router.post("/", koaBody(), async ctx => {
         } else {
             post.files = []
         }
-    })
-    publishRedisConnection.publish("timelines:public", post.id.toString())
-    console.log(post.files)
-    new Promise(async (res, rej) => {
         const replies = new Set(post.text.match(repliesRegex))
-        Array.from(replies).map(async reply => {
-            const target = await getRepository(User).findOne({
+        for (const reply of replies) {
+            const target = await transactionalEntityManager.findOne(User, {
                 screenName: reply.replace("@", ""),
             })
             if (target != null) {
-                const subscriptions = await getRepository(Subscription).find({
+                const subscriptions = await transactionalEntityManager.find(Subscription, {
                     user: target,
                     revokedAt: null,
                 })
-                subscriptions.map(async subscription => {
+                for (const subscription of subscriptions) {
                     const subscriptionOptions = {
                         endpoint: subscription.endpoint,
                         keys: {
@@ -82,32 +78,45 @@ router.post("/", koaBody(), async ctx => {
                             auth: subscription.authenticationSecret,
                         },
                     }
+                    const icon = post.user.avatarFile
+                        ? post.user.avatarFile.variants
+                              .filter(variant => variant.type == "thumbnail")
+                              .sort(variant => variant.score)[0]
+                        : null
                     const payload = {
                         title: `${post.user.name} (@${post.user.screenName})`,
                         body: post.text,
-                        icon: post.user.avatarFile
-                            ? `${S3_PUBLIC_URL}${post.user.avatarFile.variants
-                                  .filter(variant => variant.type == "thumbnail")
-                                  .sort(variant => variant.score)[0]
-                                  .toPath()}`
-                            : null,
+                        icon: icon,
                     }
                     try {
                         await webpush.sendNotification(subscriptionOptions, JSON.stringify(payload), WP_OPTIONS)
                     } catch (error) {
                         if (error instanceof WebPushError) {
-                            console.warn(`failed: ${subscription.endpoint}`)
-                            subscription.revokedAt = new Date()
-                            await getRepository(Subscription).save(subscription)
+                            console.log(`failed: ${subscription.endpoint}`)
+                            if (3 <= subscription.fallCount) {
+                                await transactionalEntityManager.update(
+                                    Subscription,
+                                    { id: subscription.id },
+                                    { revokedAt: new Date() }
+                                )
+                            } else {
+                                await transactionalEntityManager.increment(
+                                    Subscription,
+                                    { id: subscription.id },
+                                    "fallCount",
+                                    1
+                                )
+                            }
                         } else {
                             console.error(error)
                         }
                     }
-                })
+                }
             }
-        })
-        res()
+        }
     })
+    publishRedisConnection.publish("timelines:public", post.id.toString())
+    console.log(post.files)
     await ctx.send(PostRepository, post)
 })
 
