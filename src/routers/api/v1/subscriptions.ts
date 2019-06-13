@@ -8,7 +8,7 @@ import { WP_OPTIONS } from "../../../config"
 
 const router = new APIRouter()
 
-router.get("/", koaBody(), async ctx => {
+router.get("/", async ctx => {
     const fetch = await getRepository(Subscription).count({
         user: ctx.state.token.user,
         revokedAt: null,
