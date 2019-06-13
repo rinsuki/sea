@@ -8,19 +8,26 @@ import { WP_OPTIONS } from "../../../config"
 
 const router = new APIRouter()
 
-router.get("/", async ctx => {
-    const fetch = await getRepository(Subscription).count({
+router.get("/server_key", async ctx => {
+    ctx.type = "json"
+    ctx.body = JSON.stringify({
+        applicationServerKey: WP_OPTIONS.vapidDetails!.publicKey,
+    })
+})
+
+router.get("/subscriptions", async ctx => {
+    const count = await getRepository(Subscription).count({
         user: ctx.state.token.user,
+        application: ctx.state.token.application,
         revokedAt: null,
     })
     ctx.type = "json"
     ctx.body = JSON.stringify({
-        applicationServerKey: WP_OPTIONS.vapidDetails!.publicKey,
-        subscriptions: fetch,
+        subscriptions: count,
     })
 })
 
-router.post("/", koaBody(), async ctx => {
+router.post("/subscriptions", koaBody(), async ctx => {
     const body = $.obj({
         endpoint: $.string.compose($length({ min: 1 })),
         keys: $.obj({
@@ -29,13 +36,21 @@ router.post("/", koaBody(), async ctx => {
         }),
     }).transformOrThrow(ctx.request.body)
     const subscription = new Subscription()
-    const user = ctx.state.token.user
-    subscription.user = user
+    subscription.user = ctx.state.token.user
+    subscription.application = ctx.state.token.application
     subscription.endpoint = body.endpoint
     subscription.publicKey = body.keys.p256dh
     subscription.authenticationSecret = body.keys.auth
     await getRepository(Subscription).save(subscription)
-    ctx.body = ""
+    const count = await getRepository(Subscription).count({
+        user: ctx.state.token.user,
+        application: ctx.state.token.application,
+        revokedAt: null,
+    })
+    ctx.type = "json"
+    ctx.body = JSON.stringify({
+        subscriptions: count,
+    })
 })
 
 export default router
