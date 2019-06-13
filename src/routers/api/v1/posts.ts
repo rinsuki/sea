@@ -89,9 +89,17 @@ router.post("/", koaBody(), async ctx => {
                               .toPath()}`
                         : null
                     const payload = {
-                        title: `${post.user.name} (@${post.user.screenName})`,
-                        body: post.text,
-                        icon: icon,
+                        post: {
+                            user: {
+                                id: post.user.id,
+                                name: post.user.name,
+                                screenName: post.user.screenName,
+                                icon: icon,
+                            },
+                            text: post.text,
+                            id: post.id,
+                            application: post.application,
+                        },
                         type: "mention",
                     }
                     try {
