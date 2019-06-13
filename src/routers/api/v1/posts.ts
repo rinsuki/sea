@@ -9,7 +9,7 @@ import { publishRedisConnection } from "../../../utils/getRedisConnection"
 import { PostAttachedFile } from "../../../db/entities/postAttachedFile"
 import { AlbumFile } from "../../../db/entities/albumFile"
 import { Subscription } from "../../../db/entities/subscription"
-import webpush from "web-push"
+import webpush, { WebPushError } from "web-push"
 import { WP_OPTIONS, S3_PUBLIC_URL } from "../../../config"
 import { UserRepository } from "../../../db/repositories/user"
 
@@ -92,9 +92,13 @@ router.post("/", koaBody(), async ctx => {
                     try {
                         await webpush.sendNotification(subscriptionOptions, JSON.stringify(payload), WP_OPTIONS)
                     } catch (error) {
-                        console.warn(`failed: ${subscription.endpoint}`)
-                        subscription.revokedAt = new Date()
-                        await getRepository(Subscription).save(subscription)
+                        if (error instanceof WebPushError) {
+                            console.warn(`failed: ${subscription.endpoint}`)
+                            subscription.revokedAt = new Date()
+                            await getRepository(Subscription).save(subscription)
+                        } else {
+                            console.error(error)
+                        }
                     }
                 })
             }
