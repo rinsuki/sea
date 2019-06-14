@@ -99,29 +99,34 @@ router.post("/", koaBody(), async ctx => {
             type: "mention",
         }
         subscriptions.map(async subscription => {
-            const subscriptionOptions = {
-                endpoint: subscription.endpoint,
-                keys: {
-                    p256dh: subscription.publicKey,
-                    auth: subscription.authenticationSecret,
-                },
-            }
             try {
-                await webpush.sendNotification(subscriptionOptions, JSON.stringify(payload), WP_OPTIONS)
-                if (subscription.failedAt != null) {
-                    await getRepository(Subscription).update({ id: subscription.id }, { failedAt: null })
+                const subscriptionOptions = {
+                    endpoint: subscription.endpoint,
+                    keys: {
+                        p256dh: subscription.publicKey,
+                        auth: subscription.authenticationSecret,
+                    },
+                }
+                try {
+                    await webpush.sendNotification(subscriptionOptions, JSON.stringify(payload), WP_OPTIONS)
+                    if (subscription.failedAt != null) {
+                        await getRepository(Subscription).update({ id: subscription.id }, { failedAt: null })
+                    }
+                } catch (error) {
+                    console.log(`failed: ${subscription.endpoint}`)
+                    if (subscription.failedAt != null) {
+                        if (604800000 <= now.getTime() - subscription.failedAt.getTime()) {
+                            // 1000*60*60*24*7 = a week
+                            await getRepository(Subscription).update({ id: subscription.id }, { revokedAt: now })
+                        }
+                    } else {
+                        await getRepository(Subscription).update({ id: subscription.id }, { failedAt: now })
+                    }
                 }
             } catch (error) {
-                console.log(`failed: ${subscription.endpoint}`)
-                if (subscription.failedAt != null) {
-                    if (604800000 <= now.getTime() - subscription.failedAt.getTime()) {
-                        // 1000*60*60*24*7 = a week
-                        await getRepository(Subscription).update({ id: subscription.id }, { revokedAt: now })
-                    }
-                } else {
-                    await getRepository(Subscription).update({ id: subscription.id }, { failedAt: now })
-                }
+                console.error(error)
             }
+            return
         })
     }
     await ctx.send(PostRepository, post)
