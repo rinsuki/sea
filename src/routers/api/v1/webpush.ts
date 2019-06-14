@@ -57,8 +57,7 @@ router.delete("/subscriptions/:id", async ctx => {
         revokedAt: null,
     })
     await getRepository(Subscription).update({ id: subscription.id }, { revokedAt: new Date() })
-    ctx.body = JSON.stringify({ id: subscription.id })
-    ctx.type = "json"
+    ctx.status = 204
 })
 
 export default router
