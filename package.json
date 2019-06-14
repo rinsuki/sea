@@ -30,6 +30,7 @@
         "sharp": "^0.22.1",
         "transform-ts": "^0.0.2",
         "typeorm": "^0.2.18",
+        "web-push": "^3.3.5",
         "ws": "^7.0.0"
     },
     "resolutions": {
@@ -44,6 +45,7 @@
         "@types/pug": "^2.0.4",
         "@types/redis": "^2.8.13",
         "@types/sharp": "^0.22.2",
+        "@types/web-push": "^3.3.0",
         "@types/ws": "^6.0.1",
         "prettier": "^1.18.2",
         "typescript": "^3.5.1"
