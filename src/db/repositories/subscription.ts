@@ -1,6 +1,5 @@
-import { EntityRepository, Repository, getCustomRepository } from "typeorm"
+import { EntityRepository, Repository } from "typeorm"
 import { Subscription } from "../entities/subscription"
-import { ApplicationRepository } from "./application"
 
 @EntityRepository(Subscription)
 export class SubscriptionRepository extends Repository<Subscription> {
@@ -16,7 +15,6 @@ export class SubscriptionRepository extends Repository<Subscription> {
                     name: subscription.description,
                     endpoint: subscription.endpoint,
                     failedAt: subscription.failedAt,
-                    application: await getCustomRepository(ApplicationRepository).pack(subscription.application),
                     createdAt: subscription.createdAt,
                     updatedAt: subscription.updatedAt,
                 }

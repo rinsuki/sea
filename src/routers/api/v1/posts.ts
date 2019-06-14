@@ -29,11 +29,7 @@ router.post("/", koaBody(), async ctx => {
     await getManager().transaction("SERIALIZABLE", async transactionalEntityManager => {
         var user = ctx.state.token.user
         const res = await transactionalEntityManager.increment(User, { id: user.id }, "postsCount", 1)
-        user = await transactionalEntityManager.findOneOrFail(
-            User,
-            { id: user.id },
-            { relations: ["avatarFile", "avatarFile.variants"] }
-        )
+        user = await transactionalEntityManager.findOneOrFail(User, { id: user.id }, { relations: ["avatarFile"] })
         post.user = user
         await transactionalEntityManager.save(post)
         if (body.fileIds != null && body.fileIds.length) {

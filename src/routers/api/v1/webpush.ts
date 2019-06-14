@@ -20,9 +20,9 @@ router.get("/subscriptions", async ctx => {
     const subscriptions = await getRepository(Subscription).find({
         where: {
             user: ctx.state.token.user,
+            application: ctx.state.token.application,
             revokedAt: null,
         },
-        relations: ["application"],
     })
     await ctx.sendMany(SubscriptionRepository, subscriptions)
 })
@@ -54,6 +54,7 @@ router.delete("/subscriptions/:id", async ctx => {
     const subscription = await getRepository(Subscription).findOneOrFail({
         id: id,
         user: ctx.state.token.user,
+        application: ctx.state.token.application,
         revokedAt: null,
     })
     await getRepository(Subscription).update({ id: subscription.id }, { revokedAt: new Date() })
