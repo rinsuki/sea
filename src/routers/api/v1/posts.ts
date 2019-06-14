@@ -2,7 +2,7 @@ import { APIRouter } from "../router-class"
 import koaBody = require("koa-body")
 import $ = require("transform-ts")
 import { Post } from "../../../db/entities/post"
-import { getManager } from "typeorm"
+import { getManager, getRepository } from "typeorm"
 import { PostRepository } from "../../../db/repositories/post"
 import { User } from "../../../db/entities/user"
 import { publishRedisConnection } from "../../../utils/getRedisConnection"
@@ -63,69 +63,70 @@ router.post("/", koaBody(), async ctx => {
     publishRedisConnection.publish("timelines:public", post.id.toString())
     console.log(post.files)
     const now = new Date()
-    getManager().transaction("SERIALIZABLE", async transactionalEntityManager => {
-        const replies = new Set(post.text.match(repliesRegex))
-        for (const reply of replies) {
-            const target = await transactionalEntityManager.findOne(User, {
-                screenName: reply.replace("@", ""),
-            })
-            if (target != null) {
-                const subscriptions = await transactionalEntityManager.find(Subscription, {
-                    user: target,
-                    revokedAt: null,
-                })
-                for (const subscription of subscriptions) {
-                    const subscriptionOptions = {
-                        endpoint: subscription.endpoint,
-                        keys: {
-                            p256dh: subscription.publicKey,
-                            auth: subscription.authenticationSecret,
-                        },
-                    }
-                    const icon = post.user.avatarFile
-                        ? `${S3_PUBLIC_URL}${post.user.avatarFile.variants
-                              .filter(variant => variant.type == "thumbnail")
-                              .sort(variant => variant.score)[0]
-                              .toPath()}`
-                        : null
-                    const payload = {
-                        post: {
-                            user: {
-                                id: post.user.id,
-                                name: post.user.name,
-                                screenName: post.user.screenName,
-                                icon: icon,
-                            },
-                            text: post.text,
-                            id: post.id,
-                            application: post.application,
-                        },
-                        type: "mention",
-                    }
-                    try {
-                        await webpush.sendNotification(subscriptionOptions, JSON.stringify(payload), WP_OPTIONS)
-                        if (subscription.failedAt != null) {
-                            await transactionalEntityManager.update(Subscription, { id: subscription.id }, { failedAt: null })
-                        }
-                    } catch (error) {
-                        console.log(`failed: ${subscription.endpoint}`)
-                        if (subscription.failedAt != null) {
-                            if (604800000 <= now.getTime() - subscription.failedAt.getTime()) {
-                                // 1000*60*60*24*7 = a week
-                                await transactionalEntityManager.update(
-                                    Subscription,
-                                    { id: subscription.id },
-                                    { revokedAt: now }
-                                )
+    const replies = Array.from(new Set(post.text.match(repliesRegex)))
+    if (0 < replies.length) {
+        Promise.all(
+            replies.map(async reply => {
+                return new Promise(async (res, rej) => {
+                    const target = await getRepository(User).findOne({
+                        screenName: reply.replace("@", ""),
+                    })
+                    if (target != null) {
+                        const subscriptions = await getRepository(Subscription).find({
+                            user: target,
+                            revokedAt: null,
+                        })
+                        subscriptions.map(async subscription => {
+                            const subscriptionOptions = {
+                                endpoint: subscription.endpoint,
+                                keys: {
+                                    p256dh: subscription.publicKey,
+                                    auth: subscription.authenticationSecret,
+                                },
                             }
-                        } else {
-                            await transactionalEntityManager.update(Subscription, { id: subscription.id }, { failedAt: now })
-                        }
+                            const icon = post.user.avatarFile
+                                ? `${S3_PUBLIC_URL}${post.user.avatarFile.variants
+                                      .filter(variant => variant.type == "thumbnail")
+                                      .sort(variant => variant.score)[0]
+                                      .toPath()}`
+                                : null
+                            const payload = {
+                                post: {
+                                    user: {
+                                        id: post.user.id,
+                                        name: post.user.name,
+                                        screenName: post.user.screenName,
+                                        icon: icon,
+                                    },
+                                    text: post.text,
+                                    id: post.id,
+                                    application: post.application,
+                                },
+                                type: "mention",
+                            }
+                            try {
+                                await webpush.sendNotification(subscriptionOptions, JSON.stringify(payload), WP_OPTIONS)
+                                if (subscription.failedAt != null) {
+                                    await getRepository(Subscription).update({ id: subscription.id }, { failedAt: null })
+                                }
+                            } catch (error) {
+                                console.log(`failed: ${subscription.endpoint}`)
+                                if (subscription.failedAt != null) {
+                                    if (604800000 <= now.getTime() - subscription.failedAt.getTime()) {
+                                        // 1000*60*60*24*7 = a week
+                                        await getRepository(Subscription).update({ id: subscription.id }, { revokedAt: now })
+                                    }
+                                } else {
+                                    await getRepository(Subscription).update({ id: subscription.id }, { failedAt: now })
+                                }
+                            }
+                        })
                     }
-                }
-            }
-        }
-    })
+                    res()
+                })
+            })
+        )
+    }
     await ctx.send(PostRepository, post)
 })
 
