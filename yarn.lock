@@ -2400,10 +2400,10 @@ token-stream@0.0.1:
   resolved "https://registry.yarnpkg.com/token-stream/-/token-stream-0.0.1.tgz#ceeefc717a76c4316f126d0b9dbaa55d7e7df01a"
   integrity sha1-zu78cXp2xDFvEm0LnbqlXX598Bo=
 
-transform-ts@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/transform-ts/-/transform-ts-0.0.2.tgz#35c06bc28fffb2ab686465357518f4ed26b33bd4"
-  integrity sha512-8UzyYQ4xIpntaw+7+WIcIS9YHWPZ1KfSUr/ko5VjsavgkZax+zZcUtUn8UpInqYLFVUgeH1pjKCsAoTdLyaArw==
+transform-ts@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/transform-ts/-/transform-ts-0.1.0.tgz#f8255f8a16d7698689d3b133e4ad52731029aed8"
+  integrity sha512-qvMynmQCSeaU+yc1eByf0Zpdlyy3v/N/i385xR6rOgq0fwE30pIiB2prmasP39ZvTdlRCPPyJ0FgMOjC1WOMsg==
 
 tslib@^1.9.0:
   version "1.9.3"
