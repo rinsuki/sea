@@ -22,11 +22,14 @@ router.patch("/", koaBody(), async ctx => {
 
     const user = ctx.state.token.user
     if (body.name != null) user.name = body.name
-    if (body.avatarFileId != null)
+    if (body.avatarFileId === 0) {
+        user.avatarFile = null
+    } else if (body.avatarFileId) {
         user.avatarFile = await getRepository(AlbumFile).findOneOrFail({
             id: body.avatarFileId,
             user,
         })
+    }
     await getRepository(User).save(user)
     await ctx.send(UserRepository, user)
 })
