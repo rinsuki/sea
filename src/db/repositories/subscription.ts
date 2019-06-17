@@ -12,7 +12,7 @@ export class SubscriptionRepository extends Repository<Subscription> {
             subscriptions.map(async subscription => {
                 return {
                     id: subscription.id,
-                    name: subscription.description,
+                    description: subscription.description,
                     endpoint: subscription.endpoint,
                     failedAt: subscription.failedAt,
                     createdAt: subscription.createdAt,
