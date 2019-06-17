@@ -14,12 +14,11 @@
         "test": "yarn migration:up && yarn migration:downall"
     },
     "dependencies": {
-        "aws-sdk": "^2.471.0",
+        "aws-sdk": "^2.474.0",
         "axios": "^0.19.0",
         "bcrypt": "^3.0.6",
-        "cafy": "^15.1.1",
         "class-validator": "^0.9.1",
-        "file-type": "^11.1.0",
+        "file-type": "^12.0.0",
         "koa": "^2.7.0",
         "koa-body": "^4.1.0",
         "koa-router": "^7.4.0",
@@ -29,7 +28,9 @@
         "redis": "^2.8.0",
         "reflect-metadata": "^0.1.13",
         "sharp": "^0.22.1",
+        "transform-ts": "^0.0.2",
         "typeorm": "^0.2.18",
+        "web-push": "^3.3.5",
         "ws": "^7.0.0"
     },
     "resolutions": {
@@ -40,10 +41,11 @@
         "@types/koa": "^2.0.48",
         "@types/koa-pug": "^3.0.4",
         "@types/koa-router": "^7.0.40",
-        "@types/node": "^12.0.7",
+        "@types/node": "^12.0.8",
         "@types/pug": "^2.0.4",
         "@types/redis": "^2.8.13",
         "@types/sharp": "^0.22.2",
+        "@types/web-push": "^3.3.0",
         "@types/ws": "^6.0.1",
         "prettier": "^1.18.2",
         "typescript": "^3.5.1"

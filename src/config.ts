@@ -1,4 +1,6 @@
-import $ from "cafy"
+import $ = require("transform-ts")
+import { $literal } from "./utils/transformers"
+import { RequestOptions } from "web-push"
 
 export const isProductionMode = process.env.NODE_ENV === "production"
 if (isProductionMode === false) {
@@ -37,8 +39,23 @@ export const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379"
 export const FORCE_HTTPS = !!process.env.FORCE_HTTPS
 
 export const { S3_BUCKET, S3_ENDPOINT, S3_PUBLIC_URL, S3_FORCE_USE_PATH_STYLE } = $.obj({
-    S3_BUCKET: $.str,
-    S3_ENDPOINT: $.str,
-    S3_PUBLIC_URL: $.str,
-    S3_FORCE_USE_PATH_STYLE: $.str.or(["yes", "no"]),
-}).throw(process.env)
+    S3_BUCKET: $.string,
+    S3_ENDPOINT: $.string,
+    S3_PUBLIC_URL: $.string,
+    S3_FORCE_USE_PATH_STYLE: $literal({ yes: "yes", no: "no" } as const),
+}).transformOrThrow(process.env)
+
+const { SW_KEY_PUBLIC, SW_KEY_PRIVATE, SW_SUBJECT } = $.obj({
+    SW_KEY_PUBLIC: $.string,
+    SW_KEY_PRIVATE: $.string,
+    SW_SUBJECT: $.string,
+}).transformOrThrow(process.env)
+
+export const WP_OPTIONS: RequestOptions = {
+    vapidDetails: {
+        subject: SW_SUBJECT,
+        publicKey: SW_KEY_PUBLIC,
+        privateKey: SW_KEY_PRIVATE,
+    },
+    TTL: 60,
+}
