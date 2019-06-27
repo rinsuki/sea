@@ -40,7 +40,7 @@
         "@types/bcrypt": "^3.0.0",
         "@types/koa": "^2.0.48",
         "@types/koa-pug": "^3.0.4",
-        "@types/koa-router": "^7.0.41",
+        "@types/koa-router": "^7.0.42",
         "@types/node": "^12.0.10",
         "@types/pug": "^2.0.4",
         "@types/redis": "^2.8.13",
