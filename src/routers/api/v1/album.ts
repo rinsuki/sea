@@ -93,6 +93,7 @@ router.post("/files", bodyParser, async ctx => {
             Body: buffer,
             Bucket: S3_BUCKET,
             Key: variant.toPath(),
+            CacheControl: 'public; max-age=31536000', // 1 year
             ContentType: EXT2MIME[extension],
         })
         const res = await new Promise((resolve, reject) => {
