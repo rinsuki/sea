@@ -303,10 +303,10 @@ async-limiter@^1.0.0:
   resolved "https://registry.yarnpkg.com/async-limiter/-/async-limiter-1.0.0.tgz#78faed8c3d074ab81f22b4e985d79e8738f720f8"
   integrity sha512-jp/uFnooOiO+L211eZOoSyzpOITMXx1rBITauYykG3BRYPu8h0UcxsPNB04RR5vo4Tyz3+ay17tR6JVf9qzYWg==
 
-aws-sdk@^2.489.0:
-  version "2.489.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.489.0.tgz#5ca376546dd3e912febf3114d2bcfa4d82c5584a"
-  integrity sha512-P85rLUWpO2DAG/ZQoOscNiwTKY4LgWNCHarw7RACGt0vOGiMkuKL0JN+FvurcmDEBj0xRUXsKDMfwWHDFhA2Jw==
+aws-sdk@^2.490.0:
+  version "2.490.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.490.0.tgz#c890e038a4cae854c857f3530f5ab00db69f59f1"
+  integrity sha512-8dCf+F360XEwOorTk0wVV/haaxYvUZnfZI6PVXfR8xbcVd7Ioh9KWRe+MqHNStEttE4UQzknEPrUj/mDW++NDw==
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
