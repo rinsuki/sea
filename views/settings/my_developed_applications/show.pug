@@ -17,7 +17,44 @@ block content
         tr
             th client_secret
             td: input(type="text", value=app.clientSecret, readonly)
-
+        tr
+            th your access token
+            td
+                if token == null
+                    span 出ないみたい…
+                    form(method="POST", action="/settings/my_developed_applications/"+app.id+"/my_token", style="display: inline;")
+                        input(type="hidden", name="_csrf", value=session.getCookieValue())
+                        input(type="submit", value="ボタンを押せ!!", onclick="return confirm('アクセストークン発行モードに突入!!')")
+                else
+                    input(type="password", value=token.token, readonly, id="access_token")
+                    button(id="copy_token") コピー
+                    button(id="show_token") 表示
+                    button(id="hide_token", style="display: none;") 非表示
+                    script.
+                        (() => {
+                            const tokenInput = document.getElementById("access_token")
+                            const tempInput = document.createElement("textarea")
+                            tempInput.style.opacity = 0
+                            tempInput.value = tokenInput.value
+                            document.getElementById("copy_token").addEventListener("click", () => {
+                                document.body.appendChild(tempInput)
+                                tempInput.focus()
+                                tempInput.select()
+                                document.execCommand("copy")
+                                document.body.removeChild(tempInput)
+                                alert("できた")
+                            })
+                            document.getElementById("show_token").addEventListener("click", e => {
+                                tokenInput.type = "text"
+                                e.target.style.display = "none"
+                                document.getElementById("hide_token").style.display = ""
+                            })
+                            document.getElementById("hide_token").addEventListener("click", e => {
+                                tokenInput.type = "password"
+                                e.target.style.display = "none" 
+                                document.getElementById("show_token").style.display = ""
+                            })
+                        })()
     hr
 
     form(method="POST")

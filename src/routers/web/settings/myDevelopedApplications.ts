@@ -7,6 +7,7 @@ import { randomBytes } from "crypto"
 import koaBody = require("koa-body")
 import { checkCsrf } from "../../../utils/checkCsrf"
 import { $length, $regexp, $stringNumber, $safeNumber, $literal } from "../../../utils/transformers"
+import { AccessToken } from "../../../db/entities/accessToken"
 
 const router = new Router<WebRouterState, WebRouterCustom>()
 
@@ -51,7 +52,12 @@ router.get("/:id", async ctx => {
         relations: ["ownerUser"],
     })
     if (app.ownerUser.id != ctx.state.session!.user.id) return ctx.throw(403, "お前ownerじゃねえだろ")
-    ctx.render("settings/my_developed_applications/show", { app })
+    const token = await getRepository(AccessToken).findOne({
+        user: app.ownerUser,
+        application: app,
+        revokedAt: null,
+    })
+    ctx.render("settings/my_developed_applications/show", { app, token })
 })
 
 router.post("/:id", koaBody(), checkCsrf, async ctx => {
@@ -74,6 +80,33 @@ router.post("/:id", koaBody(), checkCsrf, async ctx => {
     app.isAutomated = body.is_automated != undefined
     await getRepository(Application).save(app)
     ctx.redirect("/settings/my_developed_applications/" + app.id)
+})
+
+router.post("/:id/my_token", koaBody(), checkCsrf, async ctx => {
+    const { id } = $.obj({
+        id: $stringNumber.compose($safeNumber),
+    }).transformOrThrow(ctx.params)
+
+    const application = await getRepository(Application).findOneOrFail(id, {
+        relations: ["ownerUser"],
+    })
+    if (application.ownerUser.id != ctx.state.session!.user.id) return ctx.throw(403, "お前ownerじゃねえだろ")
+
+    var token = await getRepository(AccessToken).findOne({
+        user: application.ownerUser,
+        application,
+        revokedAt: null,
+    })
+    if (token == null) {
+        token = new AccessToken()
+        token.application = application
+        token.user = application.ownerUser
+        token.generateToken()
+        await getRepository(AccessToken).save(token)
+    }
+
+    ctx.status = 303
+    ctx.set("Location", "/settings/my_developed_applications/" + id)
 })
 
 export default router
