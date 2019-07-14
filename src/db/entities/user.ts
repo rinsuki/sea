@@ -37,7 +37,7 @@ export class User extends EntityWithTimestamps {
 
     @OneToOne(type => AlbumFile)
     @JoinColumn({ name: "avatar_file_id", referencedColumnName: "id" })
-    avatarFile?: AlbumFile
+    avatarFile!: AlbumFile | null
 
     @Column({ name: "min_readable_date", type: "timestamptz", nullable: false })
     minReadableDate!: Date
