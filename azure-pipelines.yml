@@ -60,6 +60,7 @@ steps:
                   -P "${SYSTEM_PULLREQUEST_PULLREQUESTNUMBER:-}" \
                   -b "${BUILD_BUILDID:-}" \
                   -K
+    displayName: Upload Code Coverage to codecov
   - task: JenkinsQueueJob@2
     displayName: "Deploy"
     condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
