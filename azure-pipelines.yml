@@ -60,6 +60,8 @@ steps:
                   -P "${SYSTEM_PULLREQUEST_PULLREQUESTNUMBER:-}" \
                   -b "${BUILD_BUILDID:-}" \
                   -K
+    env:
+      CODECOV_TOKEN: $(codecovToken)
     displayName: Upload Code Coverage to codecov
   - task: JenkinsQueueJob@2
     displayName: "Deploy"
