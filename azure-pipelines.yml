@@ -56,12 +56,6 @@ steps:
     inputs:
       command: logout
       containerRegistry: dockerHub
-  - script: |
-      curl -s https://codecov.io/bash -o .codecov && chmod +x .codecov
-      ./.codecov
-    env:
-      CODECOV_TOKEN: $(codecovToken)
-    displayName: Upload Code Coverage to codecov
   - task: JenkinsQueueJob@2
     displayName: "Deploy"
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
@@ -69,3 +63,9 @@ steps:
       serverEndpoint: jenkins
       jobName: sea-sns
       captureConsole: false
+  - script: |
+      curl -s https://codecov.io/bash -o .codecov && chmod +x .codecov
+      ./.codecov
+    env:
+      CODECOV_TOKEN: $(codecovToken)
+    displayName: Upload Code Coverage to codecov
