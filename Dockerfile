@@ -7,7 +7,7 @@ RUN apk add --no-cache python2 make g++
 COPY package.json yarn.lock ./
 RUN yarn install
 
-COPY src views tests ormconfig.js jest.config.js LICENSE README.md tsconfig.json /app/
+COPY src views ormconfig.js jest.config.js LICENSE README.md tsconfig.json /app/
 RUN yarn build
 
 ENV PORT 3000
