@@ -64,7 +64,7 @@ steps:
     displayName: Upload Code Coverage to codecov
   - task: JenkinsQueueJob@2
     displayName: "Deploy"
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master') && successed()
     inputs:
       serverEndpoint: jenkins
       jobName: sea-sns
