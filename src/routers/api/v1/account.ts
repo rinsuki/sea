@@ -14,6 +14,8 @@ router.get("/", async ctx => {
 })
 router.redirect("/verify_credentials", "/api/v1/account", 308)
 
+const omikuji = ["大吉", "中吉", "吉", "小吉", "末吉", "凶", "大凶", "はずれ"]
+
 router.patch("/", koaBody(), async ctx => {
     const body = $.obj({
         name: $.optional($.string.compose($length({ min: 1, max: 20 }))),
@@ -21,7 +23,10 @@ router.patch("/", koaBody(), async ctx => {
     }).transformOrThrow(ctx.request.body)
 
     const user = ctx.state.token.user
-    if (body.name != null) user.name = body.name
+    if (body.name != null) user.name = body.name.replace(/★/g, "☆")
+    if (user.name === "!omikuji") {
+        user.name += " → ★" + omikuji[Math.random() * omikuji.length]
+    }
     if (body.avatarFileId === 0) {
         user.avatarFile = null
     } else if (body.avatarFileId) {
