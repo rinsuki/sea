@@ -5,5 +5,7 @@ export class ExtendUserNameLengthLimitTo501563947120001 implements MigrationInte
         await queryRunner.query("ALTER TABLE users ALTER COLUMN name TYPE varchar(50)")
     }
 
-    public async down(queryRunner: QueryRunner): Promise<any> {}
+    public async down(queryRunner: QueryRunner): Promise<any> {
+        await queryRunner.query("ALTER TABLE users ALTER COLUMN name TYPE varchar(20)")
+    }
 }

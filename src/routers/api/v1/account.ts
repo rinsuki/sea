@@ -25,7 +25,7 @@ router.patch("/", koaBody(), async ctx => {
     const user = ctx.state.token.user
     if (body.name != null) user.name = body.name.replace(/★/g, "☆")
     if (user.name === "!omikuji") {
-        user.name += " → ★" + omikuji[Math.random() * omikuji.length]
+        user.name += " → ★" + omikuji[Math.floor(Math.random() * omikuji.length)]
     }
     if (body.avatarFileId === 0) {
         user.avatarFile = null
