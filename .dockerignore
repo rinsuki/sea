@@ -1,1 +1,10 @@
 node_modules/
+.vscode/
+.ci-files/
+coverage/
+dist/
+.env
+.prettierrc
+app.json
+azure-pipelines.yml
+Procfile
