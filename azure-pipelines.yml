@@ -38,13 +38,13 @@ steps:
     displayName: "Run yarn migration:downall"
   - task: Docker@2
     displayName: "Login to DockerHub"
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master') && successed()
     inputs:
       command: login
       containerRegistry: dockerHub
   - task: Docker@2
     displayName: "Push to DockerHub"
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master') && successed()
     inputs:
       command: push
       repository: rinsuki/sea
