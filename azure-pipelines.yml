@@ -15,7 +15,10 @@ steps:
       docker run --name postgres -e POSTGRES_PASSWORD=onlyfortesting -d postgres:10-alpine
     displayName: "Run PostgreSQL"
   - script: |
-      docker build -t rinsuki/sea:latest .
+      docker pull rinsuki/sea:latest
+    displayName: "Fetch previous build result"
+  - script: |
+      docker build --cache-from rinsuki/sea:latest -t rinsuki/sea:latest .
     displayName: "Build docker container"
   - script: |
       docker run --rm --link postgres:postgres -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" rinsuki/sea yarn migration:up
