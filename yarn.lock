@@ -4978,10 +4978,10 @@ tr46@^1.0.1:
   dependencies:
     punycode "^2.1.0"
 
-transform-ts@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/transform-ts/-/transform-ts-0.1.0.tgz#f8255f8a16d7698689d3b133e4ad52731029aed8"
-  integrity sha512-qvMynmQCSeaU+yc1eByf0Zpdlyy3v/N/i385xR6rOgq0fwE30pIiB2prmasP39ZvTdlRCPPyJ0FgMOjC1WOMsg==
+transform-ts@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/transform-ts/-/transform-ts-0.1.2.tgz#a3316b7d99c0d659ca5cca7d071f541aeb6ea424"
+  integrity sha512-LWmAr+ATTMBckcN/Gkg1+fWqp4idJyn5z5TSkcdMijTOD/QH3mOXYJ+YC7l1+8nIAaHGIeNWolFnOPnUySW2Uw==
 
 trim-right@^1.0.1:
   version "1.0.1"
