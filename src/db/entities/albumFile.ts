@@ -4,6 +4,11 @@ import { EntityWithTimestamps } from "../../utils/timestampColumns"
 import path from "path"
 import { AlbumFileVariant } from "./albumFileVariant"
 
+export enum AlbumFileType {
+    IMAGE = "image",
+    VIDEO = "video",
+}
+
 @Entity("album_files")
 export class AlbumFile extends EntityWithTimestamps {
     @PrimaryColumn()
@@ -15,6 +20,9 @@ export class AlbumFile extends EntityWithTimestamps {
 
     @Column({ name: "name" })
     name!: string
+
+    @Column({ name: "type", type: "enum", enum: AlbumFileType })
+    type!: AlbumFileType
 
     @OneToMany(type => AlbumFileVariant, variant => variant.albumFile)
     variants!: AlbumFileVariant[]

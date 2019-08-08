@@ -4,4 +4,5 @@ export const EXT2MIME = {
     png: "image/png",
     jpg: "image/jpeg",
     webp: "image/webp",
+    mp4: "video/mp4",
 }

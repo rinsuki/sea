@@ -36,6 +36,7 @@ export class AlbumFileRepository extends Repository<AlbumFile> {
             return {
                 id: file.id,
                 name: file.name,
+                type: file.type,
                 variants: packedVariants
                     .filter(({ id }) => variantIds.includes(id))
                     .sort((a, b) => (a.score === b.score ? a.id - b.id : b.score - a.score)),

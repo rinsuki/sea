@@ -7,7 +7,7 @@ import { PostRepository } from "../../../db/repositories/post"
 import { User } from "../../../db/entities/user"
 import { publishRedisConnection } from "../../../utils/getRedisConnection"
 import { PostAttachedFile } from "../../../db/entities/postAttachedFile"
-import { AlbumFile } from "../../../db/entities/albumFile"
+import { AlbumFile, AlbumFileType } from "../../../db/entities/albumFile"
 import { Subscription } from "../../../db/entities/subscription"
 import webpush from "web-push"
 import { WP_OPTIONS } from "../../../config"
@@ -28,13 +28,9 @@ router.post("/", koaBody(), async ctx => {
     post.application = ctx.state.token.application
     await getManager().transaction("SERIALIZABLE", async transactionalEntityManager => {
         var user = ctx.state.token.user
-        const res = await transactionalEntityManager.increment(User, { id: user.id }, "postsCount", 1)
-        user = await transactionalEntityManager.findOneOrFail(User, { id: user.id }, { relations: ["avatarFile"] })
-        post.user = user
-        await transactionalEntityManager.save(post)
+        const attachedFiles: PostAttachedFile[] = []
         if (body.fileIds != null && body.fileIds.length) {
             // TODO: ここ 一個ごとforじゃなくて ORDER BY FIELDを使う
-            const attachedFiles: PostAttachedFile[] = []
             for (const [index, fileId] of body.fileIds.entries()) {
                 const file = await transactionalEntityManager.findOneOrFail(
                     AlbumFile,
@@ -52,6 +48,15 @@ router.post("/", koaBody(), async ctx => {
                 attachedFile.order = index
                 attachedFiles.push(attachedFile)
             }
+            if (attachedFiles.length > 1 && attachedFiles.find(f => f.albumFile.type === AlbumFileType.VIDEO)) {
+                throw "If attached video, attached files is should only one."
+            }
+        }
+        const res = await transactionalEntityManager.increment(User, { id: user.id }, "postsCount", 1)
+        user = await transactionalEntityManager.findOneOrFail(User, { id: user.id }, { relations: ["avatarFile"] })
+        post.user = user
+        await transactionalEntityManager.save(post)
+        if (attachedFiles.length > 0) {
             await transactionalEntityManager.insert(PostAttachedFile, attachedFiles)
             post.files = attachedFiles
         } else {

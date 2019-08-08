@@ -2,7 +2,7 @@ FROM node:12-alpine
 
 WORKDIR /app
 
-RUN apk add --no-cache python2 make g++
+RUN apk add --no-cache python2 make g++ ffmpeg
 
 COPY package.json yarn.lock ./
 RUN yarn install
