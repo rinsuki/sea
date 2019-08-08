@@ -3,7 +3,7 @@ import { UserRepository } from "../../../db/repositories/user"
 import koaBody = require("koa-body")
 import { getRepository } from "typeorm"
 import { User } from "../../../db/entities/user"
-import { AlbumFile } from "../../../db/entities/albumFile"
+import { AlbumFile, AlbumFileType } from "../../../db/entities/albumFile"
 import $ = require("transform-ts")
 import { $length } from "../../../utils/transformers"
 
@@ -34,6 +34,7 @@ router.patch("/", koaBody(), async ctx => {
             id: body.avatarFileId,
             user,
         })
+        if (user.avatarFile.type !== AlbumFileType.IMAGE) throw "お前何をアイコンにしようとしてんねん"
     }
     await getRepository(User).save(user)
     await ctx.send(UserRepository, user)
