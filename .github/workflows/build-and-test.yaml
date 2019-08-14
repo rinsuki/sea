@@ -1,0 +1,34 @@
+name: Build and Test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Launch PostgreSQL Container
+      run: |
+        docker run --name postgres -e POSTGRES_PASSWORD=onlyfortesting -d postgres:10-alpine
+    - name: Fetch previous build result
+      run: |
+        docker pull rinsuki/sea:latest
+    - name: Build docker container
+      run: |
+        docker build --cache-from rinsuki/sea:latest -t rinsuki/sea:latest .
+    - name: Run migration
+      run: |
+        docker run --rm --link postgres:postgres -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" rinsuki/sea yarn migration:up
+    - name: Run test
+      run: |
+        docker run --rm --link postgres:postgres --env-file ./ci-files/.env -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" -v $(pwd)/coverage:/app/coverage rinsuki/sea sh -c 'yarn test --coverage --coverageReporters=cobertura --coverageReporters=html'
+    - name: Prepare for Publish code coverage
+      run: |
+        sudo chown $(whoami) ./coverage/cobertura-coverage.xml
+        python3 -c 'import os;r=open("./coverage/cobertura-coverage.xml", "r").read().replace("/app", os.getcwd());open("./coverage/cobertura-coverage.xml", "w").write(r)'
+    - name: Upload Code Coverage to codecov
+      run: |
+        curl -s https://codecov.io/bash -o .codecov && chmod +x .codecov
+        ./.codecov
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_Token }}
