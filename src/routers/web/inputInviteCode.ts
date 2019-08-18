@@ -3,7 +3,7 @@ import { WebRouterState, WebRouterCustom } from "."
 import { getRepository, getManager } from "typeorm"
 import { User } from "../../db/entities/user"
 import { checkCsrf } from "../../utils/checkCsrf"
-import $ = require("transform-ts")
+import $ from "transform-ts"
 import { InviteCode } from "../../db/entities/inviteCode"
 import { createHash } from "crypto"
 import koaBody = require("koa-body")

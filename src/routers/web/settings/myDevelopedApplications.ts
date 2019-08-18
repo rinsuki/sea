@@ -2,7 +2,7 @@ import Router from "koa-router"
 import { WebRouterState, WebRouterCustom } from ".."
 import { getRepository } from "typeorm"
 import { Application } from "../../../db/entities/application"
-import $ = require("transform-ts")
+import $ from "transform-ts"
 import { randomBytes } from "crypto"
 import koaBody = require("koa-body")
 import { checkCsrf } from "../../../utils/checkCsrf"

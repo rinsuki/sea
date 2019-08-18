@@ -1,5 +1,5 @@
 import Router from "koa-router"
-import $ = require("transform-ts")
+import $ from "transform-ts"
 import koaBody = require("koa-body")
 import { getRepository, getManager } from "typeorm"
 import { Application } from "../../../db/entities/application"
