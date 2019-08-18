@@ -178,7 +178,7 @@ router.post("/files", bodyParser, async ctx => {
             const videoTracks = info.streams.filter(t => t.codec_type === "video")
             if (videoTracks.length !== 1) throw "Video track should only one."
             const videoTrack = videoTracks[0]
-            if (videoTrack.pix_fmt! !== "yuv420p") throw "Video pix_fmt is should 'yuv420p'."
+            if (videoTrack.pix_fmt !== "yuv420p" && videoTrack.pix_fmt !== "yuvj420p") throw "Video pix_fmt is should 'yuv420p' or 'yuvj420p'."
             if (videoTrack.codec_name !== "h264") throw "video codec is should 'H.264'."
             const audioTracks = info.streams.filter(t => t.codec_type === "audio")
             if (audioTracks.length > 1) throw "Audio track should only one or none."
