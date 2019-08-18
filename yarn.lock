@@ -794,10 +794,10 @@ atob@^2.1.1:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-aws-sdk@^2.497.0:
-  version "2.497.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.497.0.tgz#42fdde2fbc5d880e1532181cb42e644a07fb37b6"
-  integrity sha512-SCAVfWqj0qe22Lj6ZHMP/4autc9x3GqgWTj3YrE3VleSuql62xhyCC9gSYfbm7wo8Puqx0+kEnKYyyXR7Z98QA==
+aws-sdk@^2.512.0:
+  version "2.512.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.512.0.tgz#2480184c37964a224b2db1259aa07231403a09cc"
+  integrity sha512-ioZZ6dTiZyETpJJ3aYy81OS3idnU5n8eyFssvgMXdsX8PRJ3KJZ/dQAdCD/680xDt3ymRNClGvlkPcOLPNlDKQ==
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
@@ -4984,7 +4984,7 @@ tr46@^1.0.1:
   dependencies:
     punycode "^2.1.0"
 
-transform-ts@0.2.2:
+transform-ts@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/transform-ts/-/transform-ts-0.2.2.tgz#c93b5a5ef2de163206c7c966fa5d97d70214698c"
   integrity sha512-ZhK++xaal1Okh+dNJ2KTPfgwWgUip8nIefRwiUq5sxchAa66I9x6czbaUQWKsm5Ja43lbvucKpPv7Jn7ZJg27w==
