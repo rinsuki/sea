@@ -1,6 +1,6 @@
 require("dotenv").config()
 
-import $ = require("transform-ts")
+import $ from "transform-ts"
 import { $literal } from "./utils/transformers"
 import { RequestOptions } from "web-push"
 

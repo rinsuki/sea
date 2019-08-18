@@ -1,5 +1,5 @@
 import { RouterContext } from "koa-router"
-import $ = require("transform-ts")
+import $ from "transform-ts"
 import { RECAPTCHA } from "../config"
 import axios from "axios"
 import { URLSearchParams } from "url"

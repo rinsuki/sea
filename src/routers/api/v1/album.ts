@@ -11,7 +11,7 @@ import { S3_BUCKET, S3_ENDPOINT, S3_FORCE_USE_PATH_STYLE } from "../../../config
 import { AlbumFileRepository } from "../../../db/repositories/albumFile"
 import { EXT2MIME } from "../../../constants"
 import moment from "moment"
-import $ = require("transform-ts")
+import $ from "transform-ts"
 import { $length, $literal } from "../../../utils/transformers"
 import { join } from "path"
 import { execFilePromise } from "../../../utils/execFilePromise"
@@ -178,7 +178,8 @@ router.post("/files", bodyParser, async ctx => {
             const videoTracks = info.streams.filter(t => t.codec_type === "video")
             if (videoTracks.length !== 1) throw "Video track should only one."
             const videoTrack = videoTracks[0]
-            if (videoTrack.pix_fmt !== "yuv420p" && videoTrack.pix_fmt !== "yuvj420p") throw "Video pix_fmt is should 'yuv420p' or 'yuvj420p'."
+            if (videoTrack.pix_fmt !== "yuv420p" && videoTrack.pix_fmt !== "yuvj420p")
+                throw "Video pix_fmt is should 'yuv420p' or 'yuvj420p'."
             if (videoTrack.codec_name !== "h264") throw "video codec is should 'H.264'."
             const audioTracks = info.streams.filter(t => t.codec_type === "audio")
             if (audioTracks.length > 1) throw "Audio track should only one or none."
