@@ -13,6 +13,7 @@ import webpush from "web-push"
 import { WP_OPTIONS } from "../../../config"
 import { AlbumFileRepository } from "../../../db/repositories/albumFile"
 import { ApplicationRepository } from "../../../db/repositories/application"
+import { Application } from "../../../db/entities/application"
 
 const router = new APIRouter()
 
@@ -82,7 +83,7 @@ router.post("/", koaBody(), async ctx => {
         const subscriptions = await getRepository(Subscription)
             .createQueryBuilder("subscription")
             .where("subscription.revokedAt IS NULL")
-            .innerJoin("subscription.user", "users")
+            .innerJoinAndSelect("subscription.user", "users")
             .andWhere("users.screenName = ANY(:lusers)", { lusers: replies })
             .getMany()
         const payload = {
@@ -99,7 +100,15 @@ router.post("/", koaBody(), async ctx => {
             },
             type: "mention",
         }
+        const application = await getRepository(Application).findOne({
+            where: { id: post.application.id },
+            relations: ["ownerUser"],
+        })
         subscriptions.map(async subscription => {
+            if (post.application.isAutomated && application && application.ownerUser.id != subscription.user.id) {
+                return
+            }
+
             try {
                 const subscriptionOptions = {
                     endpoint: subscription.endpoint,
