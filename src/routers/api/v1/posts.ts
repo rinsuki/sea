@@ -66,7 +66,8 @@ router.post("/", koaBody(), async ctx => {
     })
     publishRedisConnection.publish("timelines:public", post.id.toString())
     console.log(post.files)
-    if (!post.application.isAutomated || body.notify == "send") {
+    const notify = body.notify || (post.application.isAutomated ? "none" : "send")
+    if (notify == "send") {
         const now = new Date()
         const replies = Array.from(new Set(post.text.match(repliesRegex))).map(reply => reply.replace("@", ""))
         if (0 < replies.length) {
