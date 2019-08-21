@@ -22,6 +22,7 @@ router.post("/", koaBody(), async ctx => {
     const body = $.obj({
         text: $.string,
         fileIds: $.optional($.array($.number)),
+        notify: $.optional($.literal("none", "send")),
     }).transformOrThrow(ctx.request.body)
     const post = new Post()
     post.text = body.text
@@ -65,70 +66,72 @@ router.post("/", koaBody(), async ctx => {
     })
     publishRedisConnection.publish("timelines:public", post.id.toString())
     console.log(post.files)
-    const now = new Date()
-    const replies = Array.from(new Set(post.text.match(repliesRegex))).map(reply => reply.replace("@", ""))
-    if (0 < replies.length) {
-        const icon: string | null = await (async () => {
-            if (post.user.avatarFile) {
-                const albumFile = await getCustomRepository(AlbumFileRepository).pack(post.user.avatarFile)
-                return albumFile.variants
-                    .filter(variant => variant.type == "thumbnail")
-                    .sort(variant => variant.score)
-                    .reverse()[0].url
-            } else {
-                return null
-            }
-        })()
-        const subscriptions = await getRepository(Subscription)
-            .createQueryBuilder("subscription")
-            .where("subscription.revokedAt IS NULL")
-            .innerJoin("subscription.user", "users")
-            .andWhere("users.screenName = ANY(:lusers)", { lusers: replies })
-            .getMany()
-        const payload = {
-            post: {
-                user: {
-                    id: post.user.id,
-                    name: post.user.name,
-                    screenName: post.user.screenName,
-                    icon: icon,
-                },
-                text: post.text,
-                id: post.id,
-                application: await getCustomRepository(ApplicationRepository).pack(post.application),
-            },
-            type: "mention",
-        }
-        subscriptions.map(async subscription => {
-            try {
-                const subscriptionOptions = {
-                    endpoint: subscription.endpoint,
-                    keys: {
-                        p256dh: subscription.publicKey,
-                        auth: subscription.authenticationSecret,
-                    },
+    if (!post.application.isAutomated || body.notify == "send") {
+        const now = new Date()
+        const replies = Array.from(new Set(post.text.match(repliesRegex))).map(reply => reply.replace("@", ""))
+        if (0 < replies.length) {
+            const icon: string | null = await (async () => {
+                if (post.user.avatarFile) {
+                    const albumFile = await getCustomRepository(AlbumFileRepository).pack(post.user.avatarFile)
+                    return albumFile.variants
+                        .filter(variant => variant.type == "thumbnail")
+                        .sort(variant => variant.score)
+                        .reverse()[0].url
+                } else {
+                    return null
                 }
+            })()
+            const subscriptions = await getRepository(Subscription)
+                .createQueryBuilder("subscription")
+                .where("subscription.revokedAt IS NULL")
+                .innerJoin("subscription.user", "users")
+                .andWhere("users.screenName = ANY(:lusers)", { lusers: replies })
+                .getMany()
+            const payload = {
+                post: {
+                    user: {
+                        id: post.user.id,
+                        name: post.user.name,
+                        screenName: post.user.screenName,
+                        icon: icon,
+                    },
+                    text: post.text,
+                    id: post.id,
+                    application: await getCustomRepository(ApplicationRepository).pack(post.application),
+                },
+                type: "mention",
+            }
+            subscriptions.map(async subscription => {
                 try {
-                    await webpush.sendNotification(subscriptionOptions, JSON.stringify(payload), WP_OPTIONS)
-                    if (subscription.failedAt != null) {
-                        await getRepository(Subscription).update({ id: subscription.id }, { failedAt: null })
+                    const subscriptionOptions = {
+                        endpoint: subscription.endpoint,
+                        keys: {
+                            p256dh: subscription.publicKey,
+                            auth: subscription.authenticationSecret,
+                        },
+                    }
+                    try {
+                        await webpush.sendNotification(subscriptionOptions, JSON.stringify(payload), WP_OPTIONS)
+                        if (subscription.failedAt != null) {
+                            await getRepository(Subscription).update({ id: subscription.id }, { failedAt: null })
+                        }
+                    } catch (error) {
+                        console.log(`failed: ${subscription.endpoint}`)
+                        if (subscription.failedAt != null) {
+                            if (604800000 <= now.getTime() - subscription.failedAt.getTime()) {
+                                // 1000*60*60*24*7 = a week
+                                await getRepository(Subscription).update({ id: subscription.id }, { revokedAt: now })
+                            }
+                        } else {
+                            await getRepository(Subscription).update({ id: subscription.id }, { failedAt: now })
+                        }
                     }
                 } catch (error) {
-                    console.log(`failed: ${subscription.endpoint}`)
-                    if (subscription.failedAt != null) {
-                        if (604800000 <= now.getTime() - subscription.failedAt.getTime()) {
-                            // 1000*60*60*24*7 = a week
-                            await getRepository(Subscription).update({ id: subscription.id }, { revokedAt: now })
-                        }
-                    } else {
-                        await getRepository(Subscription).update({ id: subscription.id }, { failedAt: now })
-                    }
+                    console.error(error)
                 }
-            } catch (error) {
-                console.error(error)
-            }
-            return
-        })
+                return
+            })
+        }
     }
     await ctx.send(PostRepository, post)
 })
