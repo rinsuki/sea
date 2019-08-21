@@ -102,8 +102,8 @@ router.post("/", koaBody(), async ctx => {
                 },
                 type: "mention",
             }
-            subscriptions.map(async subscription => {
-                try {
+            Promise.all(
+                subscriptions.map(async subscription => {
                     const subscriptionOptions = {
                         endpoint: subscription.endpoint,
                         keys: {
@@ -127,11 +127,9 @@ router.post("/", koaBody(), async ctx => {
                             await getRepository(Subscription).update({ id: subscription.id }, { failedAt: now })
                         }
                     }
-                } catch (error) {
-                    console.error(error)
-                }
-                return
-            })
+                    return
+                })
+            )
         }
     }
     await ctx.send(PostRepository, post)
