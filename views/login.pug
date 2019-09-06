@@ -9,6 +9,14 @@ block head
 
 block content
     h1 ログイン - Sea
+    if session
+        p
+            | すでに
+            strong @#{session.user.screenName}
+            | でログインしています。
+        p 別のアカウントでログインしたい場合は、
+            a(href="/logout") ログアウト
+            | してください。
     form(method="POST")
         table
             tr
