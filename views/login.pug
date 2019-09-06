@@ -4,7 +4,7 @@ block init
     - var title = "Login"
 
 block head
-    if recaptchaSiteKey != null
+    if recaptchaSiteKey != null && session == null
         script(src="https://www.google.com/recaptcha/api.js", async, defer)
 
 block content
