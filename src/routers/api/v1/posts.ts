@@ -13,10 +13,9 @@ import webpush from "web-push"
 import { WP_OPTIONS } from "../../../config"
 import { AlbumFileRepository } from "../../../db/repositories/albumFile"
 import { ApplicationRepository } from "../../../db/repositories/application"
+import parse, { isMention } from '@linkage-community/bottlemail'
 
 const router = new APIRouter()
-
-const repliesRegex = new RegExp(/(@[A-Za-z0-9]+)[^A-Za-z0-9]*?/g)
 
 router.post("/", koaBody(), async ctx => {
     const body = $.obj({
@@ -69,8 +68,8 @@ router.post("/", koaBody(), async ctx => {
     const notify = body.notify || (post.application.isAutomated ? "none" : "send")
     if (notify === "send") {
         const now = new Date()
-        const replies = Array.from(new Set(post.text.match(repliesRegex))).map(reply => reply.replace("@", ""))
-        if (0 < replies.length) {
+        const mentions = parse(post.text).filter(isMention).map(n => n.value)
+        if (0 < mentions.length) {
             const icon: string | null = await (async () => {
                 if (post.user.avatarFile) {
                     const albumFile = await getCustomRepository(AlbumFileRepository).pack(post.user.avatarFile)
@@ -86,7 +85,7 @@ router.post("/", koaBody(), async ctx => {
                 .createQueryBuilder("subscription")
                 .where("subscription.revokedAt IS NULL")
                 .innerJoin("subscription.user", "users")
-                .andWhere("users.screenName = ANY(:lusers)", { lusers: replies })
+                .andWhere("users.screenName = ANY(:lusers)", { lusers: mentions })
                 .getMany()
             const payload = {
                 post: {
