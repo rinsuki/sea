@@ -68,8 +68,8 @@ router.post("/", koaBody(), async ctx => {
     const notify = body.notify || (post.application.isAutomated ? "none" : "send")
     if (notify === "send") {
         const now = new Date()
-        const replies = parse(post.text).filter(isMention).map(n => n.value)
-        if (0 < replies.length) {
+        const mentions = parse(post.text).filter(isMention).map(n => n.value)
+        if (0 < mentions.length) {
             const icon: string | null = await (async () => {
                 if (post.user.avatarFile) {
                     const albumFile = await getCustomRepository(AlbumFileRepository).pack(post.user.avatarFile)
@@ -85,7 +85,7 @@ router.post("/", koaBody(), async ctx => {
                 .createQueryBuilder("subscription")
                 .where("subscription.revokedAt IS NULL")
                 .innerJoin("subscription.user", "users")
-                .andWhere("users.screenName = ANY(:lusers)", { lusers: replies })
+                .andWhere("users.screenName = ANY(:lusers)", { lusers: mentions })
                 .getMany()
             const payload = {
                 post: {
