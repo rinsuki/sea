@@ -29,7 +29,7 @@
         "pug": "^2.0.4",
         "redis": "^2.8.0",
         "reflect-metadata": "^0.1.13",
-        "sharp": "^0.23.0",
+        "sharp": "^0.23.1",
         "transform-ts": "^0.2.2",
         "typeorm": "^0.2.19",
         "web-push": "^3.3.5",
