@@ -21,7 +21,7 @@
         "class-validator": "^0.10.0",
         "dotenv": "^8.1.0",
         "file-type": "^12.3.0",
-        "koa": "^2.8.1",
+        "koa": "^2.8.2",
         "koa-body": "^4.1.1",
         "koa-router": "^7.4.0",
         "moment": "^2.24.0",
