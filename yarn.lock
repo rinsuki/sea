@@ -305,10 +305,10 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@linkage-community/bottlemail@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@linkage-community/bottlemail/-/bottlemail-1.0.0.tgz#9363683ac7c833232cac720f2702785af225d203"
-  integrity sha512-qSDsfltjiLqEYJ6F7uO1KTf9W9IE7iFKWZ3HtJBWhmGJsxRWECVW3vOsRR6xc8tPgZe4HNbkRfy8sFKekJ2gdA==
+"@linkage-community/bottlemail@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@linkage-community/bottlemail/-/bottlemail-2.0.0.tgz#958d799b963e84aca7eeb9c226d06e16d5137aa6"
+  integrity sha512-1QAsNreZ6vncPk9mykefxqjKCj3oEIx72okR1lC3pE6y56vRw2dB+zk3Ks1TSsg6Yjdo45/OJpcWyeIaVCFAdg==
 
 "@types/accepts@*":
   version "1.3.5"
