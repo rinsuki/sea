@@ -15,7 +15,7 @@
     },
     "dependencies": {
         "@linkage-community/bottlemail": "^2.0.0",
-        "aws-sdk": "^2.546.0",
+        "aws-sdk": "^2.552.0",
         "axios": "^0.19.0",
         "bcrypt": "^3.0.6",
         "class-validator": "^0.10.2",
