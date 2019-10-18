@@ -31,7 +31,7 @@
         "reflect-metadata": "^0.1.13",
         "sharp": "^0.23.1",
         "transform-ts": "^0.2.2",
-        "typeorm": "^0.2.19",
+        "typeorm": "^0.2.20",
         "web-push": "^3.4.0",
         "ws": "^7.1.2"
     },
