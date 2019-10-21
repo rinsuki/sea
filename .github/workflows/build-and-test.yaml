@@ -25,10 +25,11 @@ jobs:
         run: |
           docker run --rm --link postgres:postgres --env-file ./ci-files/.env -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" -v $(pwd)/coverage:/app/coverage $DOCKER_NAME sh -c 'yarn test --coverage --coverageReporters=cobertura --coverageReporters=html'
       - name: Upload docker container
-        if: success() && github.event_type == "push" && github.ref == "master"
+        if: success() && github.event_type == 'push' && github.ref == 'master'
         run: |
           docker login docker.pkg.github.com --username rinsuki --password ${{ secrets.GITHUB_TOKEN }}
           docker push $DOCKER_NAME:latest
+          docker logout docker.pkg.github.com
       - name: Prepare for Publish code coverage
         run: |
           sudo chown $(whoami) ./coverage/cobertura-coverage.xml
