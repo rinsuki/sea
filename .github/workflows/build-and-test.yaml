@@ -29,7 +29,7 @@ jobs:
       - name: Upload docker container
         if: success() && github.event_type == 'push' && github.ref == 'master'
         run: |
-          ./ci-files/cat-env.py DOCKERHUB_TOKEN docker login --username rinsuki --password-stdin
+          ./ci-files/cat-env.py DOCKERHUB_TOKEN | docker login --username rinsuki --password-stdin
           docker push rinsuki/sea:latest
           docker logout
         env:
