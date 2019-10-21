@@ -12,12 +12,9 @@ jobs:
       - name: Launch PostgreSQL Container
         run: |
           docker run --name postgres -e POSTGRES_PASSWORD=onlyfortesting -d postgres:10-alpine
-      - name: Fetch previous build result
-        run: |
-          docker pull $DOCKER_NAME:latest
       - name: Build docker container
         run: |
-          docker build --cache-from $DOCKER_NAME:latest -t $DOCKER_NAME:latest .
+          docker build -t $DOCKER_NAME:latest .
       - name: Run migration
         run: |
           docker run --rm --link postgres:postgres -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" $DOCKER_NAME yarn migration:up
@@ -25,7 +22,6 @@ jobs:
         run: |
           docker run --rm --link postgres:postgres --env-file ./ci-files/.env -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" -v $(pwd)/coverage:/app/coverage $DOCKER_NAME sh -c 'yarn test --coverage --coverageReporters=cobertura --coverageReporters=html'
       - name: Upload docker container
-        if: success() && github.event_type == 'push' && github.ref == 'master'
         run: |
           docker login docker.pkg.github.com --username rinsuki --password ${{ secrets.GITHUB_TOKEN }}
           docker push $DOCKER_NAME:latest
