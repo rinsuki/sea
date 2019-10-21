@@ -8,3 +8,4 @@ dist/
 app.json
 azure-pipelines.yml
 Procfile
+.github/
