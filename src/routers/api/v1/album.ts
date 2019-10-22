@@ -15,6 +15,8 @@ import $ from "transform-ts"
 import { $length, $literal } from "../../../utils/transformers"
 import { join } from "path"
 import { execFilePromise } from "../../../utils/execFilePromise"
+import { StorageFile } from "../../../db/entities/storageFile"
+import { createHash } from "crypto"
 
 const s3 = new AWS.S3({
     endpoint: S3_ENDPOINT,
@@ -91,23 +93,37 @@ router.post("/files", bodyParser, async ctx => {
         variant.type = type
         variant.extension = extension
         variant.score = score
-        const upload = s3.upload({
-            Body: buffer,
-            Bucket: S3_BUCKET,
-            Key: variant.toPath(),
-            CacheControl: "max-age=604870; must-revalidate", // 7 days
-            ContentType: EXT2MIME[extension],
-        })
-        const res = await new Promise((resolve, reject) => {
-            upload.send((err, res) => {
-                if (err) {
-                    reject(err)
-                } else {
-                    resolve(res)
-                }
-            })
-        })
-        console.log(res)
+        const hash = createHash("sha512")
+            .update(buffer)
+            .digest("hex")
+        variant.hash = hash
+        if ((await getRepository(StorageFile).findOne({ hash })) == null) {
+            const file = new StorageFile()
+            file.hash = hash
+            await getRepository(StorageFile).save(file)
+            try {
+                const upload = s3.upload({
+                    Body: buffer,
+                    Bucket: S3_BUCKET,
+                    Key: variant.toPath(),
+                    CacheControl: "max-age=604870; must-revalidate", // 7 days
+                    ContentType: EXT2MIME[extension],
+                })
+                const res = await new Promise((resolve, reject) => {
+                    upload.send((err, res) => {
+                        if (err) {
+                            reject(err)
+                        } else {
+                            resolve(res)
+                        }
+                    })
+                })
+                console.log(res)
+            } catch (e) {
+                await getRepository(StorageFile).remove(file)
+                throw e
+            }
+        }
         return variant
     }
 

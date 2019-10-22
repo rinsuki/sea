@@ -28,7 +28,18 @@ export class AlbumFileVariant extends EntityWithTimestamps {
     @Column({ type: "int", nullable: false })
     size!: number
 
+    @Column({ type: "varchar", nullable: true })
+    hash!: string
+
     toPath() {
-        return path.join(this.albumFile.toPath(), [this.type, this.extension].join("."))
+        if (this.hash) {
+            var pathList = ["files", "s5"]
+            pathList.push(this.hash.slice(0, 2))
+            pathList.push(this.hash.slice(2, 4))
+            pathList.push(this.hash.slice(4))
+            return path.join(...pathList)
+        } else {
+            return path.join(this.albumFile.toPath(), [this.type, this.extension].join("."))
+        }
     }
 }
