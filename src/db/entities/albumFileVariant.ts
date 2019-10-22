@@ -33,10 +33,9 @@ export class AlbumFileVariant extends EntityWithTimestamps {
     hash!: string
 
     toPath() {
-        if (this.hash) {
-            return getPathFromHash(this.hash)
-        } else {
+        if (this.hash == null) {
             return path.join(this.albumFile.toPath(), [this.type, this.extension].join("."))
         }
+        return getPathFromHash(this.hash)
     }
 }
