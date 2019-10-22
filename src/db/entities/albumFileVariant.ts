@@ -3,6 +3,7 @@ import { EntityWithTimestamps } from "../../utils/timestampColumns"
 import { AlbumFile } from "./albumFile"
 import path from "path"
 import { EXT2MIME } from "../../constants"
+import { getPathFromHash } from "../../utils/getPathFromHash"
 
 @Entity("album_file_variants")
 export class AlbumFileVariant extends EntityWithTimestamps {
@@ -33,11 +34,7 @@ export class AlbumFileVariant extends EntityWithTimestamps {
 
     toPath() {
         if (this.hash) {
-            var pathList = ["files", "s5"]
-            pathList.push(this.hash.slice(0, 2))
-            pathList.push(this.hash.slice(2, 4))
-            pathList.push(this.hash.slice(4))
-            return path.join(...pathList)
+            return getPathFromHash(this.hash)
         } else {
             return path.join(this.albumFile.toPath(), [this.type, this.extension].join("."))
         }

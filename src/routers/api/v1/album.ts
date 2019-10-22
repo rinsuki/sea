@@ -6,8 +6,6 @@ import sharp from "sharp"
 import { getConnection, getRepository, getManager } from "typeorm"
 import { AlbumFileVariant } from "../../../db/entities/albumFileVariant"
 import { AlbumFile, AlbumFileType } from "../../../db/entities/albumFile"
-import AWS from "aws-sdk"
-import { S3_BUCKET, S3_ENDPOINT, S3_FORCE_USE_PATH_STYLE } from "../../../config"
 import { AlbumFileRepository } from "../../../db/repositories/albumFile"
 import { EXT2MIME } from "../../../constants"
 import moment from "moment"
@@ -15,13 +13,7 @@ import $ from "transform-ts"
 import { $length, $literal } from "../../../utils/transformers"
 import { join } from "path"
 import { execFilePromise } from "../../../utils/execFilePromise"
-import { StorageFile } from "../../../db/entities/storageFile"
-import { createHash } from "crypto"
-
-const s3 = new AWS.S3({
-    endpoint: S3_ENDPOINT,
-    s3ForcePathStyle: S3_FORCE_USE_PATH_STYLE === "yes",
-})
+import { uploadFile } from "../../../utils/uploadFile"
 
 const router = new APIRouter()
 
@@ -93,37 +85,8 @@ router.post("/files", bodyParser, async ctx => {
         variant.type = type
         variant.extension = extension
         variant.score = score
-        const hash = createHash("sha512")
-            .update(buffer)
-            .digest("hex")
-        variant.hash = hash
-        if ((await getRepository(StorageFile).findOne({ hash })) == null) {
-            const file = new StorageFile()
-            file.hash = hash
-            await getRepository(StorageFile).save(file)
-            try {
-                const upload = s3.upload({
-                    Body: buffer,
-                    Bucket: S3_BUCKET,
-                    Key: variant.toPath(),
-                    CacheControl: "max-age=604870; must-revalidate", // 7 days
-                    ContentType: EXT2MIME[extension],
-                })
-                const res = await new Promise((resolve, reject) => {
-                    upload.send((err, res) => {
-                        if (err) {
-                            reject(err)
-                        } else {
-                            resolve(res)
-                        }
-                    })
-                })
-                console.log(res)
-            } catch (e) {
-                await getRepository(StorageFile).remove(file)
-                throw e
-            }
-        }
+        variant.hash = await uploadFile(buffer, extension)
+
         return variant
     }
 
