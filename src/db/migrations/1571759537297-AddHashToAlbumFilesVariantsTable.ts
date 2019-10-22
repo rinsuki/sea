@@ -23,7 +23,7 @@ export class AddHashToAlbumFilesVariantsTable1571759537297 implements MigrationI
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.dropColumn("album_file_variants", "hash")
         await queryRunner.dropForeignKey("album_file_variants", "FK:album_file_variants:hash::storage_files:hash")
+        await queryRunner.dropColumn("album_file_variants", "hash")
     }
 }
