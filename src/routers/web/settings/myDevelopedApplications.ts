@@ -68,16 +68,21 @@ router.post("/:id", koaBody(), checkCsrf, async ctx => {
         name: $.string.compose($length({ min: 1, max: 32 })),
         description: $.string.compose($length({ min: 1 })),
         redirect_uri: $.string,
+        url: $.string,
         is_automated: $.optional($literal({ true: "1" })),
+        is_public: $.optional($literal({ true: "1" })),
     }).transformOrThrow(ctx.request.body)
     const app = await getRepository(Application).findOneOrFail(id, {
         relations: ["ownerUser"],
     })
     if (app.ownerUser.id != ctx.state.session!.user.id) return ctx.throw(403, "お前ownerじゃねえだろ")
+    if (body.url !== "" && !body.url.startsWith("http")) return ctx.throw(400, "URLを入れろURLを")
     app.name = body.name
     app.description = body.description
     app.redirectUri = body.redirect_uri
+    app.url = body.url === "" ? null : body.url
     app.isAutomated = body.is_automated != undefined
+    app.isPublic = body.is_public != undefined
     await getRepository(Application).save(app)
     ctx.redirect("/settings/my_developed_applications/" + app.id)
 })

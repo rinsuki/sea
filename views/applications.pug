@@ -1,0 +1,22 @@
+extends layout
+
+block init
+    - var title = "Applications"
+
+block head
+    meta(name="referrer", content="same-origin")
+
+block content
+    h1 公開されてるアプリ一覧
+    p 開発者が公開してもいいと申請しているやつだけ
+    hr
+    if apps.length
+        ul
+            each app in apps
+                li #{app.name} by @#{app.ownerUser.screenName}
+                    ul
+                        li
+                            a(href=app.url)= app.url
+                        li= app.description
+    else
+        p 一個もなかった…

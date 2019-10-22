@@ -30,4 +30,10 @@ export class Application extends EntityWithTimestamps {
 
     @Column({ name: "is_automated" })
     isAutomated!: boolean
+
+    @Column({ name: "url", type: "text", nullable: true })
+    url!: string | null
+
+    @Column({ name: "is_public" })
+    isPublic!: boolean
 }

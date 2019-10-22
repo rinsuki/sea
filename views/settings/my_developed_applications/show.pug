@@ -73,7 +73,15 @@ block content
                 td: input(type="text", name="redirect_uri" value=app.redirectUri)
 
             tr
+                th url
+                td: input(type="text", name="url" value=app.url)
+
+            tr
                 th isAutomated?
                 td
                     input(type="checkbox", name="is_automated" checked=app.isAutomated value='1')
+            tr
+                th isPublic?
+                td
+                    input(type="checkbox", name="is_public" checked=app.isPublic value='1')
         input(type="submit", value="Update app")

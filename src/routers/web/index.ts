@@ -11,6 +11,7 @@ import logoutRouter from "./logout"
 import inputInviteCodeRouter from "./inputInviteCode"
 import settingsRouter from "./settings"
 import oauthRouter from "./oauth"
+import applicationsRouter from "./applications"
 import { requireVerifyInviteCode } from "../../utils/requireVerifyInviteCode"
 
 const router = new Router<WebRouterState, WebRouterCustom>()
@@ -79,5 +80,6 @@ router.use("/logout", logoutRouter.routes())
 router.use("/input_invite_code", inputInviteCodeRouter.routes())
 router.use("/settings", requireVerifyInviteCode, settingsRouter.routes())
 router.use("/oauth", requireVerifyInviteCode, oauthRouter.routes())
+router.use("/applications", requireVerifyInviteCode, applicationsRouter.routes())
 
 export default router

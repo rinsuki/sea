@@ -6,6 +6,7 @@ block content
         strong: a(href="/input_invite_code") 招待コードを入力するまでは、全ての機能が利用できません。ここをクリックすると招待コードの入力画面に推移します
     ul
         if session
+            li: a(href="/applications") 公開されてるアプリ一覧
             li: a(href="/settings") 設定
             li: a(href="/logout") ログアウト
         else
