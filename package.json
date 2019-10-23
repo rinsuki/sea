@@ -32,7 +32,7 @@
         "sharp": "^0.23.1",
         "transform-ts": "^0.2.2",
         "typeorm": "^0.2.20",
-        "web-push": "^3.4.0",
+        "web-push": "^3.4.1",
         "ws": "^7.1.2"
     },
     "resolutions": {
