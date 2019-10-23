@@ -2,6 +2,7 @@ import { AccessToken } from "../../db/entities/accessToken"
 import { getRepository, getCustomRepository } from "typeorm"
 import v1Router from "./v1"
 import { APIRouter } from "./router-class"
+import { HttpError } from "http-errors"
 
 const router = new APIRouter()
 
@@ -12,6 +13,22 @@ router.use(async (ctx, next) => {
     ctx.set("Access-Control-Max-Age", (24 * 60 * 60).toString())
 
     await next()
+})
+
+router.use(async (ctx, next) => {
+    try {
+        await next()
+    } catch (e) {
+        if (e instanceof HttpError) {
+            ctx.status = e.statusCode
+            ctx.body = {
+                message: e.message,
+            }
+            return
+        }
+        console.error(e)
+        throw e
+    }
 })
 
 router.options("*", async ctx => {

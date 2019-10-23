@@ -21,6 +21,7 @@
         "class-validator": "^0.10.2",
         "dotenv": "^8.2.0",
         "file-type": "^12.3.0",
+        "http-errors": "^1.7.3",
         "koa": "^2.10.0",
         "koa-body": "^4.1.1",
         "koa-router": "^7.4.0",
@@ -40,6 +41,7 @@
     },
     "devDependencies": {
         "@types/bcrypt": "^3.0.0",
+        "@types/http-errors": "^1.6.2",
         "@types/jest": "^24.0.18",
         "@types/koa": "^2.0.50",
         "@types/koa-pug": "^3.0.4",
