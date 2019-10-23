@@ -22,13 +22,21 @@ router.use(async (ctx, next) => {
         if (e instanceof HttpError) {
             ctx.status = e.statusCode
             ctx.body = {
-                message: e.message,
+                errors: [
+                    {
+                        message: e.message,
+                    },
+                ],
             }
             return
         }
         ctx.status = 503
         ctx.body = {
-            message: "Internal Server Error",
+            errors: [
+                {
+                    message: "Internal Server Error",
+                },
+            ],
         }
         console.error(e)
         throw e
