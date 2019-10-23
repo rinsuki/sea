@@ -1,6 +1,7 @@
 {
     "extends": ["config:base", ":prHourlyLimitNone", ":prConcurrentLimitNone"],
     "labels": ["dependencies"],
+    "rangeStrategy": "bump",
     "patch": {
         "automerge": true
     },
