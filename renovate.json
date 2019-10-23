@@ -1,5 +1,5 @@
 {
-    "extends": ["config:base", ":preserveSemverRanges", ":prHourlyLimitNone", ":prConcurrentLimitNone"],
+    "extends": ["config:base", ":prHourlyLimitNone", ":prConcurrentLimitNone"],
     "labels": ["dependencies"],
     "patch": {
         "automerge": true
