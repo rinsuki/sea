@@ -26,6 +26,10 @@ router.use(async (ctx, next) => {
             }
             return
         }
+        ctx.status = 503
+        ctx.body = {
+            message: "Internal Server Error",
+        }
         console.error(e)
         throw e
     }
