@@ -13,6 +13,7 @@ router.get("/public", async ctx => {
         sinceId: $.optional($stringNumber.compose($safeNumber)),
         maxId: $.optional($stringNumber.compose($safeNumber)),
         count: $.optional($stringNumber.compose($safeNumber).compose($range({ min: 1, max: 100 }))),
+        search: $.optional($.string),
     }).transformOrThrow(ctx.query)
     var fetch = getRepository(Post)
         .createQueryBuilder("post")
@@ -24,6 +25,7 @@ router.get("/public", async ctx => {
         .where("post.createdAt > :minReadableDate", { minReadableDate: ctx.state.token.user.minReadableDate })
     if (query.sinceId) fetch = fetch.andWhere("post.id > :sinceId", { sinceId: query.sinceId })
     if (query.maxId) fetch = fetch.andWhere("post.id < :maxId", { maxId: query.maxId })
+    if (query.search) fetch = fetch.andWhere("post.text LIKE :searchPattern", { searchPattern: query.search })
     const result = await fetch.getMany()
     await ctx.sendMany(PostRepository, result)
 })
