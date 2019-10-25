@@ -7,6 +7,9 @@ block content
     ul
         if session
             li: a(href="/applications") 公開されてるアプリ一覧
+            li: a(href="/explore") Explore
+                ul
+                    li: a(href="/explore/ranking") ランキング
             li: a(href="/settings") 設定
             li: a(href="/logout") ログアウト
         else

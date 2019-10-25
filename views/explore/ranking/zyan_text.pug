@@ -1,0 +1,13 @@
+extends /layout
+
+block content
+    h1 〜〜じゃん 使用された回数ランキング
+    a(href="/explore/ranking") ランキング一覧に戻る
+    table
+        tr
+            th 使用回数
+            th テキスト
+        each line in data
+            tr
+                td= line.count
+                td= line.text

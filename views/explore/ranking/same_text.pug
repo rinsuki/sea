@@ -1,0 +1,14 @@
+extends /layout
+
+block content
+    h1 何回も投稿された全く同じ内容の投稿ランキング
+    a(href="/explore/ranking") ランキング一覧に戻る
+    p 負荷軽減のために直近3ヶ月で絞っています
+    table
+        tr
+            th 使用回数
+            th テキスト
+        each line in data
+            tr
+                td= line.count
+                td= line.text            
