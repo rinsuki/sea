@@ -16,7 +16,6 @@ router.get("/zyan_text", async ctx => {
         .select(["COUNT(*) as count", "text"])
         .where({ text: Like("%じゃん"), createdAt: MoreThan(minReadableDate) })
         .groupBy("text")
-        .limit(100)
         .having("COUNT(text) > 1")
         .orderBy("count", "DESC")
         .getRawMany()
