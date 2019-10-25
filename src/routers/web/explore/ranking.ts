@@ -14,7 +14,7 @@ router.get("/zyan_text", async ctx => {
     const data = await getRepository(Post)
         .createQueryBuilder()
         .select(["COUNT(*) as count", "text"])
-        .where({ text: Like("%じゃん"), createdAt: minReadableDate })
+        .where({ text: Like("%じゃん"), createdAt: MoreThan(minReadableDate) })
         .groupBy("text")
         .limit(100)
         .having("COUNT(text) > 1")
