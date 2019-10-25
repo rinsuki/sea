@@ -1,0 +1,15 @@
+extends /layout
+
+block content
+    h1 きたああああの回数ランキング
+    a(href="/explore/ranking") ランキング一覧に戻る
+    table
+        tr
+            th 使用回数
+            th 文字数
+            th 実際に出してみた
+        each line in data
+            tr
+                td= line.cnt
+                td= line.charcnt
+                td= "きた" + ("あ".repeat(line.charcnt - 2))
