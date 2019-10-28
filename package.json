@@ -44,7 +44,7 @@
         "@types/http-errors": "^1.6.2",
         "@types/jest": "^24.0.21",
         "@types/koa": "^2.0.51",
-        "@types/koa-pug": "^3.0.4",
+        "@types/koa-pug": "^4.0.0",
         "@types/koa-router": "^7.0.42",
         "@types/node": "^12.12.0",
         "@types/pug": "^2.0.4",
