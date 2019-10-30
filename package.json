@@ -46,7 +46,7 @@
         "@types/koa": "^2.0.51",
         "@types/koa-pug": "^4.0.0",
         "@types/koa-router": "^7.0.42",
-        "@types/node": "^12.12.0",
+        "@types/node": "^12.12.2",
         "@types/pug": "^2.0.4",
         "@types/redis": "^2.8.14",
         "@types/sharp": "^0.23.0",
