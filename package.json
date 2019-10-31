@@ -20,7 +20,7 @@
         "bcrypt": "^3.0.6",
         "class-validator": "^0.10.2",
         "dotenv": "^8.2.0",
-        "file-type": "^12.3.1",
+        "file-type": "^12.4.0",
         "http-errors": "^1.7.3",
         "koa": "^2.11.0",
         "koa-body": "^4.1.1",
