@@ -1,4 +1,4 @@
-import { EntityRepository, Repository, getCustomRepository, getRepository, In } from "typeorm"
+import { EntityRepository, Repository, getCustomRepository, getRepository, In, Not, IsNull } from "typeorm"
 import { AlbumFile } from "../entities/albumFile"
 import { AlbumFileVariantRepository } from "./albumFileVariant"
 import { AlbumFileVariant } from "../entities/albumFileVariant"
@@ -22,12 +22,13 @@ export class AlbumFileRepository extends Repository<AlbumFile> {
             )
         if (requireVariantsFiles.length) {
             variants = variants.concat(
-                (await getRepository(AlbumFileVariant).find({ albumFileId: In(requireVariantsFiles.map(f => f.id)) })).map(
-                    v => {
-                        v.albumFile = requireVariantsFiles.find(({ id }) => v.albumFileId === id)!
-                        return v
-                    }
-                )
+                (await getRepository(AlbumFileVariant).find({
+                    albumFileId: In(requireVariantsFiles.map(f => f.id)),
+                    deletedAt: IsNull(),
+                })).map(v => {
+                    v.albumFile = requireVariantsFiles.find(({ id }) => v.albumFileId === id)!
+                    return v
+                })
             )
         }
         const packedVariants = await getCustomRepository(AlbumFileVariantRepository).packMany(variants)

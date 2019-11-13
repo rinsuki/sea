@@ -32,6 +32,9 @@ export class AlbumFileVariant extends EntityWithTimestamps {
     @Column({ type: "varchar", nullable: true })
     hash!: string
 
+    @Column({ name: "deleted_at", type: "timestamptz", nullable: true })
+    deletedAt!: Date | null
+
     toPath() {
         if (this.hash == null) {
             return path.join(this.albumFile.toPath(), [this.type, this.extension].join("."))

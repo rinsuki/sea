@@ -10,7 +10,7 @@ import { AlbumFileRepository } from "../../../db/repositories/albumFile"
 import { EXT2MIME } from "../../../constants"
 import moment from "moment"
 import $ from "transform-ts"
-import { $length, $literal } from "../../../utils/transformers"
+import { $length, $literal, $stringNumber } from "../../../utils/transformers"
 import { join } from "path"
 import { execFilePromise } from "../../../utils/execFilePromise"
 import { uploadFile } from "../../../utils/uploadFile"
@@ -218,6 +218,26 @@ router.post("/files", bodyParser, async ctx => {
     })
     albumFile.variants = variants
     await ctx.send(AlbumFileRepository, albumFile)
+})
+
+router.delete("/files/:id", async ctx => {
+    const { id } = $.obj({
+        id: $stringNumber,
+    }).transformOrThrow(ctx.params)
+    const file = await getRepository(AlbumFile).findOne(id, {
+        relations: ["user"],
+    })
+    if (file == null) return ctx.throw(404, "file not found")
+    if (file.user.id !== ctx.state.token.user.id) return ctx.throw(400, "this file is not your file")
+    await getRepository(AlbumFileVariant).update(
+        {
+            albumFileId: file.id,
+        },
+        {
+            deletedAt: "NOW()",
+        }
+    )
+    ctx.status = 204
 })
 
 export default router
