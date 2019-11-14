@@ -19,7 +19,8 @@ router.use(async (ctx, next) => {
     try {
         await next()
     } catch (e) {
-        if (e instanceof HttpError) {
+        // https://github.com/jshttp/http-errors/issues/56#issuecomment-481969593
+        if (e.constructor && e.constructor.super_ && e.constructor.super_.name === "HttpError") {
             ctx.status = e.statusCode
             ctx.body = {
                 errors: [
@@ -28,6 +29,7 @@ router.use(async (ctx, next) => {
                     },
                 ],
             }
+            console.log(ctx.body)
             return
         }
         ctx.status = 503
@@ -39,7 +41,6 @@ router.use(async (ctx, next) => {
             ],
         }
         console.error(e)
-        throw e
     }
 })
 
