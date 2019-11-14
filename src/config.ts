@@ -5,7 +5,10 @@ import { $literal } from "./utils/transformers"
 import { RequestOptions } from "web-push"
 
 export const isProductionMode = process.env.NODE_ENV === "production"
-if (isProductionMode === false) {
+export const isTestMode = process.env.NODE_ENV === "test"
+if (isTestMode) {
+    console.warn("testモードです")
+} else if (isProductionMode === false) {
     console.warn("productionモードじゃないで")
 }
 

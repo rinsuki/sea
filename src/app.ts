@@ -4,7 +4,7 @@ import { createConnection, getConnectionOptions } from "typeorm"
 import webRouter from "./routers/web"
 import apiRouter from "./routers/api"
 import Router from "koa-router"
-import { isProductionMode, FORCE_HTTPS } from "./config"
+import { isProductionMode, FORCE_HTTPS, isTestMode } from "./config"
 import WebSocket from "ws"
 import http from "http"
 import { streamingConnectionCallback } from "./routers/streaming"
@@ -33,7 +33,7 @@ export async function databaseSetup() {
     const config = await getConnectionOptions()
     await createConnection({
         ...config,
-        logging: isProductionMode ? [] : ["query"],
+        logging: isProductionMode || isTestMode ? [] : ["query"],
     })
 }
 
