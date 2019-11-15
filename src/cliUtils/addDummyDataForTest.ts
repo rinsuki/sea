@@ -4,6 +4,7 @@ import { User } from "../db/entities/user"
 import { databaseSetup } from "../app"
 import { Application } from "../db/entities/application"
 import { AccessToken } from "../db/entities/accessToken"
+import { InviteCode } from "../db/entities/inviteCode"
 
 async function main() {
     if (!isTestMode) {
@@ -77,6 +78,29 @@ async function main() {
             return token
         })
     )
+
+    console.log("invite codes")
+    const invites = [
+        "chihiro:chihiro",
+        "chihiro:producer",
+        "producer:rin",
+        "producer:uzuki",
+        "producer:mio",
+        "producer:anzu",
+    ] as const
+    await getRepository(InviteCode).save(
+        invites.map(invite => {
+            const [sender, receiver] = invite.split(":")
+            const code = new InviteCode()
+            code.generateCode()
+            code.fromUser = users[sender as keyof typeof users]
+            code.toUser = users[receiver as keyof typeof users]
+            users[receiver as keyof typeof users].inviteCode = code
+            code.memo = invite
+            return code
+        })
+    )
+    await getRepository(User).save(Object.values(users).filter(u => u.inviteCode != null))
 }
 
 main()
