@@ -23,8 +23,6 @@ jobs:
       - name: Build docker container
         run: |
           docker build --cache-from rinsuki/sea:latest -t rinsuki/sea:latest .
-        env:
-          DOCKER_BUILDKIT: 1
       - name: Run migration
         run: |
           docker run --rm --link postgres:postgres -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" rinsuki/sea yarn migration:up
