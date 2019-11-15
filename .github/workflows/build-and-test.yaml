@@ -27,13 +27,13 @@ jobs:
           DOCKER_BUILDKIT: 1
       - name: Run migration
         run: |
-          docker run --rm --link postgres:postgres -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" rinsuki/sea yarn migration:up
+          docker run --rm --link postgres:postgres --env-file ./ci-files/.env rinsuki/sea yarn migration:up
       - name: Run test
         run: |
-          docker run --rm --link postgres:postgres --env-file ./ci-files/.env -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" -v $(pwd)/coverage:/app/coverage rinsuki/sea sh -c 'yarn test --coverage --coverageReporters=cobertura --coverageReporters=html'
+          docker run --rm --link postgres:postgres --env-file ./ci-files/.env -v $(pwd)/coverage:/app/coverage rinsuki/sea sh -c 'yarn test --coverage --coverageReporters=cobertura --coverageReporters=html'
       - name: Run migration:downall
         run: |
-          docker run --rm --link postgres:postgres -e DATABASE_URL="postgres://postgres:onlyfortesting@postgres/postgres" rinsuki/sea yarn migration:downall
+          docker run --rm --link postgres:postgres --env-file ./ci-files/.env rinsuki/sea yarn migration:downall
       - name: Upload docker image
         if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: |

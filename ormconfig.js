@@ -4,7 +4,7 @@ const typeorm = require("typeorm")
 /** @type {typeorm.ConnectionOptions} */
 const config = {
     type: "postgres",
-    url: process.env.DATABASE_URL,
+    url: process.env.NODE_ENV === "test" ? process.env.DATABASE_URL_TEST : process.env.DATABASE_URL,
     entities: ["dist/db/entities/*.js"],
     migrations: ["dist/db/migrations/*.js"],
     subscribers: ["dist/db/subscribers/*.js"],
