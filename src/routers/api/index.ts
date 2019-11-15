@@ -7,7 +7,6 @@ import { HttpError } from "http-errors"
 const router = new APIRouter()
 
 router.use(async (ctx, next) => {
-    console.log(ctx.request.headers)
     if (ctx.request.headers["origin"] != null) {
         ctx.set("Access-Control-Allow-Origin", "*")
     }
