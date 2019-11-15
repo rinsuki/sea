@@ -15,7 +15,7 @@
     },
     "dependencies": {
         "@linkage-community/bottlemail": "^2.0.0",
-        "aws-sdk": "^2.568.0",
+        "aws-sdk": "^2.572.0",
         "axios": "^0.19.0",
         "bcrypt": "^3.0.6",
         "class-validator": "^0.11.0",
@@ -42,7 +42,7 @@
     "devDependencies": {
         "@types/bcrypt": "^3.0.0",
         "@types/http-errors": "^1.6.2",
-        "@types/jest": "^24.0.22",
+        "@types/jest": "^24.0.23",
         "@types/koa": "^2.0.52",
         "@types/koa-pug": "^4.0.0",
         "@types/koa-router": "^7.0.42",
