@@ -11,7 +11,7 @@
         "build": "tsc",
         "migration:up": "typeorm migration:run",
         "migration:downall": "node ./dist/cliUtils/migrationDownAll.js",
-        "test": "NODE_ENV=test jest"
+        "test": "NODE_ENV=test node ./dist/cliUtils/addDummyDataForTest.js && jest"
     },
     "dependencies": {
         "@linkage-community/bottlemail": "^2.0.0",

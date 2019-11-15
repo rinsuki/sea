@@ -40,4 +40,26 @@ describe("API Authorize", () => {
                 })
         )
     })
+    test("所持者が招待コードを持ってなかったら弾く", async () => {
+        await request(r =>
+            r
+                .get("/api/v1/account")
+                .set("Authorization", "Bearer yakkai")
+                .expect(400)
+                .expect(r => {
+                    expect(r.body.errors[0].message).toBe("Please check web interface")
+                })
+        )
+    })
+    test("トークンがrevokeされてたら弾く", async () => {
+        await request(r =>
+            r
+                .get("/api/v1/account")
+                .set("Authorization", "Bearer revoked.chihiro")
+                .expect(403)
+                .expect(r => {
+                    expect(r.body.errors[0].message).toBe("This token is already revoked")
+                })
+        )
+    })
 })
