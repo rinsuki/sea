@@ -1,6 +1,6 @@
-import { request } from "../../../src/utils/forTesting/testRequest"
+import { request } from "../../src/utils/forTesting/testRequest"
 
-describe("/api/v1/account", () => {
+describe("API Authorize", () => {
     test("認証がないなら弾く", async () => {
         await request(r =>
             r
