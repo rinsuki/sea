@@ -1,13 +1,7 @@
 # Sea :ocean:
 
-<a href="https://dev.azure.com/rinsuki/sea/_build?definitionId=1">
-
-![Azure DevOps builds (branch)](https://img.shields.io/azure-devops/build/rinsuki/sea/1/master.svg)
-![Azure DevOps tests (branch)](https://img.shields.io/azure-devops/tests/rinsuki/sea/1/master.svg)
-![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/rinsuki/sea/1/master.svg)
-
-</a>
-
+[![GitHub Actions status (master)](https://github.com/rinsuki/sea/workflows/Build%20and%20Test/badge.svg)](https://github.com/rinsuki/sea/actions)
+[![Codecov Test Coverage](https://img.shields.io/codecov/c/github/rinsuki/sea)](https://codecov.io/github/rinsuki/sea)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=rinsuki/sea)](https://dependabot.com)
 
 ## Requires
