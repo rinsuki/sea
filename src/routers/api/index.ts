@@ -7,10 +7,10 @@ import { HttpError } from "http-errors"
 const router = new APIRouter()
 
 router.use(async (ctx, next) => {
-    ctx.set("Access-Control-Allow-Origin", "*")
-    ctx.set("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, DELETE, PATCH")
-    ctx.set("Access-Control-Allow-Headers", "Authorization, Content-Type")
-    ctx.set("Access-Control-Max-Age", (24 * 60 * 60).toString())
+    console.log(ctx.request.headers)
+    if (ctx.request.headers["origin"] != null) {
+        ctx.set("Access-Control-Allow-Origin", "*")
+    }
 
     await next()
 })
@@ -45,6 +45,9 @@ router.use(async (ctx, next) => {
 
 router.options("*", async ctx => {
     ctx.status = 204
+    ctx.set("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, DELETE, PATCH")
+    ctx.set("Access-Control-Allow-Headers", "Authorization, Content-Type")
+    ctx.set("Access-Control-Max-Age", (24 * 60 * 60).toString())
 })
 
 router.use(async (ctx, next) => {
