@@ -41,7 +41,7 @@
     },
     "devDependencies": {
         "@types/bcrypt": "^3.0.0",
-        "@types/http-errors": "^1.6.2",
+        "@types/http-errors": "^1.6.3",
         "@types/jest": "^24.0.23",
         "@types/koa": "^2.0.52",
         "@types/koa-pug": "^4.0.0",
