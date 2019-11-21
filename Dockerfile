@@ -17,14 +17,6 @@ RUN yarn build
 
 # ---
 
-FROM base as production-modules-builder
-
-RUN apk add --no-cache python2 make g++ ffmpeg
-COPY package.json yarn.lock ./
-RUN yarn install --prod
-
-# ---
-
 FROM base
 
 RUN apk add --no-cache ffmpeg
@@ -32,7 +24,7 @@ RUN apk add --no-cache ffmpeg
 COPY jest.config.js LICENSE ormconfig.js package.json yarn.lock ./
 COPY tests/ ./tests
 COPY views ./views
-COPY --from=production-modules-builder /app/node_modules ./node_modules
+COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 
 ENV PORT 3000
