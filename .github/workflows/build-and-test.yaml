@@ -27,7 +27,8 @@ jobs:
           docker run --name postgres -e POSTGRES_PASSWORD=onlyfortesting -d postgres:10-alpine
       - name: Build docker container
         run: python3 .github/workflows/buildkit-wrapper.py | docker load
-        env: BUILDKIT_HOST: tcp://localhost:1234
+        env:
+          BUILDKIT_HOST: tcp://localhost:1234
       - name: Run migration
         run: |
           docker run --rm --link postgres:postgres --env-file ./ci-files/.env rinsuki/sea yarn migration:up
