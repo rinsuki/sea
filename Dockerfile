@@ -1,14 +1,36 @@
-FROM node:12-alpine
+FROM node:12-alpine as base
 
 WORKDIR /app
 
-RUN apk add --no-cache python2 make g++ ffmpeg
+# ---
+
+FROM base as package-builder
+
+RUN apk add --no-cache python2 make g++
 
 COPY package.json yarn.lock ./
 RUN yarn install
 
-COPY . .
+# ---
+
+FROM package-builder as builder
+
+COPY tsconfig.json ./
+COPY src ./src
 RUN yarn build
+
+# ---
+
+FROM base
+
+RUN apk add --no-cache ffmpeg
+
+COPY jest.config.js LICENSE ormconfig.js package.json yarn.lock tsconfig.json ./
+COPY tests/ ./tests
+COPY views ./views
+COPY src ./src
+COPY --from=package-builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
 
 ENV PORT 3000
 EXPOSE 3000
