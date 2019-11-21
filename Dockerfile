@@ -25,7 +25,7 @@ FROM base
 
 RUN apk add --no-cache ffmpeg
 
-COPY jest.config.js LICENSE ormconfig.js package.json yarn.lock ./
+COPY jest.config.js LICENSE ormconfig.js package.json yarn.lock tsconfig.json ./
 COPY tests/ ./tests
 COPY views ./views
 COPY src ./src
