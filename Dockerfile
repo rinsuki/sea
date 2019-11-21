@@ -29,10 +29,10 @@ FROM base
 
 RUN apk add --no-cache ffmpeg
 
-COPY --from=production-modules-builder /app/node_modules ./node_modules
-COPY jest.config.js LICENSE ormconfig.js ./
+COPY jest.config.js LICENSE ormconfig.js package.json yarn.lock ./
 COPY tests/ ./tests
 COPY views ./views
+COPY --from=production-modules-builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 
 ENV PORT 3000
