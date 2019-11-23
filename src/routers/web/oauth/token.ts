@@ -1,11 +1,12 @@
 import Router from "koa-router"
 import $ from "transform-ts"
 import koaBody = require("koa-body")
-import { getRepository, getManager } from "typeorm"
+import { getRepository, getManager, getCustomRepository } from "typeorm"
 import { Application } from "../../../db/entities/application"
 import { AuthorizationCode } from "../../../db/entities/authorizationCode"
 import { AccessToken } from "../../../db/entities/accessToken"
 import { $literal } from "../../../utils/transformers"
+import { UserRepository } from "../../../db/repositories/user"
 const router = new Router()
 
 router.use((ctx, next) => {
@@ -30,6 +31,7 @@ router.post("/", koaBody(), async ctx => {
         code: $.string,
         grant_type: $literal(OAuthGrantType),
         state: $.optional($.string),
+        include_user_object: $.optional($.literal("v1")),
     }).transformOrThrow(ctx.request.body)
     const application = await getRepository(Application).findOne({
         clientId: body.client_id,
@@ -46,7 +48,7 @@ router.post("/", koaBody(), async ctx => {
             code: body.code,
             state: body.state || null,
         },
-        { relations: ["user"] }
+        { relations: ["user", "user.avatarFile"] }
     )
     if (code == null || new Date().getTime() - code.createdAt.getTime() > 10 * 60 * 1000)
         throw ctx.throw(400, {
@@ -65,9 +67,12 @@ router.post("/", koaBody(), async ctx => {
         token.generateToken()
         await getRepository(AccessToken).save(token)
     }
+    var user
+    if (body.include_user_object === "v1") user = await getCustomRepository(UserRepository).pack(code.user)
     ctx.body = {
         access_token: token.token,
         token_type: "Bearer",
+        user,
     }
 })
 
