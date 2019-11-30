@@ -5,10 +5,7 @@ import { randomBytes, createHash } from "crypto"
 import { getRepository } from "typeorm"
 import { SESSION_COOKIE_NAME } from "../constants"
 
-export async function createUserSession(
-    ctx: RouterContext<any, { [key: string]: any }>,
-    user: User
-) {
+export async function createUserSession<Ctx extends RouterContext<any, any>>(ctx: Ctx, user: User) {
     const session = new UserSession()
 
     session.secret = randomBytes(192).toString("base64")
