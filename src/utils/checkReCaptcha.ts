@@ -1,10 +1,12 @@
+import { ParameterizedContext } from "koa"
 import { RouterContext } from "koa-router"
 import $ from "transform-ts"
 import { RECAPTCHA } from "../config"
 import axios from "axios"
 import { URLSearchParams } from "url"
+import { WebRouterState, WebRouterCustom } from "../routers/web"
 
-export async function checkReCaptcha(ctx: RouterContext, next: () => Promise<void>) {
+export async function checkReCaptcha<StateT, CustomT>(ctx: RouterContext<StateT, CustomT>, next: () => Promise<void>) {
     const body = $.obj({
         "g-recaptcha-response": $.optional($.string),
     }).transformOrThrow(ctx.request.body)
