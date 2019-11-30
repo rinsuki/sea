@@ -7,7 +7,8 @@ import { AuthorizationCode } from "../../../db/entities/authorizationCode"
 import { AccessToken } from "../../../db/entities/accessToken"
 import { $literal } from "../../../utils/transformers"
 import { UserRepository } from "../../../db/repositories/user"
-const router = new Router()
+import { WebRouterState, WebRouterCustom } from "../"
+const router = new Router<WebRouterState, WebRouterCustom>()
 
 router.use((ctx, next) => {
     if (ctx.request.headers["origin"] != null) {
