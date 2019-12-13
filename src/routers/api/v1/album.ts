@@ -1,4 +1,4 @@
-import { APIRouter } from "../router-class"
+import { APIRouter, APIRouterState, APIRouterCustom } from "../router-class"
 import koaBody = require("koa-body")
 import fileType from "file-type"
 import fs from "fs"
@@ -14,6 +14,10 @@ import { $length, $literal, $stringNumber } from "../../../utils/transformers"
 import { join } from "path"
 import { execFilePromise } from "../../../utils/execFilePromise"
 import { uploadFile } from "../../../utils/uploadFile"
+import { ParameterizedContext } from "koa"
+import getRawBody from "raw-body"
+import { tmpdir } from "os"
+import { randomBytes } from "crypto"
 
 const router = new APIRouter()
 
@@ -31,21 +35,11 @@ const ifNameConflictedConst = {
 
 declare const a: typeof ifNameConflictedConst[keyof typeof ifNameConflictedConst]
 
-router.post("/files", bodyParser, async ctx => {
-    const { file } = $.obj({
-        file: $.obj({
-            name: $.optional($.string),
-            path: $.string,
-            size: $.number,
-        }),
-    }).transformOrThrow(ctx.request.files)
-
-    const body = $.obj({
-        name: $.string.compose($length({ min: 1 })),
-        folderId: $.optional($.number),
-        ifNameConflicted: $literal(ifNameConflictedConst),
-    }).transformOrThrow(ctx.request.body)
-
+async function processUpload(
+    ctx: ParameterizedContext<APIRouterState, APIRouterCustom>,
+    file: { path: string; size: number },
+    body: { name: string; folderId?: number; ifNameConflicted: typeof a }
+) {
     if (file.size >= 16 * 1024 * 1024) return ctx.throw(400, "file-too-big")
     const buffer = await fs.promises.readFile(file.path)
     const type = fileType(buffer)
@@ -218,6 +212,54 @@ router.post("/files", bodyParser, async ctx => {
     })
     albumFile.variants = variants
     await ctx.send(AlbumFileRepository, albumFile)
+}
+
+router.post("/files", bodyParser, async ctx => {
+    const { file } = $.obj({
+        file: $.obj({
+            path: $.string,
+            size: $.number,
+        }),
+    }).transformOrThrow(ctx.request.files)
+
+    const body = $.obj({
+        name: $.string.compose($length({ min: 1 })),
+        folderId: $.optional($.number),
+        ifNameConflicted: $literal(ifNameConflictedConst),
+    }).transformOrThrow(ctx.request.body)
+
+    await processUpload(ctx, file, body)
+})
+
+router.post("/files/raw_upload", async ctx => {
+    const arg = ctx.req.headers["x-sea-api-arg"]
+    if (arg == null) {
+        ctx.throw(400, "x-sea-api-arg header is required")
+        return
+    }
+    if (Array.isArray(arg)) {
+        ctx.throw(400, "x-sea-api-arg is must be only one header")
+        return
+    }
+    const body = $.obj({
+        name: $.string.compose($length({ min: 1 })),
+        folderId: $.optional($.number),
+        ifNameConflicted: $literal(ifNameConflictedConst),
+    }).transformOrThrow(JSON.parse(arg))
+
+    const binary = await getRawBody(ctx.req, { limit: 16 * 1024 * 1024 })
+    const path = `${tmpdir()}/rawupload_${randomBytes(24).toString("hex")}`
+    console.log(path)
+    await fs.promises.writeFile(path, binary)
+    const file = {
+        path,
+        size: binary.byteLength,
+    }
+    try {
+        await processUpload(ctx, file, body)
+    } finally {
+        await fs.promises.unlink(path)
+    }
 })
 
 router.delete("/files/:id", async ctx => {
