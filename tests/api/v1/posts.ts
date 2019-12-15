@@ -55,6 +55,29 @@ describe("/api/v1/posts", () => {
                         .expect(200)
                 )
             })
+            test("一回違う内容を含めばリジェクトされない", async () => {
+                await request(r =>
+                    r
+                        .post("/api/v1/posts")
+                        .set("Authorization", "Bearer mio")
+                        .send({ text: "あかねちんー" })
+                        .expect(200)
+                )
+                await request(r =>
+                    r
+                        .post("/api/v1/posts")
+                        .set("Authorization", "Bearer mio")
+                        .send({ text: "あーちゃんー" })
+                        .expect(200)
+                )
+                await request(r =>
+                    r
+                        .post("/api/v1/posts")
+                        .set("Authorization", "Bearer mio")
+                        .send({ text: "あかねちんー" })
+                        .expect(200)
+                )
+            })
         })
     })
 })

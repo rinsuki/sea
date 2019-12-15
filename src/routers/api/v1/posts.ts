@@ -28,7 +28,7 @@ router.post("/", koaBody(), async ctx => {
     post.application = ctx.state.token.application
     await getManager().transaction("SERIALIZABLE", async transactionalEntityManager => {
         var user = ctx.state.token.user
-        const latestPost = await transactionalEntityManager.findOne(Post, { where: { text: post.text } })
+        const latestPost = await transactionalEntityManager.findOne(Post, { where: { user }, order: { createdAt: "DESC" } })
         if (latestPost && latestPost.text === body.text) {
             // 重複検知
             var isDuplicated = true
