@@ -13,7 +13,7 @@ import webpush from "web-push"
 import { WP_OPTIONS } from "../../../config"
 import { AlbumFileRepository } from "../../../db/repositories/albumFile"
 import { ApplicationRepository } from "../../../db/repositories/application"
-import parse, { isMention } from '@linkage-community/bottlemail'
+import parse, { isMention } from "@linkage-community/bottlemail"
 
 const router = new APIRouter()
 
@@ -28,6 +28,30 @@ router.post("/", koaBody(), async ctx => {
     post.application = ctx.state.token.application
     await getManager().transaction("SERIALIZABLE", async transactionalEntityManager => {
         var user = ctx.state.token.user
+        const latestPost = await transactionalEntityManager.findOne(Post, { where: { text: post.text } })
+        if (latestPost && latestPost.text === body.text) {
+            // 重複検知
+            var isDuplicated = true
+            const attachedFiles = await transactionalEntityManager.find(PostAttachedFile, {
+                where: { post: latestPost },
+                order: { order: "ASC" },
+                relations: ["albumFile"],
+            })
+            if (body.fileIds == null || body.fileIds.length === 0) {
+                isDuplicated = attachedFiles.length === 0
+            } else {
+                for (const [i, file] of attachedFiles.entries()) {
+                    if (file.albumFile.id !== body.fileIds[i]) {
+                        isDuplicated = false
+                        break
+                    }
+                }
+            }
+            if (isDuplicated) {
+                ctx.throw(400, "already posted with same text (and attached files). please check timeline.")
+                return
+            }
+        }
         const attachedFiles: PostAttachedFile[] = []
         if (body.fileIds != null && body.fileIds.length) {
             // TODO: ここ 一個ごとforじゃなくて ORDER BY FIELDを使う
@@ -68,7 +92,9 @@ router.post("/", koaBody(), async ctx => {
     const notify = body.notify || (post.application.isAutomated ? "none" : "send")
     if (notify === "send") {
         const now = new Date()
-        const mentions = parse(post.text).filter(isMention).map(n => n.value)
+        const mentions = parse(post.text)
+            .filter(isMention)
+            .map(n => n.value)
         if (0 < mentions.length) {
             const icon: string | null = await (async () => {
                 if (post.user.avatarFile) {
