@@ -29,7 +29,7 @@ router.post("/", koaBody(), async ctx => {
     await getManager().transaction("SERIALIZABLE", async transactionalEntityManager => {
         var user = ctx.state.token.user
         const latestPost = await transactionalEntityManager.findOne(Post, { where: { user }, order: { createdAt: "DESC" } })
-        if (latestPost && latestPost.text === body.text) {
+        if (latestPost && Date.now() - latestPost.createdAt.getTime() < 60 * 1000 && latestPost.text === body.text) {
             // 重複検知
             var isDuplicated = true
             const attachedFiles = await transactionalEntityManager.find(PostAttachedFile, {
