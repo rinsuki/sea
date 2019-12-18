@@ -26,7 +26,7 @@
         "koa-body": "^4.1.1",
         "koa-router": "^7.4.0",
         "moment": "^2.24.0",
-        "pg": "^7.14.0",
+        "pg": "^7.15.0",
         "pug": "^2.0.4",
         "raw-body": "^2.4.1",
         "redis": "^2.8.0",
@@ -35,7 +35,7 @@
         "transform-ts": "^0.2.2",
         "typeorm": "^0.2.21",
         "web-push": "^3.4.2",
-        "ws": "^7.2.0"
+        "ws": "^7.2.1"
     },
     "resolutions": {
         "@types/cookies": "^0.7.2"
@@ -43,11 +43,11 @@
     "devDependencies": {
         "@types/bcrypt": "^3.0.0",
         "@types/http-errors": "^1.6.3",
-        "@types/jest": "^24.0.23",
+        "@types/jest": "^24.0.24",
         "@types/koa": "^2.11.0",
         "@types/koa-pug": "^4.0.0",
         "@types/koa-router": "^7.0.42",
-        "@types/node": "^12.12.17",
+        "@types/node": "^12.12.21",
         "@types/pug": "^2.0.4",
         "@types/redis": "^2.8.14",
         "@types/sharp": "^0.23.1",
