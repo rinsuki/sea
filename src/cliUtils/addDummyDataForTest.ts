@@ -37,6 +37,7 @@ async function main() {
 
     for (const name of Object.keys(users) as (keyof typeof users)[]) {
         users[name].name = name
+        users[name].screenName = name
         users[name].displayScreenName = name
         users[name].encryptedPassword = "!dummy"
         if (name === "chihiro" || name === "producer") {
