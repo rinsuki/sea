@@ -37,7 +37,7 @@ async function main() {
 
     for (const name of Object.keys(users) as (keyof typeof users)[]) {
         users[name].name = name
-        users[name].screenName = name
+        users[name].displayScreenName = name
         users[name].encryptedPassword = "!dummy"
         if (name === "chihiro" || name === "producer") {
             users[name].canMakeInviteCode = true
@@ -64,7 +64,7 @@ async function main() {
             const token = new AccessToken()
             token.application = app
             token.user = user
-            token.token = user.screenName
+            token.token = user.displayScreenName
             return token
         })
     )
@@ -73,7 +73,7 @@ async function main() {
             const token = new AccessToken()
             token.application = app
             token.user = user
-            token.token = "revoked." + user.screenName
+            token.token = "revoked." + user.displayScreenName
             token.revokedAt = new Date(0)
             return token
         })

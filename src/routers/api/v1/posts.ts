@@ -111,14 +111,14 @@ router.post("/", koaBody(), async ctx => {
                 .createQueryBuilder("subscription")
                 .where("subscription.revokedAt IS NULL")
                 .innerJoin("subscription.user", "users")
-                .andWhere("users.screenName = ANY(:lusers)", { lusers: mentions })
+                .andWhere("users.displayScreenName = ANY(:lusers)", { lusers: mentions })
                 .getMany()
             const payload = {
                 post: {
                     user: {
                         id: post.user.id,
                         name: post.user.name,
-                        screenName: post.user.screenName,
+                        screenName: post.user.displayScreenName,
                         icon: icon,
                     },
                     text: post.text,

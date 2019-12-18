@@ -24,6 +24,7 @@ router.post("/", koaBody(), checkReCaptcha, async ctx => {
     const user = new User()
     user.name = body.name
     user.screenName = body.screen_name
+    user.displayScreenName = body.screen_name
     user.encryptedPassword = await bcrypt.hash(body.password, 14)
     const repo = getRepository(User)
     const res = await repo.insert(user).catch(e => {
