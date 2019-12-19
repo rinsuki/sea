@@ -22,7 +22,11 @@ const callback = async (
     ctx: ParameterizedContext<WebRouterState, WebRouterCustom & IRouterParamContext<WebRouterState, WebRouterCustom>>
 ) => {
     if (ctx.state.session == null) return ctx.throw(400, "ログインしてね")
-    const cmd = ctx.params.cmd || "l100"
+    const cmd = ctx.params.cmd || ""
+    if (cmd === "") {
+        ctx.redirect("/posts/l50")
+        return
+    }
 
     var fetch = getRepository(Post)
         .createQueryBuilder("post")
@@ -31,7 +35,7 @@ const callback = async (
         .leftJoinAndSelect("post.application", "applications")
         .where("post.createdAt > :minReadableDate", { minReadableDate: ctx.state.session.user.minReadableDate })
     var order: "ASC" | "DESC" = "ASC"
-    var limit = 100
+    var limit = 101
 
     // parse command
 
@@ -52,6 +56,9 @@ const callback = async (
         console.log(result)
     } else if ((result = /^[0-9]+$/.exec(cmd))) {
         fetch = fetch.andWhere("post.id = :id", { id: parseInt(result[0]) })
+    } else {
+        ctx.throw(400, "よくわからなかったです。。。")
+        return
     }
 
     const posts = await getCustomRepository(PostRepository)
