@@ -39,14 +39,12 @@ const callback = async (
 
     // parse command
 
-    console.log(cmd)
-
     var result
 
     if ((result = /^l([0-9]{1,3})|l1000$/.exec(cmd))) {
         limit = parseInt(result[1])
         order = "DESC"
-    } else if ((result = /^([0-9]+)?-([0-9]+)?$/.exec(cmd))) {
+    } else if ((result = /^([0-9]{1,8})?-([0-9]{1,8})?$/.exec(cmd))) {
         if (result[1] != null) {
             fetch = fetch.andWhere("post.id >= :startId", { startId: parseInt(result[1]) })
         }
@@ -54,7 +52,7 @@ const callback = async (
             fetch = fetch.andWhere("post.id <= :endId", { endId: parseInt(result[2]) })
         }
         console.log(result)
-    } else if ((result = /^[0-9]+$/.exec(cmd))) {
+    } else if ((result = /^[0-9]{1,8}$/.exec(cmd))) {
         fetch = fetch.andWhere("post.id = :id", { id: parseInt(result[0]) })
     } else {
         ctx.throw(400, "よくわからなかったです。。。")
