@@ -1,0 +1,42 @@
+doctype html
+html(lang="ja")
+    head
+        meta(charset="UTF-8")
+        meta(name="robots",content="noindex")
+        title 雑談スレ★n
+    body(style="background-color: #efefef")
+        span#links
+            a(href="/") Sea
+            | &nbsp;
+            a(href="/applications") 専ブラ一覧
+            | &nbsp;
+            a(href="/") ■掲示板に戻る■
+            | &nbsp;
+            a(href="/posts/1-") 1-
+            | &nbsp;
+            a(href="/posts/l50") 最新50
+        span#ad(style="float: right;")
+            | [PR]
+            a(href="https://github.com/rinsuki/sea") 今すぐ開発に参加!
+            | [PR]
+        hr
+        h1#title(style="color: red; font-size: larger; font-weight: normal;") 雑談スレ★n
+        dl#thread
+            each post in posts
+                dt(id="posts_" + post.id)
+                    span #{post.id} ：
+                    span(style="color: green")
+                        b #{post.user.name}
+                    span &nbsp;：#{post.createdAtString}
+                    | &nbsp;ID: #{post.user.screenName}
+                dd= post.text
+        hr
+        center: a(href="/posts/"+lastPost.id+"-") 新着レスの表示
+        hr
+        a(href="/posts/1-") 1-
+        | &nbsp;
+        a(href="/posts/" + Math.max(posts[0].id - 100, 1) + "-" + posts[0].id) 前100
+        | &nbsp;
+        a(href="/posts/" + lastPost.id + "-" + (lastPost.id + 100)) 次100
+        | &nbsp;
+        a(href="/posts/l50") 最新50
