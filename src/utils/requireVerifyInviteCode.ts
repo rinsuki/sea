@@ -8,7 +8,10 @@ export function requireVerifyInviteCode<StateT extends { session?: UserSession }
     ctx: RouterContext<StateT, CustomT>,
     next: () => Promise<void>
 ) {
-    if (ctx.state.session && ctx.state.session.user.inviteCode == null) {
+    if (ctx.state.session == null) {
+        ctx.throw(400, "/login でログインしてね")
+    }
+    if (ctx.state.session.user.inviteCode == null) {
         const backUrl = ctx.URL.pathname + ctx.URL.search
         const randomizer = UrlSafeBase64.convert(randomBytes(12).toString("base64"))
         const seed = createHash("sha512")
