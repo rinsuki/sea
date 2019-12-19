@@ -97,7 +97,7 @@ describe("/api/v1/posts", () => {
                 r
                     .post("/api/v1/posts")
                     .set("Authorization", "Bearer chihiro")
-                    .set({ text: "こんにちは" })
+                    .send({ text: "こんにちは" })
                     .expect(200)
             )
             await request(r =>

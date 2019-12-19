@@ -42,6 +42,7 @@ async function main() {
         if (name === "chihiro" || name === "producer") {
             users[name].canMakeInviteCode = true
         }
+        users[name].minReadableDate = new Date(0)
     }
 
     await getRepository(User).save(Object.values(users))

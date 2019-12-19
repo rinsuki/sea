@@ -14,6 +14,7 @@ import { WP_OPTIONS } from "../../../config"
 import { AlbumFileRepository } from "../../../db/repositories/albumFile"
 import { ApplicationRepository } from "../../../db/repositories/application"
 import parse, { isMention } from "@linkage-community/bottlemail"
+import { $stringNumber } from "../../../utils/transformers"
 
 const router = new APIRouter()
 
@@ -161,13 +162,18 @@ router.post("/", koaBody(), async ctx => {
 })
 
 router.get("/:id", async ctx => {
-    const { id } = $.obj({ id: $.number }).transformOrThrow(ctx.params)
-    const post = await getRepository(Post).findOne({
-        id,
-        createdAt: MoreThan(ctx.state.token.user.minReadableDate),
-    })
+    const { id } = $.obj({ id: $stringNumber }).transformOrThrow(ctx.params)
+    const post = await getRepository(Post).findOne(
+        {
+            id,
+            createdAt: MoreThan(ctx.state.token.user.minReadableDate),
+        },
+        {
+            relations: ["user", "application"],
+        }
+    )
     if (post == null) return ctx.throw(404, "post not found")
-    await getCustomRepository(PostRepository).pack(post)
+    await ctx.send(PostRepository, post)
 })
 
 export default router
