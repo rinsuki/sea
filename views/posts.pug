@@ -29,7 +29,7 @@ html(lang="ja")
                     | &nbsp;ID: #{post.user.screenName}
                 dd
                     each line in post.text.split("\n")
-                        |= line
+                        | #{line}
                         br
                     br
         hr
