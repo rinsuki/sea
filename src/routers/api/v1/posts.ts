@@ -2,7 +2,7 @@ import { APIRouter } from "../router-class"
 import koaBody = require("koa-body")
 import $ from "transform-ts"
 import { Post } from "../../../db/entities/post"
-import { getManager, getRepository, getCustomRepository } from "typeorm"
+import { getManager, getRepository, getCustomRepository, MoreThan } from "typeorm"
 import { PostRepository } from "../../../db/repositories/post"
 import { User } from "../../../db/entities/user"
 import { publishRedisConnection } from "../../../utils/getRedisConnection"
@@ -158,6 +158,16 @@ router.post("/", koaBody(), async ctx => {
         }
     }
     await ctx.send(PostRepository, post)
+})
+
+router.get("/:id", async ctx => {
+    const { id } = $.obj({ id: $.number }).transformOrThrow(ctx.params)
+    const post = await getRepository(Post).findOne({
+        id,
+        createdAt: MoreThan(ctx.state.token.user.minReadableDate),
+    })
+    if (post == null) return ctx.throw(404, "post not found")
+    await getCustomRepository(PostRepository).pack(post)
 })
 
 export default router

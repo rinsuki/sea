@@ -80,4 +80,35 @@ describe("/api/v1/posts", () => {
             })
         })
     })
+    describe("GET /:id", () => {
+        test("not found", async () => {
+            await request(r =>
+                r
+                    .get("/api/v1/posts/99999")
+                    .set("Authorization", "Bearer chihiro")
+                    .expect(404)
+                    .expect(r => {
+                        expect(r.body.errors[0].message).toBe("post not found")
+                    })
+            )
+        })
+        test("found", async () => {
+            const res = await request(r =>
+                r
+                    .post("/api/v1/posts")
+                    .set("Authorization", "Bearer chihiro")
+                    .set({ text: "こんにちは" })
+                    .expect(200)
+            )
+            await request(r =>
+                r
+                    .get("/api/v1/posts/" + res.body.id)
+                    .set("Authorization", "Bearer chihiro")
+                    .expect(200)
+                    .expect(r => {
+                        expect(r.body.text).toBe("こんにちは")
+                    })
+            )
+        })
+    })
 })
