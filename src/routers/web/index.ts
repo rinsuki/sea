@@ -11,6 +11,7 @@ import logoutRouter from "./logout"
 import inputInviteCodeRouter from "./inputInviteCode"
 import settingsRouter from "./settings"
 import oauthRouter from "./oauth"
+import oauthTokenRouter from "./token"
 import applicationsRouter from "./applications"
 import exploreRouter from "./explore"
 import postsRouter from "./posts"
@@ -81,6 +82,7 @@ router.use("/login", loginRouter.routes())
 router.use("/logout", logoutRouter.routes())
 router.use("/input_invite_code", inputInviteCodeRouter.routes())
 router.use("/settings", requireVerifyInviteCode, settingsRouter.routes())
+router.use("/oauth/token", oauthTokenRouter.routes())
 router.use("/oauth", requireVerifyInviteCode, oauthRouter.routes())
 router.use("/applications", requireVerifyInviteCode, applicationsRouter.routes())
 router.use("/explore", requireVerifyInviteCode, exploreRouter.routes())
