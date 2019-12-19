@@ -13,7 +13,7 @@ import { Post } from "../../db/entities/post"
 import { PostRepository } from "../../db/repositories/post"
 import { ParameterizedContext } from "koa"
 import { IRouterParamContext } from "koa-router"
-import { format } from "date-fns"
+import { format, addHours } from "date-fns"
 import ja from "date-fns/locale/ja"
 
 const router = new Router<WebRouterState, WebRouterCustom>()
@@ -67,7 +67,7 @@ const callback = async (
         return
     }
     for (const post of posts) {
-        ;(<any>post).createdAtString = format(post.createdAt, "yyyy/MM/dd(EEEEEE) HH:mm:ss.SSS", {
+        ;(<any>post).createdAtString = format(addHours(post.createdAt, 9), "yyyy/MM/dd(EEEEEE) HH:mm:ss.SSS", {
             locale: ja,
         })
     }
