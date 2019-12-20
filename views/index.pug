@@ -15,3 +15,7 @@ block content
         else
             li: a(href="/login") ログイン
             li: a(href="/register") 登録
+    
+    if session
+        table(width="95%", cellspacing=7, cellpadding=3, border=1, bgcolor="#CFC", align="center")
+            tr: td: small: a(href="/posts/") 1: 雑談スレ★n (#{threadNumber})

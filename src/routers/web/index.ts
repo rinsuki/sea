@@ -16,6 +16,8 @@ import applicationsRouter from "./applications"
 import exploreRouter from "./explore"
 import postsRouter from "./posts"
 import { requireVerifyInviteCode } from "../../utils/requireVerifyInviteCode"
+import { getRepository } from "typeorm"
+import { Post } from "../../db/entities/post"
 
 const router = new Router<WebRouterState, WebRouterCustom>()
 
@@ -74,7 +76,11 @@ router.use((ctx, next) => {
 router.use(setUserSessionToState)
 
 router.get("/", async ctx => {
-    ctx.render("index")
+    var threadNumber
+    if (ctx.state.session != null) {
+        threadNumber = await getRepository(Post).count()
+    }
+    ctx.render("index", { threadNumber })
 })
 
 router.use("/register", registerRouter.routes())
