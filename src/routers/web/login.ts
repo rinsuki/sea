@@ -22,7 +22,7 @@ router.post("/", koaBody(), checkReCaptcha, async ctx => {
         password: $.string.compose($length({ min: 8 })),
     }).transformOrThrow(ctx.request.body)
     const user = await getRepository(User).findOne({
-        screenName: body.screen_name,
+        displayScreenName: body.screen_name,
     })
     if (user == null) return ctx.throw(400, "そんなユーザーいない")
     const checkPasswordResult = await bcrypt.compare(body.password, user.encryptedPassword)

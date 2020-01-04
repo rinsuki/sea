@@ -16,7 +16,7 @@ export class UserRepository extends Repository<User> {
             return {
                 id: user.id,
                 name: user.name,
-                screenName: user.screenName,
+                screenName: user.displayScreenName,
                 postsCount: user.postsCount,
                 createdAt: user.createdAt,
                 updatedAt: user.updatedAt,
