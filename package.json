@@ -44,7 +44,7 @@
     "devDependencies": {
         "@types/bcrypt": "^3.0.0",
         "@types/http-errors": "^1.6.3",
-        "@types/jest": "^24.0.25",
+        "@types/jest": "^24.9.0",
         "@types/koa": "^2.11.0",
         "@types/koa-pug": "^4.0.0",
         "@types/koa-router": "^7.4.0",
