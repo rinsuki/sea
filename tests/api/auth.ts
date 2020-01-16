@@ -1,4 +1,4 @@
-import { request } from "../../src/utils/forTesting/testRequest"
+import { request } from "../../src/server/utils/forTesting/testRequest"
 
 describe("API Authorize", () => {
     test("認証がないなら弾く", async () => {

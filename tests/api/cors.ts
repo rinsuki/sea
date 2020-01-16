@@ -1,4 +1,4 @@
-import { request } from "../../src/utils/forTesting/testRequest"
+import { request } from "../../src/server/utils/forTesting/testRequest"
 
 describe("CORS headers", () => {
     test("Originがないなら付けない", async () => {
