@@ -8,14 +8,8 @@ export type APIRouterState = {
 }
 
 export type APIRouterCustom = {
-    send<Input, Output>(
-        repository: ObjectType<IPackableObject<Input, Output>>,
-        input: Input
-    ): Promise<void>
-    sendMany<Input, Output>(
-        repository: ObjectType<IPackableObject<Input, Output>>,
-        inputs: Input[]
-    ): Promise<void>
+    send<Input, Output>(repository: ObjectType<IPackableObject<Input, Output>>, input: Input): Promise<void>
+    sendMany<Input, Output>(repository: ObjectType<IPackableObject<Input, Output>>, inputs: Input[]): Promise<void>
 }
 
 export class APIRouter extends Router<APIRouterState, APIRouterCustom> {}

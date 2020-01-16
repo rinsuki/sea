@@ -1,10 +1,10 @@
-import { isTestMode } from "../config"
+import { isTestMode } from "../server/config"
 import { getRepository, getConnection } from "typeorm"
-import { User } from "../db/entities/user"
-import { databaseSetup } from "../app"
-import { Application } from "../db/entities/application"
-import { AccessToken } from "../db/entities/accessToken"
-import { InviteCode } from "../db/entities/inviteCode"
+import { User } from "../server/db/entities/user"
+import { databaseSetup } from "../server/app"
+import { Application } from "../server/db/entities/application"
+import { AccessToken } from "../server/db/entities/accessToken"
+import { InviteCode } from "../server/db/entities/inviteCode"
 
 async function main() {
     if (!isTestMode) {

@@ -1,5 +1,5 @@
 import Router from "koa-router"
-import { WebRouterState, WebRouterCustom } from ".."
+import { WebRouterState, WebRouterCustom } from "../../web"
 import $ from "transform-ts"
 import { getRepository } from "typeorm"
 import { Application } from "../../../db/entities/application"

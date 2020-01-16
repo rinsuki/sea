@@ -7,7 +7,7 @@ import bcrypt from "bcrypt"
 import { createUserSession } from "../../utils/createUserSession"
 import $ from "transform-ts"
 import { UserSession } from "../../db/entities/userSession"
-import { WebRouterState, WebRouterCustom } from "."
+import { WebRouterState, WebRouterCustom } from "../web"
 import { $regexp, $length } from "../../utils/transformers"
 
 const router = new Router<WebRouterState, WebRouterCustom>()

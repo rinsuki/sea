@@ -1,5 +1,5 @@
 import Router from "koa-router"
-import { WebRouterState, WebRouterCustom } from ".."
+import { WebRouterState, WebRouterCustom } from "../../web"
 import rankingRouter from "./ranking"
 
 const router = new Router<WebRouterState, WebRouterCustom>()

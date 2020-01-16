@@ -1,5 +1,5 @@
 import Router = require("koa-router")
-import { WebRouterState, WebRouterCustom } from "."
+import { WebRouterState, WebRouterCustom } from "../web"
 import {
     getRepository,
     MoreThan,

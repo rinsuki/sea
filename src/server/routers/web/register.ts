@@ -1,5 +1,5 @@
 import Router from "koa-router"
-import { WebRouterState, WebRouterCustom } from "."
+import { WebRouterState, WebRouterCustom } from "../web"
 import { createUserSession } from "../../utils/createUserSession"
 import { getRepository } from "typeorm"
 import { User } from "../../db/entities/user"

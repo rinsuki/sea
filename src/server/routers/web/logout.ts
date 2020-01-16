@@ -1,5 +1,5 @@
 import Router from "koa-router"
-import { WebRouterState, WebRouterCustom } from "."
+import { WebRouterState, WebRouterCustom } from "../web"
 import koaBody = require("koa-body")
 import { checkCsrf } from "../../utils/checkCsrf"
 import { getRepository } from "typeorm"
