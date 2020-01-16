@@ -9,7 +9,9 @@ export function requireVerifyInviteCode<StateT extends { session?: UserSession }
     next: () => Promise<void>
 ) {
     if (ctx.state.session == null) {
-        ctx.throw(400, "/login でログインしてね")
+        ctx.status = 400
+        ctx.body = `<!DOCTYPE html><meta charset="UTF-8"><a href="/login">/login</a> でログインしてね`
+        return
     }
     if (ctx.state.session.user.inviteCode == null) {
         const backUrl = ctx.URL.pathname + ctx.URL.search
