@@ -77,7 +77,7 @@ router.use((ctx, next) => {
         ctx.type = "text/html"
     }
     ctx.renderReact = (component, props) => {
-        ctx.body = ReactDOM.renderToStaticMarkup(React.createElement(component, props))
+        ctx.body = "<!DOCTYPE html>" + ReactDOM.renderToStaticMarkup(React.createElement(component, props))
     }
     return next()
 })
