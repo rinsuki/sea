@@ -23,6 +23,7 @@ RUN yarn build:server
 
 FROM package-builder as client-builder
 
+ENV NODE_ENV production
 COPY tsconfig.json webpack.config.ts ./
 COPY src/client ./src/client
 RUN yarn build:client
