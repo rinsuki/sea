@@ -13,11 +13,19 @@ RUN yarn install
 
 # ---
 
-FROM package-builder as builder
+FROM package-builder as server-builder
 
 COPY tsconfig.json ./
 COPY src ./src
-RUN yarn build
+RUN yarn build:server
+
+# ---
+
+FROM package-builder as client-builder
+
+COPY tsconfig.json webpack.config.ts ./
+COPY src ./src
+RUN yarn build:client
 
 # ---
 
@@ -30,7 +38,8 @@ COPY tests/ ./tests
 COPY views ./views
 COPY src ./src
 COPY --from=package-builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
+COPY --from=server-builder /app/dist ./dist
+COPY --from=client-builder /app/dist/client/assets ./dist/client/assets
 
 ENV PORT 3000
 EXPOSE 3000
