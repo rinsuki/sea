@@ -4,6 +4,7 @@
 !/tests
 !/views
 !/ormconfig.js
+!/webpack.config.ts
 
 !/package.json
 !/yarn.lock
