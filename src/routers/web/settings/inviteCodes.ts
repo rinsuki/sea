@@ -2,15 +2,23 @@ import Router from "koa-router"
 import { WebRouterState, WebRouterCustom } from ".."
 import koaBody = require("koa-body")
 import { checkCsrf } from "../../../utils/checkCsrf"
-import { getRepository } from "typeorm"
+import { getRepository, IsNull, Not } from "typeorm"
 import { InviteCode } from "../../../db/entities/inviteCode"
 import $ from "transform-ts"
 import { $length } from "../../../utils/transformers"
+import { InviteCodeIndex } from "../../../components/pages/settings/inviteCodes"
 
 const router = new Router<WebRouterState, WebRouterCustom>()
 
 router.get("/", async ctx => {
-    ctx.render("settings/invite_codes/index")
+    ctx.renderReact(InviteCodeIndex, {
+        session: ctx.state.session!,
+        invites: await getRepository(InviteCode).find({
+            where: { toUser: Not(IsNull()) },
+            relations: ["fromUser", "toUser"],
+            order: { id: "ASC" },
+        }),
+    })
 })
 
 router.get("/new", async ctx => {
