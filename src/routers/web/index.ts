@@ -18,11 +18,17 @@ import postsRouter from "./posts"
 import { requireVerifyInviteCode } from "../../utils/requireVerifyInviteCode"
 import { getRepository } from "typeorm"
 import { Post } from "../../db/entities/post"
+import React from "react"
+import ReactDOM from "react-dom/server"
+import { Entrance } from "../../components/pages/entrance"
 
 const router = new Router<WebRouterState, WebRouterCustom>()
 
 export type WebRouterState = { session?: UserSession }
-export type WebRouterCustom = { render: (name: string, locals?: {}) => void }
+export type WebRouterCustom = {
+    render: (name: string, locals?: {}) => void
+    renderReact: <T>(component: React.FunctionComponent<T>, props: T) => void
+}
 
 const pugCompilerCache: { [key: string]: (locals: any) => string } = {}
 
@@ -70,6 +76,9 @@ router.use((ctx, next) => {
         ctx.set("X-Frame-Options", "DENY")
         ctx.type = "text/html"
     }
+    ctx.renderReact = (component, props) => {
+        ctx.body = ReactDOM.renderToStaticMarkup(React.createElement(component, props))
+    }
     return next()
 })
 
@@ -80,7 +89,7 @@ router.get("/", async ctx => {
     if (ctx.state.session != null) {
         threadNumber = await getRepository(Post).count()
     }
-    ctx.render("index", { threadNumber })
+    ctx.renderReact(Entrance, { session: ctx.state.session, threadNumber })
 })
 
 router.use("/register", registerRouter.routes())
