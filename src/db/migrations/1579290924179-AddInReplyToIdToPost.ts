@@ -15,7 +15,7 @@ export class AddInReplyToIdToPost1579290924179 implements MigrationInterface {
             new TableForeignKey({
                 name: "FK:posts:in_reply_to_id::posts:id",
                 columnNames: ["in_reply_to_id"],
-                referencedTableName: "users",
+                referencedTableName: "posts",
                 referencedColumnNames: ["id"],
             })
         )

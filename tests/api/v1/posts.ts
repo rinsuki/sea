@@ -85,7 +85,7 @@ describe("/api/v1/posts", () => {
                     r
                         .post("/api/v1/posts")
                         .set("Authorization", "Bearer chihiro")
-                        .send({ text: "おはようございます!", inReplyTo: 888888888 })
+                        .send({ text: "おはようございます!", inReplyToId: 888888888 })
                         .expect(400)
                         .expect(r => {
                             expect(r.body.errors[0].message).toEqual("target of inReplyToId is not found.")
@@ -109,7 +109,7 @@ describe("/api/v1/posts", () => {
                         .set("Authorization", "Bearer chihiro")
                         .send({
                             text: "今日はスタドリが安くなってますから、ぜひこの機会にお買い求めくださいね!",
-                            inReplyTo: target.body.id,
+                            inReplyToId: target.body.id,
                         })
                         .expect(200)
                         .expect(r => {

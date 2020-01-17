@@ -63,7 +63,7 @@ router.post("/", koaBody(), async ctx => {
 
         // inReplyToIdの先があるかを確認
         if (body.inReplyToId != null) {
-            const targetPost = await transactionalEntityManager.findOne(Post, body.inReplyToId)
+            const targetPost = await transactionalEntityManager.findOne(Post, { id: body.inReplyToId })
             if (targetPost == null) {
                 ctx.throw(400, "target of inReplyToId is not found.")
                 return
