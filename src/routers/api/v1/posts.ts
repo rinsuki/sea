@@ -37,7 +37,7 @@ router.post("/", koaBody(), async ctx => {
             latestPost &&
             Date.now() - latestPost.createdAt.getTime() < 60 * 1000 &&
             latestPost.text === body.text &&
-            latestPost.inReplyToId === body.inReplyToId
+            latestPost.inReplyToId == body.inReplyToId
         ) {
             var isDuplicated = true
             const attachedFiles = await transactionalEntityManager.find(PostAttachedFile, {
