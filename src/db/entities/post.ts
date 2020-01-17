@@ -21,6 +21,16 @@ export class Post extends EntityWithTimestamps {
     @JoinColumn({ name: "application_id", referencedColumnName: "id" })
     application!: Application
 
-    @OneToMany(type => PostAttachedFile, file => file.post)
+    @OneToMany(
+        type => PostAttachedFile,
+        file => file.post
+    )
     files!: PostAttachedFile[]
+
+    @Column({ name: "in_reply_to_id", nullable: true, type: "int" })
+    inReplyToId!: number | null
+
+    @ManyToOne(type => Post)
+    @JoinColumn({ name: "in_reply_to_id", referencedColumnName: "id" })
+    inReplyTo!: Post | null
 }

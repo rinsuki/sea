@@ -79,6 +79,45 @@ describe("/api/v1/posts", () => {
                 )
             })
         })
+        describe("inReplyTo", () => {
+            test("存在しない投稿あてはコケる", async () => {
+                await request(r =>
+                    r
+                        .post("/api/v1/posts")
+                        .set("Authorization", "Bearer chihiro")
+                        .send({ text: "おはようございます!", inReplyTo: 888888888 })
+                        .expect(400)
+                        .expect(r => {
+                            expect(r.body.errors[0].message).toEqual("target of inReplyToId is not found.")
+                        })
+                )
+            })
+            test("存在する投稿ならオッケー", async () => {
+                const target = await request(r =>
+                    r
+                        .post("/api/v1/posts")
+                        .set("Authorization", "Bearer chihiro")
+                        .send({ text: "おはようございます!" })
+                        .expect(200)
+                        .expect(r => {
+                            expect(r.body.id).not.toBeNull()
+                        })
+                )
+                await request(r =>
+                    r
+                        .post("/api/v1/posts")
+                        .set("Authorization", "Bearer chihiro")
+                        .send({
+                            text: "今日はスタドリが安くなってますから、ぜひこの機会にお買い求めくださいね!",
+                            inReplyTo: target.body.id,
+                        })
+                        .expect(200)
+                        .expect(r => {
+                            expect(r.body.inReplyToId).toEqual(target.body.id)
+                        })
+                )
+            })
+        })
     })
     describe("GET /:id", () => {
         test("not found", async () => {

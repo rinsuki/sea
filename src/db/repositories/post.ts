@@ -15,14 +15,22 @@ export class PostRepository extends Repository<Post> {
 
     async packMany(posts: Post[]) {
         if (posts.length === 0) return []
-        const users = await getCustomRepository(UserRepository).packMany(onlyUnique(posts.map(p => p.user), "id"))
+        const users = await getCustomRepository(UserRepository).packMany(
+            onlyUnique(
+                posts.map(p => p.user),
+                "id"
+            )
+        )
         const attachedFiles = await getRepository(PostAttachedFile).find({
             where: { postId: In(posts.map(p => p.id)) },
             relations: ["albumFile"],
         })
 
         const allFiles = await getCustomRepository(AlbumFileRepository).packMany(
-            onlyUnique(attachedFiles.map(f => f.albumFile), "id")
+            onlyUnique(
+                attachedFiles.map(f => f.albumFile),
+                "id"
+            )
         )
         return Promise.all(
             posts.map(async post => {
@@ -38,6 +46,7 @@ export class PostRepository extends Repository<Post> {
                     createdAt: post.createdAt,
                     updatedAt: post.updatedAt,
                     files,
+                    inReplyToId: post.inReplyToId,
                 }
             })
         )
