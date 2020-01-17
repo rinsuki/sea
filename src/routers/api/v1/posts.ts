@@ -23,6 +23,7 @@ router.post("/", koaBody(), async ctx => {
         text: $.string,
         fileIds: $.optional($.array($.number)),
         notify: $.optional($.literal("none", "send")),
+        inReplyToId: $.optional($.number),
     }).transformOrThrow(ctx.request.body)
     const post = new Post()
     post.text = body.text
@@ -30,8 +31,14 @@ router.post("/", koaBody(), async ctx => {
     await getManager().transaction("SERIALIZABLE", async transactionalEntityManager => {
         var user = ctx.state.token.user
         const latestPost = await transactionalEntityManager.findOne(Post, { where: { user }, order: { createdAt: "DESC" } })
-        if (latestPost && Date.now() - latestPost.createdAt.getTime() < 60 * 1000 && latestPost.text === body.text) {
-            // 重複検知
+
+        // 重複検知
+        if (
+            latestPost &&
+            Date.now() - latestPost.createdAt.getTime() < 60 * 1000 &&
+            latestPost.text === body.text &&
+            latestPost.inReplyToId == body.inReplyToId
+        ) {
             var isDuplicated = true
             const attachedFiles = await transactionalEntityManager.find(PostAttachedFile, {
                 where: { post: latestPost },
@@ -53,6 +60,18 @@ router.post("/", koaBody(), async ctx => {
                 return
             }
         }
+
+        // inReplyToIdの先があるかを確認
+        if (body.inReplyToId != null) {
+            const targetPost = await transactionalEntityManager.findOne(Post, { id: body.inReplyToId })
+            if (targetPost == null) {
+                ctx.throw(400, "target of inReplyToId is not found.")
+                return
+            }
+            post.inReplyToId = targetPost.id
+        }
+
+        // 添付ファイル
         const attachedFiles: PostAttachedFile[] = []
         if (body.fileIds != null && body.fileIds.length) {
             // TODO: ここ 一個ごとforじゃなくて ORDER BY FIELDを使う
@@ -77,6 +96,8 @@ router.post("/", koaBody(), async ctx => {
                 throw "If attached video, attached files is should only one."
             }
         }
+
+        // 投稿処理
         const res = await transactionalEntityManager.increment(User, { id: user.id }, "postsCount", 1)
         user = await transactionalEntityManager.findOneOrFail(User, { id: user.id }, { relations: ["avatarFile"] })
         post.user = user
