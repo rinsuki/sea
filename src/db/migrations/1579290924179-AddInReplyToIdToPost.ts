@@ -21,5 +21,8 @@ export class AddInReplyToIdToPost1579290924179 implements MigrationInterface {
         )
     }
 
-    public async down(queryRunner: QueryRunner): Promise<any> {}
+    public async down(queryRunner: QueryRunner): Promise<any> {
+        await queryRunner.dropForeignKey("posts", "FK:posts:in_reply_to_id::posts:id")
+        await queryRunner.dropColumn("posts", "in_reply_to_id")
+    }
 }
