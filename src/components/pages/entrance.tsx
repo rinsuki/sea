@@ -30,6 +30,9 @@ export function Entrance({ session, threadNumber }: { session?: UserSession; thr
                                 <li>
                                     <a href="/explore/ranking">ランキング</a>
                                 </li>
+                                <li>
+                                    <a href="/explore/stats">Stats</a>
+                                </li>
                             </ul>
                         </li>
                         <li>
