@@ -10,6 +10,7 @@ import fs from "fs"
 import fileType = require("file-type")
 import sharp = require("sharp")
 import { uploadFile } from "../../../utils/uploadFile"
+import { checkCsrf } from "../../../utils/checkCsrf"
 
 const router = new Router<WebRouterState, WebRouterCustom>()
 
@@ -43,7 +44,7 @@ router.get("/new", async ctx => {
     })
 })
 
-router.post("/new", bodyParser, async ctx => {
+router.post("/new", bodyParser, checkCsrf, async ctx => {
     const { shortcode } = $.obj({ shortcode: $.string }).transformOrThrow(ctx.request.body)
     if (!/^[A-Za-z0-9_]{1,32}$/.test(shortcode)) return ctx.throw(400, "shortcodeがおかしい")
     if (null != (await getRepository(CustomEmoji).findOne({ shortcode, deletedAt: IsNull() })))
