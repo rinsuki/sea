@@ -10,7 +10,6 @@ export function CustomEmojisIndex(props: { emojis: CustomEmoji[] }) {
             <h1>カスタム絵文字</h1>
             <h2>登録</h2>
             <a href="/settings/custom_emojis/new">画像を登録</a>
-            <a href="/settings/custom_emojis/new_alias">エイリアスを登録</a>
             <h2>リスト</h2>
             <table {...{ border: 1 }}>
                 <tr>
