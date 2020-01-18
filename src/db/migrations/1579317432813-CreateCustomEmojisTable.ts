@@ -43,6 +43,7 @@ export class CreateCustomEmojisTable1579317432813 implements MigrationInterface 
                     {
                         name: "deleted_at",
                         type: "timestamptz",
+                        isNullable: true,
                     },
                 ],
                 foreignKeys: [

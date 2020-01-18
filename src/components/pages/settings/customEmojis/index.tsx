@@ -26,12 +26,19 @@ export function CustomEmojisIndex(props: { emojis: CustomEmoji[] }) {
                 </tr>
                 {props.emojis.map(emoji => (
                     <tr key={emoji.id}>
-                        <td>
-                            <img src={S3_PUBLIC_URL + getPathFromHash(emoji.hash)} style={{ height: "2em" }} />
+                        <td style={{ lineHeight: 0 }}>
+                            <a href={S3_PUBLIC_URL + getPathFromHash(emoji.hash)}>
+                                <img
+                                    src={S3_PUBLIC_URL + getPathFromHash(emoji.hash)}
+                                    style={{ height: "2em", width: "auto" }}
+                                    width={emoji.width}
+                                    height={emoji.height}
+                                />
+                            </a>
                         </td>
                         <td>{emoji.shortcode}</td>
                         <td>@{emoji.user.screenName}</td>
-                        <td>{emoji.createdAt}</td>
+                        <td>{emoji.createdAt.toString()}</td>
                     </tr>
                 ))}
             </table>
