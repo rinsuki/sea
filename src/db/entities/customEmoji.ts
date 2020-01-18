@@ -7,7 +7,7 @@ export class CustomEmoji extends EntityWithTimestamps {
     @PrimaryColumn()
     id!: number
 
-    @Column({ type: "citext", nullable: false })
+    @Column({ nullable: false })
     shortcode!: string
 
     @ManyToOne(type => User)
