@@ -30,6 +30,7 @@ router.get("/", async ctx => {
     } as const)[sort]
     ctx.renderReact(CustomEmojisIndex, {
         emojis: await getRepository(CustomEmoji).find({
+            where: { deletedAt: IsNull() },
             order: { [sortKey]: sortKey === "createdAt" ? "DESC" : "ASC" },
             relations: ["user"],
         }),
