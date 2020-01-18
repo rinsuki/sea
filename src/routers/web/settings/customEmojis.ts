@@ -53,7 +53,7 @@ router.post("/new", bodyParser, async ctx => {
             size: $.number,
         }),
     }).transformOrThrow(ctx.request.files)
-    if (file.size > 256 * 1024 * 1024) return ctx.throw(400, "でかすぎ")
+    if (file.size > 256 * 1024) return ctx.throw(400, "でかすぎ")
     const buffer = await fs.promises.readFile(file.path)
     const type = fileType(buffer)
     if (type == null) return ctx.throw(400, "なにこのファイル")
