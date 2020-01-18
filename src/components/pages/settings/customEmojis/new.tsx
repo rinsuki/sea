@@ -10,7 +10,16 @@ export function CustomEmojisNew(props: { csrf: string }) {
                 <dl>
                     <dt>shortcode</dt>
                     <dd>
-                        :<input type="text" name="shortcode" required maxLength={32} pattern="[A-Za-z0-9_]+" />:
+                        :
+                        <input
+                            type="text"
+                            name="shortcode"
+                            required
+                            maxLength={32}
+                            pattern="^[A-Za-z0-9_]+$"
+                            placeholder="^[A-Za-z0-9_]{1,32}$"
+                        />
+                        :
                     </dd>
                     <dt>画像</dt>
                     <dd>
