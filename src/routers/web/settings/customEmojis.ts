@@ -44,7 +44,7 @@ router.get("/new", async ctx => {
 
 router.post("/new", bodyParser, async ctx => {
     const { shortcode } = $.obj({ shortcode: $.string }).transformOrThrow(ctx.request.body)
-    if (!/^[A-Za-z0-9_]{1,30}$/.test(shortcode)) return ctx.throw(400, "shortcodeがおかしい")
+    if (!/^[A-Za-z0-9_]{1,32}$/.test(shortcode)) return ctx.throw(400, "shortcodeがおかしい")
     if (null != (await getRepository(CustomEmoji).findOne({ shortcode, deletedAt: IsNull() })))
         return ctx.throw(400, "そのshortcodeはもうすでに使われてる")
     const { file } = $.obj({

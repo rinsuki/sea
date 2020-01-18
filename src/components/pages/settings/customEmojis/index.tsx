@@ -15,13 +15,13 @@ export function CustomEmojisIndex(props: { emojis: CustomEmoji[] }) {
                 <tr>
                     <th>画像</th>
                     <th>
-                        <a href="?order=name">shortcode</a>
+                        <a href="?sort=name">shortcode</a>
                     </th>
                     <th>
-                        <a href="?order=uploader">登録者</a>
+                        <a href="?sort=uploader">登録者</a>
                     </th>
                     <th>
-                        <a href="?order=date">登録日時</a>
+                        <a href="?sort=date">登録日時</a>
                     </th>
                 </tr>
                 {props.emojis.map(emoji => (
