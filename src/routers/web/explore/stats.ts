@@ -12,8 +12,11 @@ router.get("/", async ctx => {
     ctx.renderReact(ExploreStats, {
         count: {
             users: await getRepository(User).count({ where: { inviteCode: Not(IsNull()) } }),
-            posts: await getRepository(Post).count(),
-            files: await getRepository(AlbumFile).count(),
+            posts: [await getRepository(Post).count(), ctx.state.session!.user.postsCount] as [number, number],
+            files: [
+                await getRepository(AlbumFile).count(),
+                await getRepository(AlbumFile).count({ where: { user: ctx.state.session!.user } }),
+            ] as [number, number],
             bytes: parseInt(
                 (
                     await getConnection().query(
