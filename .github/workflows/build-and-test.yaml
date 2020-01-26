@@ -51,7 +51,7 @@ jobs:
           sudo chown $(whoami) ./coverage/cobertura-coverage.xml
           python3 -c 'import os;r=open("./coverage/cobertura-coverage.xml", "r").read().replace("/app", os.getcwd());open("./coverage/cobertura-coverage.xml", "w").write(r)'
       - name: Upload Code Coverage to codecov
-        uses: codecov/codecov-action@v1.0.3
+        uses: codecov/codecov-action@v1.0.5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage/cobertura-coverage.xml
