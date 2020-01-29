@@ -2,12 +2,13 @@
     "name": "sea",
     "private": true,
     "version": "1.0.0",
-    "main": "index.js",
+    "main": "dist/index.js",
     "license": "MIT",
     "engines": {
         "node": ">=12"
     },
     "scripts": {
+        "start": "node dist",
         "build": "tsc",
         "migration:up": "typeorm migration:run",
         "migration:downall": "node ./dist/cliUtils/migrationDownAll.js",
