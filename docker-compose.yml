@@ -12,7 +12,7 @@ services:
     image: postgres:12
     restart: unless-stopped
     volumes:
-      - .docker-compose/minio:/var/lib/postgresql/data
+      - .docker-compose/postgres:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: *POSTGRES_PASSWORD
       POSTGRES_DB: *POSTGRES_DB
@@ -37,6 +37,7 @@ services:
       - .docker-compose/minio:/mnt/shared
     networks:
       - default
+    command: ["minio", "server", "/mnt/shared"]
 
   sea:
     build: .
@@ -52,6 +53,7 @@ services:
       S3_BUCKET: "chinco"
       S3_ENDPOINT: "http://minio:9000"
       S3_FORCE_USE_PATH_STYLE: "on"
+      S3_BUCKET_INITIALIZE: "on"
       S3_PUBLIC_URL: "http://127.0.0.1/chinco"
       FORCE_HTTPS: ""
       # from environment variables
@@ -61,6 +63,11 @@ services:
       SW_KEY_PRIVATE: "${SW_KEY_PRIVATE}"
       RECAPTCHA_SITE_KEY: "${RECAPTCHA_SITE_KEY}"
       RECAPTCHA_SITE_SECRET: "${RECAPTCHA_SITE_SECRET}"
+    restart: unless-stopped
     networks:
       - default
+    depends_on:
+      - postgres
+      - redis
+      - minio
     command: ["sh", "-c", "yarn migration:up && node /app/dist/index.js"]
