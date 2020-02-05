@@ -52,8 +52,8 @@ services:
       AWS_SECRET_ACCESS_KEY: *MINIO_SECRET_KEY
       S3_BUCKET: "chinco"
       S3_ENDPOINT: "http://minio:9000"
-      S3_FORCE_USE_PATH_STYLE: "on"
-      S3_BUCKET_INITIALIZE: "on"
+      S3_FORCE_USE_PATH_STYLE: "yes"
+      S3_BUCKET_INITIALIZE: "yes"
       S3_PUBLIC_URL: "http://127.0.0.1/chinco"
       FORCE_HTTPS: ""
       # from environment variables
@@ -61,8 +61,6 @@ services:
       SW_SUBJECT: "dev:${SW_SUBJECT}"
       SW_KEY_PUBLIC: "${SW_KEY_PUBLIC}"
       SW_KEY_PRIVATE: "${SW_KEY_PRIVATE}"
-      RECAPTCHA_SITE_KEY: "${RECAPTCHA_SITE_KEY}"
-      RECAPTCHA_SITE_SECRET: "${RECAPTCHA_SITE_SECRET}"
     restart: unless-stopped
     networks:
       - default
