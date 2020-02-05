@@ -5,3 +5,4 @@ dist/
 !.env.example
 coverage/
 buildkit-cache
+.docker-compose/

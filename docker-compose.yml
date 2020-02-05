@@ -1,0 +1,66 @@
+version: "2.4"
+
+x-variables:
+  POSTGRES_PASSWORD: &POSTGRES_PASSWORD "p@ssw0rd"
+  POSTGRES_DB: &POSTGRES_DB "sea"
+  POSTGRES_URL: &POSTGRES_URL "postgresql://postgres:p@ssw0rd@postgres/sea"
+  AWS_ACCESS_KEY_ID: &MINIO_ACCESS_KEY "AKIAIOSFODNN7EXAMPLE"
+  AWS_SECRET_ACCESS_KEY: &MINIO_SECRET_KEY "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+
+services:
+  postgres:
+    image: postgres:12
+    restart: unless-stopped
+    volumes:
+      - .docker-compose/minio:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: *POSTGRES_PASSWORD
+      POSTGRES_DB: *POSTGRES_DB
+    networks:
+      - default
+
+  redis:
+    image: redis:5
+    restart: unless-stopped
+    networks:
+      - default
+
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    ports:
+      - 9000:9000
+    environment:
+      MINIO_ACCESS_KEY: *MINIO_ACCESS_KEY
+      MINIO_SECRET_KEY: *MINIO_SECRET_KEY
+    volumes:
+      - .docker-compose/minio:/mnt/shared
+    networks:
+      - default
+
+  sea:
+    build: .
+    ports:
+      - "${PORT}:${PORT}"
+    environment:
+      NODE_ENV: "development"
+      # docker local network
+      DATABASE_URL: *POSTGRES_URL
+      REDIS_URL: "redis://redis"
+      AWS_ACCESS_KEY_ID: *MINIO_ACCESS_KEY
+      AWS_SECRET_ACCESS_KEY: *MINIO_SECRET_KEY
+      S3_BUCKET: "chinco"
+      S3_ENDPOINT: "http://minio:9000"
+      S3_FORCE_USE_PATH_STYLE: "on"
+      S3_PUBLIC_URL: "http://127.0.0.1/chinco"
+      FORCE_HTTPS: ""
+      # from environment variables
+      PORT: "${PORT}"
+      SW_SUBJECT: "dev:${SW_SUBJECT}"
+      SW_KEY_PUBLIC: "${SW_KEY_PUBLIC}"
+      SW_KEY_PRIVATE: "${SW_KEY_PRIVATE}"
+      RECAPTCHA_SITE_KEY: "${RECAPTCHA_SITE_KEY}"
+      RECAPTCHA_SITE_SECRET: "${RECAPTCHA_SITE_SECRET}"
+    networks:
+      - default
+    command: ["sh", "-c", "yarn migration:up && node /app/dist/index.js"]
