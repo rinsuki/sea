@@ -12,7 +12,31 @@ const s3 = new AWS.S3({
 })
 
 if (S3_BUCKET_INITIALIZE) {
-    s3.createBucket({ Bucket: S3_BUCKET }, (err) => console.error(err))
+    const publicPolicy = `
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AddPerm",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": ["s3:GetObject"],
+            "Resource": ["arn:aws:s3:::*"]
+        }
+    ]
+}
+`
+
+    s3.createBucket({
+        Bucket: S3_BUCKET,
+        GrantRead: "*",
+    }, (err) => {
+        console.error(err)
+        s3.putBucketPolicy({
+            Bucket: S3_BUCKET,
+            Policy: publicPolicy
+        }, err => console.error(err))
+    })
 }
 
 export async function uploadFile(buffer: Buffer, extension: keyof typeof EXT2MIME): Promise<string> {

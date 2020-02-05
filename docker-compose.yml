@@ -50,11 +50,11 @@ services:
       REDIS_URL: "redis://redis"
       AWS_ACCESS_KEY_ID: *MINIO_ACCESS_KEY
       AWS_SECRET_ACCESS_KEY: *MINIO_SECRET_KEY
-      S3_BUCKET: "chinco"
       S3_ENDPOINT: "http://minio:9000"
+      S3_BUCKET: "shared"
+      S3_PUBLIC_URL: "http://localhost:9000/shared/"
       S3_FORCE_USE_PATH_STYLE: "yes"
       S3_BUCKET_INITIALIZE: "yes"
-      S3_PUBLIC_URL: "http://127.0.0.1/chinco"
       FORCE_HTTPS: ""
       # from environment variables
       PORT: "${PORT}"
