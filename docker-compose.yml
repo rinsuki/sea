@@ -68,8 +68,10 @@ services:
       - ./src:/app/src
       - ./docker-files:/app/docker-files
       - ./ormconfig.js:/app/ormconfig.js
+      - ./package.json:/app/package.json
+      - ./yarn.lock:/app/yarn.lock
     depends_on:
       - postgres
       - redis
       - minio
-    command: ["sh", "-c", "yarn migration:up && node ./docker-files/init.js && yarn watch"]
+    command: ["sh", "-c", "yarn tsc-watch --onSuccess 'sh -c \" yarn && yarn migration:up && node ./docker-files/init.js && node . \" '"]
