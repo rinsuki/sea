@@ -43,10 +43,6 @@ export const RECAPTCHA:
 export const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379"
 export const FORCE_HTTPS = !!process.env.FORCE_HTTPS
 
-export const S3_BUCKET_INITIALIZE = process.env.S3_BUCKET_INITIALIZE === "yes"
-if (S3_BUCKET_INITIALIZE && isProductionMode) {
-    throw "プロダクションでは S3 バケット作成機能を有効にしてはいけません"
-}
 export const { S3_BUCKET, S3_ENDPOINT, S3_PUBLIC_URL, S3_FORCE_USE_PATH_STYLE } = $.obj({
     S3_BUCKET: $.string,
     S3_ENDPOINT: $.string,

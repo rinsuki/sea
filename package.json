@@ -2,7 +2,7 @@
     "name": "sea",
     "private": true,
     "version": "1.0.0",
-    "main": "index.js",
+    "main": "dist/index.js",
     "license": "MIT",
     "engines": {
         "node": ">=12"
@@ -11,7 +11,8 @@
         "build": "tsc",
         "migration:up": "typeorm migration:run",
         "migration:downall": "node ./dist/cliUtils/migrationDownAll.js",
-        "test": "NODE_ENV=test node ./dist/cliUtils/addDummyDataForTest.js && jest"
+        "test": "NODE_ENV=test node ./dist/cliUtils/addDummyDataForTest.js && jest",
+        "watch": "tsc-watch --onSuccess 'node .'"
     },
     "dependencies": {
         "@linkage-community/bottlemail": "^2.1.0",
@@ -64,6 +65,7 @@
         "redis-mock": "^0.47.0",
         "supertest": "^4.0.2",
         "ts-jest": "^25.0.0",
+        "tsc-watch": "^4.1.0",
         "typescript": "^3.7.5"
     }
 }

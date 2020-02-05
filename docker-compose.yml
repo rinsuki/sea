@@ -42,7 +42,7 @@ services:
   sea:
     build: .
     ports:
-      - "${PORT}:${PORT}"
+      - "${PORT:-5000}:${PORT:-5000}"
     environment:
       NODE_ENV: "development"
       # docker local network
@@ -57,15 +57,19 @@ services:
       S3_BUCKET_INITIALIZE: "yes"
       FORCE_HTTPS: ""
       # from environment variables
-      PORT: "${PORT}"
+      PORT: "${PORT:-5000}"
       SW_SUBJECT: "dev:${SW_SUBJECT}"
       SW_KEY_PUBLIC: "${SW_KEY_PUBLIC}"
       SW_KEY_PRIVATE: "${SW_KEY_PRIVATE}"
     restart: unless-stopped
     networks:
       - default
+    volumes:
+      - ./src:/app/src
+      - ./docker-files:/app/docker-files
+      - ./ormconfig.js:/app/ormconfig.js
     depends_on:
       - postgres
       - redis
       - minio
-    command: ["sh", "-c", "yarn migration:up && node /app/dist/index.js"]
+    command: ["sh", "-c", "yarn migration:up && node ./docker-files/init.js && yarn watch"]
