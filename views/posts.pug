@@ -35,15 +35,16 @@ html(lang="ja")
                         | #{line}
                         br
                     br
-                    each file in post.files
-                        if file.variants.length == 0
-                            p deleted 😢
-                        else
-                            a(href=file.variants.filter(v => v.mime !== "image/webp" && v.type !== "thumbnail")[0].url)
-                                img(src=file.variants.filter(v => v.mime !== "image/webp" && v.type === "thumbnail")[0].url, style={float: "left", height: "3.5em", "margin-right": "0.5em"})
-                                div= file.name
-                            div #{file.type} | #{file.variants.filter(v => v.mime !== "image/webp" && v.type !== "thumbnail")[0].size} bytes
-                    br
+                    if post.files.length
+                        each file in post.files
+                            if file.variants.length == 0
+                                p deleted 😢
+                            else
+                                a(href=file.variants.filter(v => v.mime !== "image/webp" && v.type !== "thumbnail")[0].url)
+                                    img(src=file.variants.filter(v => v.mime !== "image/webp" && v.type === "thumbnail")[0].url, style={float: "left", height: "3.5em", "margin-right": "0.5em"})
+                                    div= file.name
+                                div #{file.type} | #{file.variants.filter(v => v.mime !== "image/webp" && v.type !== "thumbnail")[0].size} bytes
+                        br
         hr
         center: a(href="/posts/"+lastPost.id+"-") 新着レスの表示
         hr
