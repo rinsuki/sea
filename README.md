@@ -9,6 +9,16 @@
 -   Node.js 12.x
 -   Postgres >= 10.x
 
+## How to develop
+
+```sh
+cp .env.example .env
+yarn web-push generate-vapid-keys
+# Insert your vapid keys to .env
+editor .env
+docker-compose up
+```
+
 ## Deploy
 
 ### Heroku
