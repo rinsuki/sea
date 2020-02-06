@@ -38,20 +38,20 @@ const ALL_ALLOW_POLICY = `
 }
 `
 
-function main() {
-    return Promise.all([
-        promisify(s3.putBucketPolicy.bind(s3))({
-            Bucket: S3_BUCKET,
-            Policy: ALL_ALLOW_POLICY,
-        }),
-        promisify(s3.createBucket.bind(s3))({
-            Bucket: S3_BUCKET,
-        }).catch(e => {
-            if (e.code && e.code == 'BucketAlreadyOwnedByYou') {
-                console.log('already created.')
-            }
-        })
-    ])
+async function main() {
+    await promisify(s3.createBucket.bind(s3))({
+        Bucket: S3_BUCKET,
+    }).catch(e => {
+        if (e.code && e.code == 'BucketAlreadyOwnedByYou') {
+            console.log('already created.')
+            return
+        }
+        throw e
+    })
+    await promisify(s3.putBucketPolicy.bind(s3))({
+        Bucket: S3_BUCKET,
+        Policy: ALL_ALLOW_POLICY,
+    })
 }
 
 main()

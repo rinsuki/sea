@@ -7,17 +7,26 @@ x-variables:
   AWS_ACCESS_KEY_ID: &MINIO_ACCESS_KEY "AKIAIOSFODNN7EXAMPLE"
   AWS_SECRET_ACCESS_KEY: &MINIO_SECRET_KEY "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
 
+volumes:
+  postgres-data:
+    driver: 'local'
+  minio-data:
+    driver: 'local'
+
 services:
   postgres:
     image: postgres:12
     restart: unless-stopped
     volumes:
-      - .docker-compose/postgres:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 1s
+      timeout: 5s
+      retries: 30
     environment:
       POSTGRES_PASSWORD: *POSTGRES_PASSWORD
       POSTGRES_DB: *POSTGRES_DB
-    networks:
-      - default
 
   redis:
     image: redis:5
@@ -34,9 +43,7 @@ services:
       MINIO_ACCESS_KEY: *MINIO_ACCESS_KEY
       MINIO_SECRET_KEY: *MINIO_SECRET_KEY
     volumes:
-      - .docker-compose/minio:/mnt/shared
-    networks:
-      - default
+      - minio-data:/mnt/shared
     command: ["minio", "server", "/mnt/shared"]
 
   sea:
@@ -54,7 +61,6 @@ services:
       S3_BUCKET: "shared"
       S3_PUBLIC_URL: "http://localhost:9000/shared/"
       S3_FORCE_USE_PATH_STYLE: "yes"
-      S3_BUCKET_INITIALIZE: "yes"
       FORCE_HTTPS: ""
       # from environment variables
       PORT: "${PORT:-5000}"
@@ -62,16 +68,21 @@ services:
       SW_KEY_PUBLIC: "${SW_KEY_PUBLIC}"
       SW_KEY_PRIVATE: "${SW_KEY_PRIVATE}"
     restart: unless-stopped
-    networks:
-      - default
     volumes:
       - ./src:/app/src
       - ./docker-files:/app/docker-files
       - ./ormconfig.js:/app/ormconfig.js
       - ./package.json:/app/package.json
       - ./yarn.lock:/app/yarn.lock
+      - ./views:/app/views
     depends_on:
-      - postgres
-      - redis
-      - minio
-    command: ["sh", "-c", "yarn tsc-watch --onSuccess 'sh -c \" yarn && yarn migration:up && node ./docker-files/init.js && node . \" '"]
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      minio:
+        condition: service_started
+    command: [
+      "sh", "-c",
+      "yarn migration:up && node ./docker-files/init.js && yarn tsc-watch --onSuccess 'sh -c \" yarn && node . \" '"
+    ]
