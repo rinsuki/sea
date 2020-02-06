@@ -84,5 +84,5 @@ services:
         condition: service_started
     command: [
       "sh", "-c",
-      "yarn migration:up && node ./docker-files/init.js && yarn tsc-watch --onSuccess 'sh -c \" yarn && node . \" '"
+      "yarn && node ./docker-files/init.js && yarn tsc-watch --onFirstSuccess 'yarn migration:up' --onSuccess 'sh -c \" yarn && node . \" '"
     ]
