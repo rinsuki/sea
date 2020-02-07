@@ -1,6 +1,9 @@
 const { S3 } = require('aws-sdk')
-const { promisify } = require('util')
 
+const logger = (level, message) => {
+    process.stdout.write('[docker-files/init] ')
+    console[level](message)
+}
 const getEnv = (name) => {
     if (!process.env[name]) {
         throw new Error(`Missing ${name} env`)
@@ -39,24 +42,24 @@ const ALL_ALLOW_POLICY = `
 `
 
 async function main() {
-    await promisify(s3.createBucket.bind(s3))({
+    await s3.createBucket({
         Bucket: S3_BUCKET,
-    }).catch(e => {
+    }).promise().catch(e => {
         if (e.code && e.code == 'BucketAlreadyOwnedByYou') {
-            console.log('already created.')
+            logger('log', 'already created.')
             return
         }
         throw e
     })
-    await promisify(s3.putBucketPolicy.bind(s3))({
+    await s3.putBucketPolicy({
         Bucket: S3_BUCKET,
         Policy: ALL_ALLOW_POLICY,
-    })
+    }).promise()
 }
 
 main()
     .then(() => process.exit(0))
     .catch((e) => {
-        console.error(e)
+        logger('error', e)
         process.exit(1)
     })
