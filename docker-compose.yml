@@ -1,11 +1,11 @@
 version: "2.4"
 
 x-variables:
-  POSTGRES_PASSWORD: &POSTGRES_PASSWORD "p@ssw0rd"
+  POSTGRES_PASSWORD: &POSTGRES_PASSWORD "password"
   POSTGRES_DB: &POSTGRES_DB "sea"
-  POSTGRES_URL: &POSTGRES_URL "postgresql://postgres:p@ssw0rd@postgres/sea"
-  AWS_ACCESS_KEY_ID: &MINIO_ACCESS_KEY "AKIAIOSFODNN7EXAMPLE"
-  AWS_SECRET_ACCESS_KEY: &MINIO_SECRET_KEY "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+  POSTGRES_URL: &POSTGRES_URL "postgresql://postgres:password@postgres/sea"
+  MINIO_ACCESS_KEY: &MINIO_ACCESS_KEY "AKIAIOSFODNN7EXAMPLE"
+  MINIO_SECRET_KEY: &MINIO_SECRET_KEY "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
 
 volumes:
   postgres-data:
@@ -71,7 +71,6 @@ services:
     volumes:
       - ./src:/app/src
       - ./docker-files:/app/docker-files
-      - ./ormconfig.js:/app/ormconfig.js
       - ./package.json:/app/package.json
       - ./yarn.lock:/app/yarn.lock
       - ./views:/app/views
