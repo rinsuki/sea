@@ -6,3 +6,5 @@ update_configs:
     automerged_updates:
       - match:
           dependency_name: "@types/*"
+      - match:
+          dependency_name: "aws-sdk"
