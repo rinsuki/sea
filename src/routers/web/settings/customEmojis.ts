@@ -57,7 +57,7 @@ router.post("/new", bodyParser, checkCsrf, async ctx => {
     }).transformOrThrow(ctx.request.files)
     if (file.size > 256 * 1024) return ctx.throw(400, "でかすぎ")
     const buffer = await fs.promises.readFile(file.path)
-    const type = fileType(buffer)
+    const type = await fileType.fromBuffer(buffer)
     if (type == null) return ctx.throw(400, "なにこのファイル")
 
     let isLossless = false
