@@ -1,4 +1,4 @@
-import Router from "koa-router"
+import Router from "@koa/router"
 import pug from "pug"
 import { isProductionMode, RECAPTCHA } from "../../config"
 import { join } from "path"

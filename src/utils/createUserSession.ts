@@ -1,4 +1,4 @@
-import { RouterContext } from "koa-router"
+import { RouterContext } from "@koa/router"
 import { User } from "../db/entities/user"
 import { UserSession } from "../db/entities/userSession"
 import { randomBytes, createHash } from "crypto"

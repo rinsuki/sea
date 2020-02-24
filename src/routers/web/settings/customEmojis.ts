@@ -1,4 +1,4 @@
-import Router = require("koa-router")
+import Router = require("@koa/router")
 import { WebRouterState, WebRouterCustom } from ".."
 import { CustomEmojisIndex } from "../../../components/pages/settings/customEmojis"
 import { CustomEmoji } from "../../../db/entities/customEmoji"

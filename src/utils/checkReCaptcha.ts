@@ -1,5 +1,5 @@
 import { ParameterizedContext } from "koa"
-import { RouterContext } from "koa-router"
+import { RouterContext } from "@koa/router"
 import $ from "transform-ts"
 import { RECAPTCHA } from "../config"
 import axios from "axios"

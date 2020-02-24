@@ -1,4 +1,4 @@
-import Router from "koa-router"
+import Router from "@koa/router"
 import koaBody from "koa-body"
 import { checkReCaptcha } from "../../utils/checkReCaptcha"
 import { getRepository } from "typeorm"

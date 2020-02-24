@@ -1,4 +1,4 @@
-import Router from "koa-router"
+import Router from "@koa/router"
 import { WebRouterState, WebRouterCustom } from ".."
 import authorizeRouter from "./authorize"
 

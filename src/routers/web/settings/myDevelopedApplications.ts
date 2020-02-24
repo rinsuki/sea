@@ -1,4 +1,4 @@
-import Router from "koa-router"
+import Router from "@koa/router"
 import { WebRouterState, WebRouterCustom } from ".."
 import { getRepository } from "typeorm"
 import { Application } from "../../../db/entities/application"

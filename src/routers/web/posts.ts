@@ -1,4 +1,4 @@
-import Router = require("koa-router")
+import Router = require("@koa/router")
 import { WebRouterState, WebRouterCustom } from "."
 import {
     getRepository,
@@ -12,14 +12,14 @@ import {
 import { Post } from "../../db/entities/post"
 import { PostRepository } from "../../db/repositories/post"
 import { ParameterizedContext } from "koa"
-import { IRouterParamContext } from "koa-router"
+import { RouterParamContext } from "@koa/router"
 import { format, addHours } from "date-fns"
 import ja from "date-fns/locale/ja"
 
 const router = new Router<WebRouterState, WebRouterCustom>()
 
 const callback = async (
-    ctx: ParameterizedContext<WebRouterState, WebRouterCustom & IRouterParamContext<WebRouterState, WebRouterCustom>>
+    ctx: ParameterizedContext<WebRouterState, WebRouterCustom & RouterParamContext<WebRouterState, WebRouterCustom>>
 ) => {
     if (ctx.state.session == null) return ctx.throw(400, "ログインしてね")
     const cmd = ctx.params.cmd || ""

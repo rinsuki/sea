@@ -1,4 +1,4 @@
-import Router from "koa-router"
+import Router from "@koa/router"
 import $ from "transform-ts"
 import koaBody = require("koa-body")
 import { getRepository, getManager, getCustomRepository } from "typeorm"

@@ -1,4 +1,4 @@
-import Router = require("koa-router")
+import Router = require("@koa/router")
 import { WebRouterState, WebRouterCustom } from ".."
 import { ExploreStats } from "../../../components/pages/explore/stats"
 import { getRepository, getConnection, Not, IsNull } from "typeorm"

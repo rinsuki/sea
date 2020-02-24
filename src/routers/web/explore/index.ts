@@ -1,4 +1,4 @@
-import Router from "koa-router"
+import Router from "@koa/router"
 import { WebRouterState, WebRouterCustom } from ".."
 import rankingRouter from "./ranking"
 import statsRouter from "./stats"
