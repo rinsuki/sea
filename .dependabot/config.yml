@@ -8,3 +8,5 @@ update_configs:
           dependency_name: "@types/*"
       - match:
           dependency_name: "aws-sdk"
+      - match:
+          dependency_name: "typescript"
