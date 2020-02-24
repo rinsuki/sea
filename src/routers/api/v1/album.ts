@@ -42,7 +42,7 @@ async function processUpload(
 ) {
     if (file.size >= 16 * 1024 * 1024) return ctx.throw(400, "file-too-big")
     const buffer = await fs.promises.readFile(file.path)
-    const type = fileType(buffer)
+    const type = await fileType.fromBuffer(buffer)
     if (type == null) return ctx.throw(400, "Unknown file type")
     var isLossless = false
 
