@@ -29,15 +29,15 @@ if (RECAPTCHA_SITE_KEY != null && RECAPTCHA_SECRET_KEY == null) {
 
 export const RECAPTCHA:
     | {
-          SITE_KEY: string
-          SECRET_KEY: string
-      }
+        SITE_KEY: string
+        SECRET_KEY: string
+    }
     | undefined =
     RECAPTCHA_SITE_KEY != null && RECAPTCHA_SECRET_KEY != null
         ? {
-              SITE_KEY: RECAPTCHA_SITE_KEY,
-              SECRET_KEY: RECAPTCHA_SECRET_KEY,
-          }
+            SITE_KEY: RECAPTCHA_SITE_KEY,
+            SECRET_KEY: RECAPTCHA_SECRET_KEY,
+        }
         : undefined
 
 export const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379"
