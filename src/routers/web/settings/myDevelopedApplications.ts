@@ -6,7 +6,7 @@ import $ from "transform-ts"
 import { randomBytes } from "crypto"
 import koaBody = require("koa-body")
 import { checkCsrf } from "../../../utils/checkCsrf"
-import { $length, $regexp, $stringNumber, $safeNumber, $literal } from "../../../utils/transformers"
+import { $length, $regexp, $stringNumber, $safeNumber } from "../../../utils/transformers"
 import { AccessToken } from "../../../db/entities/accessToken"
 
 const router = new Router<WebRouterState, WebRouterCustom>()
@@ -69,8 +69,8 @@ router.post("/:id", koaBody(), checkCsrf, async ctx => {
         description: $.string.compose($length({ min: 1 })),
         redirect_uri: $.string,
         url: $.string,
-        is_automated: $.optional($literal({ true: "1" })),
-        is_public: $.optional($literal({ true: "1" })),
+        is_automated: $.optional($.literal("1")),
+        is_public: $.optional($.literal("1")),
     }).transformOrThrow(ctx.request.body)
     const app = await getRepository(Application).findOneOrFail(id, {
         relations: ["ownerUser"],

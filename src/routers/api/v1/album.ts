@@ -10,7 +10,7 @@ import { AlbumFileRepository } from "../../../db/repositories/albumFile"
 import { EXT2MIME } from "../../../constants"
 import moment from "moment"
 import $ from "transform-ts"
-import { $length, $literal, $stringNumber } from "../../../utils/transformers"
+import { $length, $stringNumber } from "../../../utils/transformers"
 import { join } from "path"
 import { execFilePromise } from "../../../utils/execFilePromise"
 import { uploadFile } from "../../../utils/uploadFile"
@@ -142,7 +142,7 @@ async function processUpload(
             const info = $.obj({
                 streams: $.array(
                     $.obj({
-                        codec_type: $literal({ video: "video", audio: "audio" }),
+                        codec_type: $.literal("video", "audio"),
                         codec_name: $.string,
                         pix_fmt: $.optional($.string),
                     })
@@ -225,7 +225,7 @@ router.post("/files", bodyParser, async ctx => {
     const body = $.obj({
         name: $.string.compose($length({ min: 1 })),
         folderId: $.optional($.number),
-        ifNameConflicted: $literal(ifNameConflictedConst),
+        ifNameConflicted: $.literal(...Object.values(ifNameConflictedConst)),
     }).transformOrThrow(ctx.request.body)
 
     await processUpload(ctx, file, body)
@@ -244,7 +244,7 @@ router.post("/files/raw_upload", async ctx => {
     const body = $.obj({
         name: $.string.compose($length({ min: 1 })),
         folderId: $.optional($.number),
-        ifNameConflicted: $literal(ifNameConflictedConst),
+        ifNameConflicted: $.literal(...Object.values(ifNameConflictedConst)),
     }).transformOrThrow(JSON.parse(arg))
 
     const binary = await getRawBody(ctx.req, { limit: 16 * 1024 * 1024 })

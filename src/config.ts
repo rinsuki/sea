@@ -1,7 +1,6 @@
 require("dotenv").config()
 
 import $ from "transform-ts"
-import { $literal } from "./utils/transformers"
 import { RequestOptions } from "web-push"
 
 export const isProductionMode = process.env.NODE_ENV === "production"
@@ -29,15 +28,15 @@ if (RECAPTCHA_SITE_KEY != null && RECAPTCHA_SECRET_KEY == null) {
 
 export const RECAPTCHA:
     | {
-        SITE_KEY: string
-        SECRET_KEY: string
-    }
+          SITE_KEY: string
+          SECRET_KEY: string
+      }
     | undefined =
     RECAPTCHA_SITE_KEY != null && RECAPTCHA_SECRET_KEY != null
         ? {
-            SITE_KEY: RECAPTCHA_SITE_KEY,
-            SECRET_KEY: RECAPTCHA_SECRET_KEY,
-        }
+              SITE_KEY: RECAPTCHA_SITE_KEY,
+              SECRET_KEY: RECAPTCHA_SECRET_KEY,
+          }
         : undefined
 
 export const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379"
@@ -47,7 +46,7 @@ export const { S3_BUCKET, S3_ENDPOINT, S3_PUBLIC_URL, S3_FORCE_USE_PATH_STYLE } 
     S3_BUCKET: $.string,
     S3_ENDPOINT: $.string,
     S3_PUBLIC_URL: $.string,
-    S3_FORCE_USE_PATH_STYLE: $literal({ yes: "yes", no: "no" } as const),
+    S3_FORCE_USE_PATH_STYLE: $.literal("yes", "no"),
 }).transformOrThrow(process.env)
 
 const { SW_KEY_PUBLIC, SW_KEY_PRIVATE, SW_SUBJECT } = $.obj({
