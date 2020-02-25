@@ -1,7 +1,7 @@
 import { APIRouter } from "../router-class"
 import koaBody = require("koa-body")
 import $ from "transform-ts"
-import { $length, $regexp, $stringNumber, $safeNumber, $literal } from "../../../utils/transformers"
+import { $length, $regexp, $stringNumber, $safeNumber } from "../../../utils/transformers"
 import { getRepository } from "typeorm"
 import { Subscription } from "../../../db/entities/subscription"
 import { WP_OPTIONS } from "../../../config"

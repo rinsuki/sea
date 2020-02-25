@@ -5,7 +5,6 @@ import { getRepository, getManager, getCustomRepository } from "typeorm"
 import { Application } from "../../../db/entities/application"
 import { AuthorizationCode } from "../../../db/entities/authorizationCode"
 import { AccessToken } from "../../../db/entities/accessToken"
-import { $literal } from "../../../utils/transformers"
 import { UserRepository } from "../../../db/repositories/user"
 import { WebRouterState, WebRouterCustom } from "../"
 const router = new Router<WebRouterState, WebRouterCustom>()
@@ -30,7 +29,7 @@ router.post("/", koaBody(), async ctx => {
         client_id: $.string,
         client_secret: $.string,
         code: $.string,
-        grant_type: $literal(OAuthGrantType),
+        grant_type: $.literal(...Object.values(OAuthGrantType)),
         state: $.optional($.string),
         include_user_object: $.optional($.literal("v1")),
     }).transformOrThrow(ctx.request.body)

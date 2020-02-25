@@ -5567,10 +5567,10 @@ tr46@^1.0.1:
   dependencies:
     punycode "^2.1.0"
 
-transform-ts@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/transform-ts/-/transform-ts-0.2.2.tgz#c93b5a5ef2de163206c7c966fa5d97d70214698c"
-  integrity sha512-ZhK++xaal1Okh+dNJ2KTPfgwWgUip8nIefRwiUq5sxchAa66I9x6czbaUQWKsm5Ja43lbvucKpPv7Jn7ZJg27w==
+transform-ts@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/transform-ts/-/transform-ts-0.3.0.tgz#6bdd81abf79d3aebc03ef60ef7731ee378539b49"
+  integrity sha512-8BGag7tLPt8FfNOTF1UCVyGQYv4RdbrdXxcTt6FdHSWHGAWAMwHiLjNbtxFfE057KNvs15Y7wvBHpK6r/c8LLA==
 
 trim-right@^1.0.1:
   version "1.0.1"

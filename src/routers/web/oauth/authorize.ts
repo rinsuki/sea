@@ -8,7 +8,7 @@ import { checkCsrf } from "../../../utils/checkCsrf"
 import koaBody = require("koa-body")
 import { AuthorizationCode } from "../../../db/entities/authorizationCode"
 import { URL } from "url"
-import { $regexp, $literal } from "../../../utils/transformers"
+import { $regexp } from "../../../utils/transformers"
 
 const router = new Router<WebRouterState, WebRouterCustom>()
 
@@ -19,7 +19,7 @@ const OAuthResponseType = {
 router.get("/", async ctx => {
     const query = $.obj({
         client_id: $.string,
-        response_type: $literal(OAuthResponseType),
+        response_type: $.literal(...Object.values(OAuthResponseType)),
         state: $.optional($.string),
     }).transformOrThrow(ctx.query)
     const app = await getRepository(Application).findOneOrFail({
@@ -46,7 +46,7 @@ router.get("/", async ctx => {
 router.post("/", koaBody(), checkCsrf, async ctx => {
     const query = $.obj({
         client_id: $.string,
-        response_type: $literal(OAuthResponseType),
+        response_type: $.literal(...Object.values(OAuthResponseType)),
         state: $.optional($.string),
     }).transformOrThrow(ctx.query)
     const body = $.obj({
