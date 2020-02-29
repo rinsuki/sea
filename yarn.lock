@@ -5593,10 +5593,10 @@ ts-jest@^25.2.1:
     semver "^5.5"
     yargs-parser "^16.1.0"
 
-tsc-watch@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/tsc-watch/-/tsc-watch-4.1.0.tgz#af155da8d0a8d25db0ffe1d7ea998877f7488688"
-  integrity sha512-/czn0zT/4PXffuUyqtTTRkZwenk5UKQR0HN0N1iFW9k7tZXoJWvJq9H0w9orulSqAmyIwhVTNkcvsVf7e3NPPg==
+tsc-watch@^4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/tsc-watch/-/tsc-watch-4.2.2.tgz#5c6a53f6360934d9c148d07aedc17ad87be6eaf8"
+  integrity sha512-XwQ49Mp98GSSR47qlKdlN30X0S3mH9vNdyOWTijnhhWfZ2TcRGO5dee76oPmrcwV+4AI5BSUE6WGnS/8vJGN0g==
   dependencies:
     cross-spawn "^5.1.0"
     node-cleanup "^2.1.2"
