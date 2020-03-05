@@ -18,7 +18,7 @@
         "@linkage-community/bottlemail": "^2.1.0",
         "aws-sdk": "^2.634.0",
         "axios": "^0.19.2",
-        "bcrypt": "^3.0.8",
+        "bcrypt": "^4.0.1",
         "class-validator": "^0.11.0",
         "date-fns": "^2.10.0",
         "dotenv": "^8.2.0",
