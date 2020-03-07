@@ -34,7 +34,7 @@
         "react-dom": "^16.12.0",
         "redis": "^3.0.2",
         "reflect-metadata": "^0.1.13",
-        "sharp": "^0.24.1",
+        "sharp": "^0.25.0",
         "transform-ts": "^0.3.0",
         "typeorm": "^0.2.22",
         "web-push": "^3.4.3",
