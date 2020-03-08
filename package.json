@@ -38,7 +38,7 @@
         "transform-ts": "^0.3.0",
         "typeorm": "^0.2.22",
         "web-push": "^3.4.3",
-        "ws": "^7.2.1"
+        "ws": "^7.2.2"
     },
     "resolutions": {
         "@types/cookies": "^0.7.2"
