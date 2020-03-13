@@ -50,7 +50,7 @@
         "@types/koa": "^2.11.2",
         "@types/koa-pug": "^4.0.0",
         "@types/koa__router": "^8.0.2",
-        "@types/node": "^13.9.0",
+        "@types/node": "^13.9.1",
         "@types/pug": "^2.0.4",
         "@types/react": "^16.9.23",
         "@types/react-dom": "^16.9.5",
