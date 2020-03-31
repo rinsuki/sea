@@ -52,7 +52,7 @@
         "@types/koa__router": "^8.0.2",
         "@types/node": "^13.9.8",
         "@types/pug": "^2.0.4",
-        "@types/react": "^16.9.30",
+        "@types/react": "^16.9.31",
         "@types/react-dom": "^16.9.5",
         "@types/redis": "^2.8.17",
         "@types/sharp": "^0.24.0",
