@@ -5,3 +5,7 @@ dist/
 !.env.example
 coverage/
 buildkit-cache
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+.pnp.*
