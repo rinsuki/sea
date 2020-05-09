@@ -205,6 +205,7 @@ router.get("/:id/replies", async ctx => {
             createdAt: MoreThan(ctx.state.token.user.minReadableDate),
         },
         relations: ["user", "application"],
+        order: { id: "ASC" },
     })
     await ctx.sendMany(PostRepository, posts)
 })
