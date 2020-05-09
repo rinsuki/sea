@@ -27,6 +27,15 @@ html(lang="ja")
                         b #{post.user.name}
                     span &nbsp;：#{post.createdAtString}
                     | &nbsp;ID: #{post.user.screenName}
+                    each reply in post.replies
+                        if reply.isFoundInPosts
+                            small
+                                = " "
+                                a(href="#posts_" + reply.id) &gt;&gt;#{reply.id}
+                        else
+                            small
+                                = " "
+                                a(href="/posts/" + reply.id) &gt;&gt;#{reply.id}
                 dd
                     if post.inReplyToId != null
                         a(href="/posts/"+post.inReplyToId) &gt;&gt;#{post.inReplyToId}

@@ -8,6 +8,7 @@ import {
     FindConditions,
     MoreThanOrEqual,
     LessThanOrEqual,
+    In,
 } from "typeorm"
 import { Post } from "../../db/entities/post"
 import { PostRepository } from "../../db/repositories/post"
@@ -71,10 +72,27 @@ const callback = async (
         ctx.throw(404, "内容がないよう。。。")
         return
     }
+
+    const postIds = posts.map(p => p.id)
+
+    const replies = await getRepository(Post)
+        .find({
+            where: { inReplyToId: In(postIds) },
+            select: ["id", "inReplyToId"],
+            order: { id: "ASC" },
+        })
+        .then(r =>
+            r.map(rep => {
+                ;(<any>rep).isFoundInPosts = postIds.includes(rep.id)
+                return rep
+            })
+        )
+
     for (const post of posts) {
         ;(<any>post).createdAtString = format(addHours(post.createdAt, 9), "yyyy/MM/dd(EEEEEE) HH:mm:ss.SSS", {
             locale: ja,
         })
+        ;(<any>post).replies = replies.filter(p => p.inReplyToId === post.id)
     }
     ctx.render("posts", { posts, lastPost: posts[posts.length - 1] })
 }

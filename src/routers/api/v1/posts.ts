@@ -197,4 +197,16 @@ router.get("/:id", async ctx => {
     await ctx.send(PostRepository, post)
 })
 
+router.get("/:id/replies", async ctx => {
+    const { id } = $.obj({ id: $stringNumber }).transformOrThrow(ctx.params)
+    const posts = await getRepository(Post).find({
+        where: {
+            inReplyToId: id,
+            createdAt: MoreThan(ctx.state.token.user.minReadableDate),
+        },
+        relations: ["user", "application"],
+    })
+    await ctx.sendMany(PostRepository, posts)
+})
+
 export default router
