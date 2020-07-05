@@ -14,7 +14,7 @@
         "test": "NODE_ENV=test node ./dist/cliUtils/addDummyDataForTest.js && jest"
     },
     "dependencies": {
-        "@koa/router": "^8.0.8",
+        "@koa/router": "^9.3.0",
         "@linkage-community/bottlemail": "^2.1.0",
         "aws-sdk": "^2.709.0",
         "axios": "^0.19.2",
