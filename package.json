@@ -63,7 +63,7 @@
         "prettier": "^1.19.1",
         "redis-mock": "^0.49.0",
         "supertest": "^4.0.2",
-        "ts-jest": "^26.0.0",
+        "ts-jest": "^26.1.2",
         "tsc-watch": "^4.2.3",
         "typescript": "^3.8.3"
     }
