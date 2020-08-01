@@ -190,7 +190,7 @@ router.get("/:id", async ctx => {
             createdAt: MoreThan(ctx.state.token.user.minReadableDate),
         },
         {
-            relations: ["user", "application"],
+            relations: ["user", "user.avatarFile", "application"],
         }
     )
     if (post == null) return ctx.throw(404, "post not found")
@@ -204,7 +204,7 @@ router.get("/:id/replies", async ctx => {
             inReplyToId: id,
             createdAt: MoreThan(ctx.state.token.user.minReadableDate),
         },
-        relations: ["user", "application"],
+        relations: ["user", "user.avatarFile", "application"],
         order: { id: "ASC" },
     })
     await ctx.sendMany(PostRepository, posts)
