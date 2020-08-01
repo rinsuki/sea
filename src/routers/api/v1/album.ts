@@ -8,7 +8,6 @@ import { AlbumFileVariant } from "../../../db/entities/albumFileVariant"
 import { AlbumFile, AlbumFileType } from "../../../db/entities/albumFile"
 import { AlbumFileRepository } from "../../../db/repositories/albumFile"
 import { EXT2MIME } from "../../../constants"
-import moment from "moment"
 import $ from "transform-ts"
 import { $length, $stringNumber } from "../../../utils/transformers"
 import { join } from "path"
@@ -18,6 +17,7 @@ import { ParameterizedContext } from "koa"
 import getRawBody from "raw-body"
 import { tmpdir } from "os"
 import { randomBytes } from "crypto"
+import { format } from "date-fns"
 
 const router = new APIRouter()
 
@@ -49,7 +49,7 @@ async function processUpload(
     if (await getRepository(AlbumFile).findOne({ name: body.name, user: ctx.state.token.user })) {
         switch (body.ifNameConflicted) {
             case "add-date-string":
-                body.name += ` (${moment().format("YYYY-MM-DD_HH-mm-ss")})`
+                body.name += ` (${format(Date.now(), "yyyy-MM-dd_HH-mm-ss")})`
                 break
             case "error":
                 throw ctx.throw(400, "This name is already exists.")
