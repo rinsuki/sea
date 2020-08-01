@@ -6,7 +6,7 @@ export class AddTimelineIndex1596268305452 implements MigrationInterface {
             "posts",
             new TableIndex({
                 name: "IDX:posts:created_at",
-                columnNames: ["createdAt"],
+                columnNames: ["created_at"],
             })
         )
     }
