@@ -10,3 +10,7 @@ update_configs:
           dependency_name: "aws-sdk"
       - match:
           dependency_name: "typescript"
+      - match:
+          dependency_name: "react"
+      - match:
+          dependency_name: "react-dom"
