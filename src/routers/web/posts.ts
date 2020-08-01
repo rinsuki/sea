@@ -89,7 +89,7 @@ const callback = async (
         )
 
     for (const post of posts) {
-        ;(<any>post).createdAtString = format(addHours(post.createdAt, 9), "yyyy/MM/dd(EEEEEE) HH:mm:ss.SSS", {
+        ;(<any>post).createdAtString = format(post.createdAt, "yyyy/MM/dd(EEEEEE) HH:mm:ss.SSS", {
             locale: ja,
         })
         ;(<any>post).replies = replies.filter(p => p.inReplyToId === post.id)
