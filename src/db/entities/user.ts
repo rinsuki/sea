@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm"
-import { Matches, MaxLength } from "class-validator"
 import { EntityWithTimestamps } from "../../utils/timestampColumns"
 import { InviteCode } from "./inviteCode"
 import { AlbumFile } from "./albumFile"
@@ -10,11 +9,9 @@ export class User extends EntityWithTimestamps {
     id!: number
 
     @Column({ nullable: false })
-    @MaxLength(20)
     name!: string
 
     @Column({ name: "screen_name", length: "20", nullable: false })
-    @Matches(/^[0-9A-Za-z_]{1,20}$/)
     screenName!: string
 
     @Column({ name: "encrypted_password", nullable: false })
