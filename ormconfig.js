@@ -1,5 +1,6 @@
 // @ts-check
 const typeorm = require("typeorm")
+const { SeaNamingStrategy } = require("./dist/utils/seaNamingStrategy")
 
 /** @type {typeorm.ConnectionOptions} */
 const config = {
@@ -14,6 +15,7 @@ const config = {
         subscribersDir: "src/db/subscribers/",
     },
     ssl: process.env.DATABASE_SSL_ENABLED === "yes" ? true : false,
+    namingStrategy: new SeaNamingStrategy(),
 }
 
 module.exports = config
