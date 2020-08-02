@@ -13,11 +13,11 @@ export class Post extends EntityWithTimestamps {
     @Column({ name: "text", nullable: false, type: "varchar", length: 512 })
     text!: string
 
-    @ManyToOne(type => User)
+    @ManyToOne(type => User, { nullable: false })
     @JoinColumn({ name: "user_id", referencedColumnName: "id" })
     user!: User
 
-    @ManyToOne(type => Application)
+    @ManyToOne(type => Application, { nullable: false })
     @JoinColumn({ name: "application_id", referencedColumnName: "id" })
     application!: Application
 

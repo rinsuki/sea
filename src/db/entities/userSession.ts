@@ -8,17 +8,17 @@ export class UserSession extends EntityWithTimestamps {
     @PrimaryGeneratedColumn()
     id!: number
 
-    @Column({ nullable: false })
+    @Column({ type: "varchar", length: 256, nullable: false })
     secret!: string
 
-    @ManyToOne(type => User)
+    @ManyToOne(type => User, { nullable: false })
     @JoinColumn({ name: "user_id", referencedColumnName: "id" })
     user!: User
 
-    @Column({ name: "user_agent", nullable: false })
+    @Column({ type: "text", name: "user_agent", nullable: false })
     userAgent!: string
 
-    @Column({ name: "created_ip_address", nullable: false })
+    @Column({ type: "inet", name: "created_ip_address", nullable: false })
     createdIpAddress!: string
 
     @Column({ name: "disabled_at", type: "timestamptz", nullable: true })

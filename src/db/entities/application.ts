@@ -7,23 +7,24 @@ export class Application extends EntityWithTimestamps {
     @PrimaryGeneratedColumn()
     id!: number
 
-    @Column({ name: "name" })
+    @Column({ type: "varchar", length: 32 })
     name!: string
 
-    @Column({ name: "description" })
+    @Column({ type: "text", name: "description" })
     description!: string
 
     @ManyToOne(type => User)
     @JoinColumn({ name: "owner_user_id", referencedColumnName: "id" })
     ownerUser!: User
 
-    @Column({ name: "client_id" })
+    @Column({ type: "varchar", length: 64, name: "client_id" })
     clientId!: string
 
-    @Column({ name: "client_secret" })
+    @Column({ type: "varchar", length: 64, name: "client_secret" })
     clientSecret!: string
 
     @Column({
+        type: "text",
         name: "redirect_uri",
     })
     redirectUri!: string

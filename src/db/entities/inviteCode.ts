@@ -1,11 +1,4 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    ManyToOne,
-    OneToOne,
-    Column,
-    JoinColumn,
-} from "typeorm"
+import { Entity, PrimaryGeneratedColumn, ManyToOne, OneToOne, Column, JoinColumn } from "typeorm"
 import { EntityWithTimestamps } from "../../utils/timestampColumns"
 import { User } from "./user"
 import { randomBytes } from "crypto"
@@ -15,7 +8,7 @@ export class InviteCode extends EntityWithTimestamps {
     @PrimaryGeneratedColumn()
     id!: number
 
-    @ManyToOne(type => User)
+    @ManyToOne(type => User, { nullable: false })
     @JoinColumn({ name: "from_user_id", referencedColumnName: "id" })
     fromUser!: User
 
@@ -36,7 +29,6 @@ export class InviteCode extends EntityWithTimestamps {
         name: "memo",
         type: "varchar",
         length: "64",
-        default: "",
         nullable: false,
     })
     memo!: string

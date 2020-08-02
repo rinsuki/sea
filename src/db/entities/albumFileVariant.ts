@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, Column, ColumnOptions, JoinColumn, PrimaryColumn } from "typeorm"
+import { Entity, ManyToOne, Column, ColumnOptions, JoinColumn, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm"
 import { EntityWithTimestamps } from "../../utils/timestampColumns"
 import { AlbumFile } from "./albumFile"
 import path from "path"
@@ -7,7 +7,7 @@ import { getPathFromHash } from "../../utils/getPathFromHash"
 
 @Entity("album_file_variants")
 export class AlbumFileVariant extends EntityWithTimestamps {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn("increment")
     id!: number
 
     @ManyToOne(type => AlbumFile)
@@ -29,7 +29,7 @@ export class AlbumFileVariant extends EntityWithTimestamps {
     @Column({ type: "int", nullable: false })
     size!: number
 
-    @Column({ type: "varchar", nullable: true })
+    @Column({ type: "varchar", length: 128, nullable: true })
     hash!: string
 
     @Column({ name: "deleted_at", type: "timestamptz", nullable: true })

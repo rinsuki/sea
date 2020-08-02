@@ -8,13 +8,13 @@ export class User extends EntityWithTimestamps {
     @PrimaryGeneratedColumn()
     id!: number
 
-    @Column({ nullable: false })
+    @Column({ type: "varchar", length: 50, nullable: false })
     name!: string
 
-    @Column({ name: "screen_name", length: "20", nullable: false })
+    @Column({ name: "screen_name", type: "citext", nullable: false })
     screenName!: string
 
-    @Column({ name: "encrypted_password", nullable: false })
+    @Column({ name: "encrypted_password", type: "text", nullable: false })
     encryptedPassword!: string
 
     @Column({ name: "posts_count", type: "int", nullable: false })
@@ -27,7 +27,7 @@ export class User extends EntityWithTimestamps {
     @Column({
         name: "can_make_invite_code",
         type: "boolean",
-        default: "FALSE",
+        default: () => "FALSE",
         nullable: false,
     })
     canMakeInviteCode!: boolean

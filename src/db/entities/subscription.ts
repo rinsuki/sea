@@ -8,23 +8,23 @@ export class Subscription extends EntityWithTimestamps {
     @PrimaryGeneratedColumn()
     id!: number
 
-    @Column({ nullable: true })
+    @Column({ type: "text", nullable: true })
     description!: string
 
-    @Column({ nullable: false })
+    @Column({ type: "text", nullable: false })
     endpoint!: string
 
-    @Column({ name: "public_key", nullable: false })
+    @Column({ type: "varchar", length: 87, name: "public_key", nullable: false })
     publicKey!: string
 
-    @Column({ name: "authentication_secret", nullable: false })
+    @Column({ type: "varchar", length: 22, name: "authentication_secret", nullable: false })
     authenticationSecret!: string
 
-    @ManyToOne(type => User)
+    @ManyToOne(type => User, { nullable: false })
     @JoinColumn({ name: "user_id", referencedColumnName: "id" })
     user!: User
 
-    @ManyToOne(type => Application)
+    @ManyToOne(type => Application, { nullable: false })
     @JoinColumn({ name: "application_id", referencedColumnName: "id" })
     application!: Application
 

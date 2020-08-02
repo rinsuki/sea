@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, JoinColumn, OneToMany, PrimaryColumn } from "typeorm"
+import { Entity, Column, ManyToOne, JoinColumn, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm"
 import { User } from "./user"
 import { EntityWithTimestamps } from "../../utils/timestampColumns"
 import path from "path"
@@ -11,21 +11,27 @@ export enum AlbumFileType {
 
 @Entity("album_files")
 export class AlbumFile extends EntityWithTimestamps {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn("increment")
     id!: number
 
-    @ManyToOne(type => User)
+    @ManyToOne(type => User, { nullable: false })
     @JoinColumn({ name: "user_id", referencedColumnName: "id" })
     user!: User
 
-    @Column({ name: "name" })
+    @Column({ name: "name", type: "varchar", length: 256 })
     name!: string
 
-    @Column({ name: "type", type: "enum", enum: AlbumFileType })
+    @Column({ name: "type", type: "enum", enum: AlbumFileType, default: AlbumFileType.IMAGE })
     type!: AlbumFileType
 
-    @OneToMany(type => AlbumFileVariant, variant => variant.albumFile)
+    @OneToMany(
+        type => AlbumFileVariant,
+        variant => variant.albumFile
+    )
     variants!: AlbumFileVariant[]
+
+    @Column({ name: "_backup_name", type: "varchar", length: 256, nullable: true })
+    _backupName!: string
 
     toPath() {
         const padNumber = 8

@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm"
+import { Entity, PrimaryColumn, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Unique, Index } from "typeorm"
 import { EntityWithTimestamps } from "../../utils/timestampColumns"
 import { User } from "./user"
 import { randomBytes } from "crypto"
