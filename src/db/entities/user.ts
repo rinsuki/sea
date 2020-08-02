@@ -11,7 +11,7 @@ export class User extends EntityWithTimestamps {
     @Column({ type: "varchar", length: 50, nullable: false })
     name!: string
 
-    @Column({ name: "screen_name", type: "citext", nullable: false })
+    @Column({ name: "screen_name", nullable: false })
     screenName!: string
 
     @Column({ name: "encrypted_password", type: "text", nullable: false })
