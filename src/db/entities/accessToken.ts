@@ -12,11 +12,11 @@ export class AccessToken extends EntityWithTimestamps {
     @Column({ name: "token", type: "varchar", length: 64, nullable: false })
     token!: string
 
-    @ManyToOne(type => Application)
+    @ManyToOne(type => Application, { nullable: false })
     @JoinColumn({ name: "application_id", referencedColumnName: "id" })
     application!: Application
 
-    @ManyToOne(type => User)
+    @ManyToOne(type => User, { nullable: false })
     @JoinColumn({ name: "user_id", referencedColumnName: "id" })
     user!: User
 

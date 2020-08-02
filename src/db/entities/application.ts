@@ -13,7 +13,7 @@ export class Application extends EntityWithTimestamps {
     @Column({ type: "text", name: "description" })
     description!: string
 
-    @ManyToOne(type => User)
+    @ManyToOne(type => User, { nullable: false })
     @JoinColumn({ name: "owner_user_id", referencedColumnName: "id" })
     ownerUser!: User
 
@@ -29,12 +29,12 @@ export class Application extends EntityWithTimestamps {
     })
     redirectUri!: string
 
-    @Column({ name: "is_automated" })
+    @Column({ name: "is_automated", default: false })
     isAutomated!: boolean
 
     @Column({ name: "url", type: "text", nullable: true })
     url!: string | null
 
-    @Column({ name: "is_public" })
+    @Column({ name: "is_public", default: false })
     isPublic!: boolean
 }

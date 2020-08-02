@@ -17,7 +17,7 @@ export class User extends EntityWithTimestamps {
     @Column({ name: "encrypted_password", type: "text", nullable: false })
     encryptedPassword!: string
 
-    @Column({ name: "posts_count", type: "int", nullable: false })
+    @Column({ name: "posts_count", type: "int", nullable: false, default: 0 })
     postsCount!: number
 
     @OneToOne(type => InviteCode)
@@ -36,6 +36,6 @@ export class User extends EntityWithTimestamps {
     @JoinColumn({ name: "avatar_file_id", referencedColumnName: "id" })
     avatarFile!: AlbumFile | null
 
-    @Column({ name: "min_readable_date", type: "timestamptz", nullable: false })
+    @Column({ name: "min_readable_date", type: "timestamptz", nullable: false, default: "2999-12-31 00:00:00+09" })
     minReadableDate!: Date
 }

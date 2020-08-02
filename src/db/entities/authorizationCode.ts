@@ -1,10 +1,4 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    ManyToOne,
-    JoinColumn,
-} from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm"
 import { Application } from "./application"
 import { User } from "./user"
 import { randomBytes } from "crypto"
@@ -15,11 +9,11 @@ export class AuthorizationCode extends EntityWithTimestamps {
     @PrimaryGeneratedColumn()
     id!: number
 
-    @ManyToOne(type => Application)
+    @ManyToOne(type => Application, { nullable: false })
     @JoinColumn({ name: "application_id", referencedColumnName: "id" })
     application!: Application
 
-    @ManyToOne(type => User)
+    @ManyToOne(type => User, { nullable: false })
     @JoinColumn({ name: "user_id", referencedColumnName: "id" })
     user!: User
 
