@@ -5,6 +5,11 @@ import { randomBytes } from "crypto"
 import { Application } from "./application"
 
 @Entity("access_tokens")
+@Index("UQ:access_tokens:token", ["token"], { unique: true })
+@Index("UQ:access_tokens:application_id:user_id::only_not_revoked", ["application", "user"], {
+    where: "revoked_at IS NULL",
+    unique: true,
+})
 export class AccessToken extends EntityWithTimestamps {
     @PrimaryGeneratedColumn()
     id!: number

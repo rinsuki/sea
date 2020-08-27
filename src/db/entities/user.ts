@@ -1,9 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, Index } from "typeorm"
 import { EntityWithTimestamps } from "../../utils/timestampColumns"
 import { InviteCode } from "./inviteCode"
 import { AlbumFile } from "./albumFile"
 
 @Entity("users")
+@Index("UQ:users:screen_name", ["screenName"], { unique: true })
 export class User extends EntityWithTimestamps {
     @PrimaryGeneratedColumn()
     id!: number
@@ -36,6 +37,6 @@ export class User extends EntityWithTimestamps {
     @JoinColumn({ name: "avatar_file_id", referencedColumnName: "id" })
     avatarFile!: AlbumFile | null
 
-    @Column({ name: "min_readable_date", type: "timestamptz", nullable: false, default: "2999-12-31 00:00:00+09" })
+    @Column({ name: "min_readable_date", type: "timestamptz", nullable: false, default: "2999-12-31 09:00:00+09" })
     minReadableDate!: Date
 }

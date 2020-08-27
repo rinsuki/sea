@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, JoinColumn, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm"
+import { Entity, Column, ManyToOne, JoinColumn, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Index } from "typeorm"
 import { User } from "./user"
 import { EntityWithTimestamps } from "../../utils/timestampColumns"
 import path from "path"
@@ -10,6 +10,7 @@ export enum AlbumFileType {
 }
 
 @Entity("album_files")
+@Index("UQ:album_files:name:user_id", ["name", "user"], { unique: true })
 export class AlbumFile extends EntityWithTimestamps {
     @PrimaryGeneratedColumn("increment")
     id!: number
