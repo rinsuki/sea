@@ -4663,10 +4663,10 @@ redis-errors@^1.0.0, redis-errors@^1.2.0:
   resolved "https://registry.yarnpkg.com/redis-errors/-/redis-errors-1.2.0.tgz#eb62d2adb15e4eaf4610c04afe1529384250abad"
   integrity sha1-62LSrbFeTq9GEMBK/hUpOEJQq60=
 
-redis-mock@^0.50.0:
-  version "0.50.0"
-  resolved "https://registry.yarnpkg.com/redis-mock/-/redis-mock-0.50.0.tgz#54a7e54f234d13ad2212234a97dda91443b510dc"
-  integrity sha512-4SHJtb2M810EINPmr0meYXVUW0yliNpCh+V3K/e0GsE+Wd+JWD/aSMaOUaaElyH6f8ghv/006OX4jUkmuTf3Lg==
+redis-mock@^0.52.0:
+  version "0.52.0"
+  resolved "https://registry.yarnpkg.com/redis-mock/-/redis-mock-0.52.0.tgz#4dabe306549abfd36305a3891d802e9839b2e22a"
+  integrity sha512-s+6m2BFfgbXdbN4Pbv/+y7/lLd5M7gCTuYI0EAdb0IqvqDjYoexh+fs3Gd1w2bYIchNAez11wDhbBlFxXnjUog==
 
 redis-parser@^3.0.0:
   version "3.0.0"
