@@ -7,7 +7,7 @@
     },
     "packageRules": [
         {
-            "packagePatterns": ["^@types/"],
+            "packagePatterns": ["^@types/", "aws-sdk", "typescript", "react", "react-dom"],
             "automerge": true
         }
     ]
