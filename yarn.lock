@@ -427,10 +427,10 @@
     path-to-regexp "1.x"
     urijs "^1.19.2"
 
-"@linkage-community/bottlemail@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@linkage-community/bottlemail/-/bottlemail-2.1.0.tgz#f944dcf1b94c098409e2d0c49ed6f41fd4a07adb"
-  integrity sha512-1f9JkWk4s7g8SwRnT9HPSRUXe6bM/INg8YSG4n9N3/eJPt9+dEYWi2tRM184DtAxAQq/iXTXbwjwYXjnX1c/1Q==
+"@linkage-community/bottlemail@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@linkage-community/bottlemail/-/bottlemail-3.0.0.tgz#c3351a300d06fa9e3ffefe58b89cbd3da03f3593"
+  integrity sha512-rHT53s5fjcMHUSsg2HcsSOqpswj528yZWXHP5xEbvgXz4+/dCnpcdOQeZIX5Kqhw3c7qLSIoxm/beeHQ27u8gA==
 
 "@sinonjs/commons@^1.7.0":
   version "1.7.0"
