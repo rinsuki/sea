@@ -39,7 +39,7 @@
         "ws": "^7.2.3"
     },
     "resolutions": {
-        "@types/cookies": "^0.7.2"
+        "@types/cookies": "^0.7.4"
     },
     "devDependencies": {
         "@types/bcrypt": "^3.0.0",
