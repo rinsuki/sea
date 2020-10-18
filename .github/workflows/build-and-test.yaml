@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/cache@v1
         with:
-          path: docker-cache
+          path: docker-cache/src
           key: v1-${{ hashFiles('./Dockerfile') }}-${{ github.ref }}-${{ github.sha }}
           restore-keys: |
             v1-${{ hashFiles('./Dockerfile') }}-${{ github.ref }}-
@@ -29,7 +29,7 @@ jobs:
         run: |
           docker buildx create --use
           docker buildx build --tag rinsuki/sea:latest --cache-from=type=local,src=./docker-cache/src --cache-to=type=local,dest=./docker-cache/dest,mode=max --load .
-          cd docker-cache && mv src old && mv dest src
+          cd docker-cache && mv src old && mv dest src && rm -rf old
         env:
           DOCKER_CLI_EXPERIMENTAL: enabled
       - name: Run migration
