@@ -13,22 +13,25 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          docker run --name buildkit -d --privileged -p 1234:1234 moby/buildkit --addr tcp://0.0.0.0:1234
-          sudo docker cp buildkit:/usr/bin/buildctl /usr/local/bin/
-        name: Setup BuildKit
       - uses: actions/checkout@master
       - uses: actions/cache@v1
         with:
-          path: buildkit-cache
-          key: v1
+          path: docker-cache
+          key: v1-${{ hashFiles('./Dockerfile') }}-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            v1-${{ hashFiles('./Dockerfile') }}-${{ github.ref }}-
+            v1-${{ hashFiles('./Dockerfile') }}-
+            v1-
       - name: Launch PostgreSQL Container
         run: |
           docker run --name postgres -e POSTGRES_PASSWORD=onlyfortesting -d postgres:10-alpine
       - name: Build docker container
-        run: python3 .github/workflows/buildkit-wrapper.py | docker load
+        run: |
+          docker buildx create --use
+          docker buildx build --tag rinsuki/sea:latest --cache-from=type=local,src=./docker-cache/src --cache-to=type=local,dest=./docker-cache/dest,mode=max --load .
+          cd docker-cache && mv src old && mv dest src
         env:
-          BUILDKIT_HOST: tcp://localhost:1234
+          DOCKER_CLI_EXPERIMENTAL: enabled
       - name: Run migration
         run: |
           docker run --rm --link postgres:postgres --env-file ./ci-files/.env rinsuki/sea yarn migration:up
