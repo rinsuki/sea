@@ -1,0 +1,14 @@
+{
+    "extends": ["config:base", ":prHourlyLimitNone", ":prConcurrentLimitNone"],
+    "labels": ["dependencies"],
+    "rangeStrategy": "bump",
+    "patch": {
+        "automerge": true
+    },
+    "packageRules": [
+        {
+            "packagePatterns": ["^@types/"],
+            "automerge": true
+        }
+    ]
+}
