@@ -43,7 +43,7 @@ router.use(async (ctx, next) => {
     }
 })
 
-router.options("*", async ctx => {
+router.options("(.*)", async ctx => {
     ctx.status = 204
     ctx.set("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, DELETE, PATCH")
     ctx.set("Access-Control-Allow-Headers", "Authorization, Content-Type")
