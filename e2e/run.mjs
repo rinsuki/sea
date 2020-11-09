@@ -45,6 +45,8 @@ async function main() {
         })
         // see post
         await page.goto(`http://localhost:3000/posts/${post.body.id}`)
+        const text = await page.$eval(`#post_${post.body.id} + dd`, e => e.textContent)
+        if (text !== "this is test") throw `wrong text: ${text}`
     } finally {
         await page.screenshot({
             path: "screenshot.png",
