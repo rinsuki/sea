@@ -1,3 +1,5 @@
+// @ts-check
+
 import { firefox } from "playwright-firefox"
 
 async function main() {
