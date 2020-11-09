@@ -21,9 +21,6 @@ jobs:
             v1-${{ hashFiles('./Dockerfile') }}-${{ github.ref }}-
             v1-${{ hashFiles('./Dockerfile') }}-
             v1-
-      - name: Launch PostgreSQL Container
-        run: |
-          docker run --name postgres -e POSTGRES_PASSWORD=onlyfortesting -d postgres:10-alpine
       - name: Build docker container
         run: |
           docker buildx create --use
