@@ -81,7 +81,7 @@ jobs:
       - run: cd e2e && yarn install
       - run: ./e2e/wait-for-up.sh
         timeout-minutes: 1
-      - run: curl -v http://localhost:3000/
+      - run: cd e2e && yarn start
       - run: cd e2e && docker-compose logs
         if: ${{ always() }}
       - run: cd e2e && docker-compose down

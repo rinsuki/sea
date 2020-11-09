@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "start": "ts-node run.ts"
+  },
   "devDependencies": {
     "playwright-firefox": "^1.5.2",
     "ts-node": "^9.0.0"
