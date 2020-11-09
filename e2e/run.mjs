@@ -6,12 +6,21 @@ async function main() {
     const browser = await firefox.launch()
     // register
     const page = await browser.newPage()
-    await page.goto("http://localhost:3000")
-    await page.click(`a[href="/register"]`)
-    await page.focus(`input[name="name"]`)
-    await page.keyboard.type(`admin\tadmin\tadminadmin\t\n`)
-    await page.click(`input[value="登録"]`)
-    await page.click(`input[value="送信"]`)
+    try {
+        await page.goto("http://localhost:3000")
+        await page.click(`a[href="/register"]`)
+        await page.focus(`input[name="name"]`)
+        await page.keyboard.type(`admin\tadmin\tadminadmin\t\n`)
+        await page.click(`input[value="登録"]`)
+        await page.click(`input[value="送信"]`)
+    } catch(e) {
+        await page.screenshot({
+            path: "error.png",
+            type: "png",
+            fullPage: true,
+        })
+        throw e
+    }
     await browser.close()
 }
 

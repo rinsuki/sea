@@ -82,6 +82,11 @@ jobs:
       - run: ./e2e/wait-for-up.sh
         timeout-minutes: 1
       - run: cd e2e && yarn start
+      - uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: error.png
+          path: e2e/error.png
       - run: cd e2e && docker-compose logs
         if: ${{ always() }}
       - run: cd e2e && docker-compose down
