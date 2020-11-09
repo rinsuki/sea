@@ -14,7 +14,6 @@ services:
       - "3000:3000"
     environment:
       PORT: 3000
-      NODE_ENV: production
       DATABASE_URL: "postgres://postgres:e2etest@postgres/sea_e2e"
       REDIS_URL: "redis://redis"
       S3_BUCKET: todo
