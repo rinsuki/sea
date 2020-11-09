@@ -79,8 +79,10 @@ jobs:
       - run: cd e2e && docker-compose run --rm sea yarn migration:up
       - run: cd e2e && docker-compose up -d
       - run: ./e2e/wait-for-up.sh
+        timeout-minutes: 1
       - run: curl -v http://localhost:3000/
       - run: docker-compose logs
+        if: true
       - run: docker-compose down
   upload:
     runs-on: ubuntu-latest
