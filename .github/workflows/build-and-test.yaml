@@ -70,6 +70,7 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@master
+      - run: cd e2e && docker-compose up -d postgres redis
       - uses: actions/download-artifact@v2
         with:
           name: docker-image
