@@ -14,6 +14,7 @@ async function main() {
         await page.type(`input[name="screen_name"]`, "admin")
         await page.type(`input[name="password"]`, "adminadmin")
         await page.click(`input[value="登録"]`)
+        await page.click(`a[href="/input_invite_code"]`)
         await page.click(`input[value="送信"]`)
     } catch(e) {
         await page.screenshot({
