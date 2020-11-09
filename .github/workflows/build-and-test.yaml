@@ -42,7 +42,7 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@master
-      - uses: actions/download-artifact
+      - uses: actions/download-artifact@v2
         with:
           name: docker-image
       - name: Launch PostgreSQL Container
@@ -71,7 +71,7 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@master
-      - uses: actions/download-artifact
+      - uses: actions/download-artifact@v2
         with:
           name: docker-image
       - run: cd e2e && docker-compose up -d
@@ -80,7 +80,7 @@ jobs:
     needs: [build, test]
     if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
     steps:
-      - uses: actions/download-artifact
+      - uses: actions/download-artifact@v2
         with:
           name: docker-image
       - name: Upload docker image
