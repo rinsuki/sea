@@ -10,7 +10,9 @@ async function main() {
         await page.goto("http://localhost:3000")
         await page.click(`a[href="/register"]`)
         await page.focus(`input[name="name"]`)
-        await page.keyboard.type(`admin\tadmin\tadminadmin\t\n`)
+        await page.type(`input[name="name"]`, "admin")
+        await page.type(`input[name="screen_name"]`, "admin")
+        await page.type(`input[name="password"]`, "adminadmin")
         await page.click(`input[value="登録"]`)
         await page.click(`input[value="送信"]`)
     } catch(e) {
