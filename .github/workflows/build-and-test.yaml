@@ -95,6 +95,7 @@ jobs:
     needs: [build, test]
     if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
     steps:
+      - uses: actions/checkout@master
       - uses: actions/download-artifact@v2
         with:
           name: docker-image
