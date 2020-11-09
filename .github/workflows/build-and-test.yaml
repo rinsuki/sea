@@ -85,8 +85,8 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: ${{ always() }}
         with:
-          name: error.png
-          path: e2e/error.png
+          name: screenshot.png
+          path: e2e/screenshot.png
       - run: cd e2e && docker-compose logs
         if: ${{ always() }}
       - run: cd e2e && docker-compose down
