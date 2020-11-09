@@ -9,7 +9,7 @@ services:
   redis:
     image: redis:5
   sea:
-    build: ".."
+    image: rinsuki/sea
     ports:
       - "3000:3000"
     environment:
