@@ -76,6 +76,7 @@ jobs:
           name: docker-image
       - name: Load docker image
         run: zcat < sea-docker-image.tgz | docker load
+      - run: cd e2e && docker-compose run --rm sea yarn migration:up
       - run: cd e2e && docker-compose up -d
       - run: curl -v http://localhost:3000/
       - run: docker-compose logs
