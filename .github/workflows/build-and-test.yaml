@@ -66,7 +66,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage/cobertura-coverage.xml
   e2e:
-    runs-on: macOS-latest
+    runs-on: windows-latest
     needs: build
     steps:
       - uses: actions/checkout@master
