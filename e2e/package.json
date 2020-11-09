@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node run.js"
+    "start": "node run.mjs"
   },
   "devDependencies": {
     "playwright-firefox": "^1.5.2"
