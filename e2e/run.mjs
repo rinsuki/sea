@@ -9,7 +9,6 @@ async function main() {
     try {
         await page.goto("http://localhost:3000")
         await page.click(`a[href="/register"]`)
-        await page.focus(`input[name="name"]`)
         await page.type(`input[name="name"]`, "admin")
         await page.type(`input[name="screen_name"]`, "admin")
         await page.type(`input[name="password"]`, "adminadmin")
