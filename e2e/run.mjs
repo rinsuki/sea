@@ -24,10 +24,13 @@ async function main() {
         await page.type(`textarea[name="description"]`, "E2E Tester")
         await page.click(`input[value="アプリを作成"]`)
         // generate token
-        await page.click(`form[action$="/my_token"] input[type="submit"]`)
-        const dialog = await page.waitForEvent("dialog")
-        if (dialog.message() !== "アクセストークン発行モードに突入!!") throw `${dialog.message()}`
-        await dialog.accept()
+        await Promise.all([
+            page.waitForEvent("dialog").then(dialog => {
+                if (dialog.message() !== "アクセストークン発行モードに突入!!") throw `${dialog.message()}`
+                return dialog.accept()
+            }),
+            page.click(`form[action$="/my_token"] input[type="submit"]`)
+        ])
         const token = await page.$eval(`input#access_token`, (/** @type {HTMLInputElement} */ elm) => elm.value)
         // create post
         const post = await got.post("http://localhost:3000/api/v1/posts", {
