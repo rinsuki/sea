@@ -81,9 +81,9 @@ jobs:
       - run: ./e2e/wait-for-up.sh
         timeout-minutes: 1
       - run: curl -v http://localhost:3000/
-      - run: docker-compose logs
+      - run: cd e2e && docker-compose logs
         if: true
-      - run: docker-compose down
+      - run: cd e2e && docker-compose down
   upload:
     runs-on: ubuntu-latest
     needs: [build, test]
