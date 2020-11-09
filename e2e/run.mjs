@@ -24,7 +24,7 @@ async function main() {
         await page.type(`textarea[name="description"]`, "E2E Tester")
         await page.click(`input[value="アプリを作成"]`)
         // generate token
-        await page.click(`form[action$="/my_token"] input[value="ボタンを押せ!!"]`)
+        await page.click(`form[action$="/my_token"] input[type="submit"]`)
         const dialog = await page.waitForEvent("dialog")
         if (dialog.message() !== "アクセストークン発行モードに突入!!") throw `${dialog.message()}`
         await dialog.accept()
