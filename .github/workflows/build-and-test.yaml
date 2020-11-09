@@ -29,7 +29,7 @@ jobs:
         env:
           DOCKER_CLI_EXPERIMENTAL: enabled
       - name: Save Docker Image
-        run: docker save -o sea-docker-image.tar rinsuki/sea:latest
+        run: docker save rinsuki/sea:latest | gzip > sea-docker-image.tgz
       - uses: actions/upload-artifact@v2
         with:
           name: docker-image
@@ -43,7 +43,7 @@ jobs:
         with:
           name: docker-image
       - name: Load docker image
-        run: docker load -i sea-docker-image.tar
+        run: zcat < sea-docker-image.tgz | docker load
       - name: Launch PostgreSQL Container
         run: |
           docker run --name postgres -e POSTGRES_PASSWORD=onlyfortesting -d postgres:10-alpine
@@ -74,7 +74,7 @@ jobs:
         with:
           name: docker-image
       - name: Load docker image
-        run: docker load -i sea-docker-image.tar
+        run: zcat < sea-docker-image.tgz | docker load
       - run: cd e2e && docker-compose up -d
   upload:
     runs-on: ubuntu-latest
@@ -85,7 +85,7 @@ jobs:
         with:
           name: docker-image
       - name: Load docker image
-        run: docker load -i sea-docker-image.tar
+        run: zcat < sea-docker-image.tgz | docker load
       - name: Upload docker image
         if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: |
