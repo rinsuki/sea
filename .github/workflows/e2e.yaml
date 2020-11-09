@@ -1,0 +1,14 @@
+name: E2E Test
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - run: cd e2e && docker-compose build && docker-compose run --rm sea yarn migration:up && docker-compose up -d
