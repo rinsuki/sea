@@ -20,7 +20,7 @@ services:
       S3_BUCKET: todo
       S3_ENDPOINT: https://todo.invalid/
       S3_PUBLIC_URL: https://todo.invalid/
-      S3_FORCE_USE_PATH_STYLE: yes
+      S3_FORCE_USE_PATH_STYLE: "yes"
       SW_KEY_PUBLIC: BCcz_Cu-dyytQQKkAe4VHpcENY77MPTRU7JHv_v8M6DVGIxiw8Dw_zOk_hAMCo7gfZhcnlbM9dmZMx8oYigzXbo
       SW_KEY_PRIVATE: z5xqBapw-DYJNngSabsn80N4r-iDRHHgYeNwDnZsgKE
       SW_SUBJECT: https://rinsuki.net/only-for-e2e-test/
