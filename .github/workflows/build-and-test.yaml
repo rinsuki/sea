@@ -33,7 +33,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: docker-image
-          path: sea-docker-image.tar
+          path: sea-docker-image.tgz
   test:
     runs-on: ubuntu-latest
     needs: build
