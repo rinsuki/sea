@@ -78,6 +78,7 @@ jobs:
         run: zcat < sea-docker-image.tgz | docker load
       - run: cd e2e && docker-compose run --rm sea yarn migration:up
       - run: cd e2e && docker-compose up -d
+      - run: ./e2e/wait-for-up.sh
       - run: curl -v http://localhost:3000/
       - run: docker-compose logs
       - run: docker-compose down
