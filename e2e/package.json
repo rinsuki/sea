@@ -1,0 +1,15 @@
+{
+  "name": "e2e",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node run.mjs"
+  },
+  "devDependencies": {
+    "playwright-firefox": "^1.5.2"
+  },
+  "dependencies": {
+    "got": "^11.8.0"
+  }
+}
