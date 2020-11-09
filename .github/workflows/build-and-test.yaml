@@ -31,6 +31,23 @@ jobs:
           cd docker-cache && mv src old && mv dest src && rm -rf old
         env:
           DOCKER_CLI_EXPERIMENTAL: enabled
+      - name: Save Docker Image
+        run: docker save -o sea-docker-image.tar rinsuki/sea:latest
+      - uses: actions/upload-artifact@v2
+        with:
+          name: docker-image
+          path: sea-docker-image.tar
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/download-artifact
+        with:
+          name: docker-image
+      - name: Launch PostgreSQL Container
+        run: |
+          docker run --name postgres -e POSTGRES_PASSWORD=onlyfortesting -d postgres:10-alpine
       - name: Run migration
         run: |
           docker run --rm --link postgres:postgres --env-file ./ci-files/.env rinsuki/sea yarn migration:up
@@ -40,14 +57,6 @@ jobs:
       - name: Run migration:downall
         run: |
           docker run --rm --link postgres:postgres --env-file ./ci-files/.env rinsuki/sea yarn migration:downall
-      - name: Upload docker image
-        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
-        run: |
-          ./ci-files/cat-env.py DOCKERHUB_TOKEN | docker login --username rinsuki --password-stdin
-          docker push rinsuki/sea:latest
-          docker logout
-        env:
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Prepare for Publish code coverage
         run: |
           sudo chown $(whoami) ./coverage/cobertura-coverage.xml
@@ -57,3 +66,28 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage/cobertura-coverage.xml
+  e2e:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/download-artifact
+        with:
+          name: docker-image
+      - run: cd e2e && docker-compose up -d
+  upload:
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/download-artifact
+        with:
+          name: docker-image
+      - name: Upload docker image
+        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: |
+          ./ci-files/cat-env.py DOCKERHUB_TOKEN | docker login --username rinsuki --password-stdin
+          docker push rinsuki/sea:latest
+          docker logout
+        env:
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
