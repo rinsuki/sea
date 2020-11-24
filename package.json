@@ -16,7 +16,7 @@
     "dependencies": {
         "@koa/router": "^9.4.0",
         "@linkage-community/bottlemail": "^3.0.0",
-        "aws-sdk": "^2.798.0",
+        "aws-sdk": "^2.799.0",
         "axios": "^0.19.2",
         "bcrypt": "^5.0.0",
         "date-fns": "^2.16.1",
