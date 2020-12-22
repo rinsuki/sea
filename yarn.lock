@@ -573,10 +573,10 @@
   resolved "https://registry.yarnpkg.com/@types/cookiejar/-/cookiejar-2.1.1.tgz#90b68446364baf9efd8e8349bb36bd3852b75b80"
   integrity sha512-aRnpPa7ysx3aNW60hTiCtLHlQaIFsXFCgQlpakNgDNVFzbtusSY8PwjAQgRWfSk0ekNoBjO51eQRB6upA9uuyw==
 
-"@types/cookies@*", "@types/cookies@^0.7.5":
-  version "0.7.5"
-  resolved "https://registry.yarnpkg.com/@types/cookies/-/cookies-0.7.5.tgz#aa42c9a9834724bffee597028da5319b38e85e84"
-  integrity sha512-3+TAFSm78O7/bAeYdB8FoYGntuT87vVP9JKuQRL8sRhv9313LP2SpHHL50VeFtnyjIcb3UELddMk5Yt0eOSOkg==
+"@types/cookies@*", "@types/cookies@^0.7.6":
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/@types/cookies/-/cookies-0.7.6.tgz#71212c5391a976d3bae57d4b09fac20fc6bda504"
+  integrity sha512-FK4U5Qyn7/Sc5ih233OuHO0qAkOpEcD/eG6584yEiLKizTFRny86qHLe/rej3HFQrkBuUjF4whFliAdODbVN/w==
   dependencies:
     "@types/connect" "*"
     "@types/express" "*"
