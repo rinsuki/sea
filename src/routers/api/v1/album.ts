@@ -199,9 +199,11 @@ async function processUpload(
             break
         case "video/quicktime":
         case "video/mp4":
+        case "video/x-m4v":
             await videoUpload()
             break
         default:
+            console.log("Not supported file type", type.mime)
             return ctx.throw(400, "Not supported file type")
     }
 
