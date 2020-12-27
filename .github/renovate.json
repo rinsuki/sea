@@ -6,6 +6,10 @@
         {
             "packagePatterns": ["^@types/", "aws-sdk", "typescript", "react", "react-dom", "jest"],
             "automerge": true
+        },
+        {
+            "paths": ["e2e/package.json"],
+            "automerge": true
         }
     ]
 }
