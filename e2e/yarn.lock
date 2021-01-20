@@ -105,6 +105,11 @@ clone-response@^1.0.2:
   dependencies:
     mimic-response "^1.0.0"
 
+commander@^6.1.0:
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-6.2.1.tgz#0792eb682dfbc325999bb2b84fddddba110ac73c"
+  integrity sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==
+
 concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
@@ -310,11 +315,12 @@ pend@~1.2.0:
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
   integrity sha1-elfrVQpng/kRUzH89GY9XI4AelA=
 
-playwright-firefox@^1.7.1:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/playwright-firefox/-/playwright-firefox-1.7.1.tgz#fd6914710b9ed847c5e3ba18fb7c10f40bda0283"
-  integrity sha512-PZS0hLUA+WjJ9CvU0b9pj3VVX+ajfA2QptRtHI0oi2E3MrGM1Ogl2F3xPFjDTlb6WMxwsk1QOqgVUhONQOVbSA==
+playwright-firefox@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/playwright-firefox/-/playwright-firefox-1.8.0.tgz#0f63a9f52d47b6c0d07123c0a10a48990711c6bc"
+  integrity sha512-CuBjgfnZX7w8hm4+YrBKaAWDJRE2SrNOn0qQcM6PEY3wzxrFAbtAH56m5ngEQjwNnEoM4XdrrxWjeP7h+WFW3Q==
   dependencies:
+    commander "^6.1.0"
     debug "^4.1.1"
     extract-zip "^2.0.1"
     https-proxy-agent "^5.0.0"
