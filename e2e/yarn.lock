@@ -141,6 +141,11 @@ end-of-stream@^1.1.0:
   dependencies:
     once "^1.4.0"
 
+escape-string-regexp@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz#a30304e99daa32e23b2fd20f51babd07cffca344"
+  integrity sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w==
+
 extract-zip@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/extract-zip/-/extract-zip-2.0.1.tgz#663dca56fe46df890d5f131ef4a06d22bb8ba13a"
@@ -315,10 +320,10 @@ pend@~1.2.0:
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
   integrity sha1-elfrVQpng/kRUzH89GY9XI4AelA=
 
-playwright-firefox@^1.8.1:
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/playwright-firefox/-/playwright-firefox-1.8.1.tgz#5a2abba4d744f83b3691c0598f53856117139695"
-  integrity sha512-vKBGvw3eVFmYdggIFl2eIwrvmqUHL2ooLJAN47hgfWMO9yldVvRYC3K39ej864Rm98uu7TC5E2O1jVZeFbYXug==
+playwright-firefox@^1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/playwright-firefox/-/playwright-firefox-1.9.0.tgz#858fbd079f756d1a7713407ac69b0ec4bf7b728b"
+  integrity sha512-FT+wueXrY2yz3j+rI2HIqO8ahEi5+GWPqtGK2DqKCpKYk8XkZhcJ++dcO9QI6F7lgONZe8Wkg42VDJwB81ujiA==
   dependencies:
     commander "^6.1.0"
     debug "^4.1.1"
@@ -331,6 +336,7 @@ playwright-firefox@^1.8.1:
     proper-lockfile "^4.1.1"
     proxy-from-env "^1.1.0"
     rimraf "^3.0.2"
+    stack-utils "^2.0.3"
     ws "^7.3.1"
 
 pngjs@^5.0.0:
@@ -398,6 +404,13 @@ signal-exit@^3.0.2:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.3.tgz#a1410c2edd8f077b08b4e253c8eacfcaf057461c"
   integrity sha512-VUJ49FC8U1OxwZLxIbTTrDvLnf/6TDgxZcK8wxR8zs13xpx7xbG60ndBlhNrFi2EMuFRoeDoJO7wthSLq42EjA==
+
+stack-utils@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/stack-utils/-/stack-utils-2.0.3.tgz#cd5f030126ff116b78ccb3c027fe302713b61277"
+  integrity sha512-gL//fkxfWUsIlFL2Tl42Cl6+HFALEaB1FU76I/Fy+oZjRreP7OPMXFlGbxM7NQsI0ZpUfw76sHnv0WNYuTb7Iw==
+  dependencies:
+    escape-string-regexp "^2.0.0"
 
 wrappy@1:
   version "1.0.2"
