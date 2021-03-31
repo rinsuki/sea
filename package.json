@@ -53,7 +53,7 @@
         "@types/react-dom": "^17.0.3",
         "@types/redis": "^2.8.28",
         "@types/sharp": "^0.27.1",
-        "@types/supertest": "^2.0.10",
+        "@types/supertest": "^2.0.11",
         "@types/web-push": "^3.3.0",
         "@types/ws": "^7.4.0",
         "jest": "^26.6.3",
