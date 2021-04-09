@@ -42,7 +42,7 @@
         "@types/cookies": "^0.7.6"
     },
     "devDependencies": {
-        "@types/bcrypt": "^3.0.0",
+        "@types/bcrypt": "^3.0.1",
         "@types/http-errors": "^1.8.0",
         "@types/jest": "^26.0.22",
         "@types/koa": "^2.11.5",
