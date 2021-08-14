@@ -7,7 +7,7 @@
     "start": "node run.mjs"
   },
   "devDependencies": {
-    "playwright-firefox": "^1.13.1"
+    "playwright-firefox": "^1.14.0"
   },
   "dependencies": {
     "got": "^11.8.2"
