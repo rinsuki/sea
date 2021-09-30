@@ -320,10 +320,10 @@ pend@~1.2.0:
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
   integrity sha1-elfrVQpng/kRUzH89GY9XI4AelA=
 
-playwright-firefox@^1.15.0:
-  version "1.15.0"
-  resolved "https://registry.yarnpkg.com/playwright-firefox/-/playwright-firefox-1.15.0.tgz#d6e33017c10fe841f337169b8955dc31cbe57832"
-  integrity sha512-D9rYQluU1aF9TYnD8c4DhyIlpDQRbcds7K/bbGaWHrKJtspipICgiGh8Y5XluWfjZsurQp1D56c+62yaehl6/w==
+playwright-firefox@^1.15.1:
+  version "1.15.1"
+  resolved "https://registry.yarnpkg.com/playwright-firefox/-/playwright-firefox-1.15.1.tgz#509c549350b53c08f7c25546304d4e3a5cbdb9db"
+  integrity sha512-oWvnlWKKAKuYTzBdHDfaOzivrghk2ns6m6hC/V0GPE9RgFYF36bVWaSayYAE9W8ZrLyN0wkS6tJeMXOTglLijA==
   dependencies:
     commander "^6.1.0"
     debug "^4.1.1"
