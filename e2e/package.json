@@ -10,6 +10,6 @@
     "playwright-firefox": "^1.16.3"
   },
   "dependencies": {
-    "got": "^11.8.2"
+    "got": "^11.8.3"
   }
 }
