@@ -61,7 +61,7 @@
         "redis-mock": "^0.52.0",
         "supertest": "^5.0.0",
         "ts-jest": "^27.1.2",
-        "tsc-watch": "^4.2.9",
+        "tsc-watch": "^4.6.2",
         "typescript": "^3.8.3"
     }
 }
