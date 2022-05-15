@@ -1178,10 +1178,10 @@
   dependencies:
     "@types/superagent" "*"
 
-"@types/web-push@^3.3.1":
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/@types/web-push/-/web-push-3.3.1.tgz#0b5a3ab30128d180fcf8e7d4ab2e2bf2413af6f2"
-  integrity sha512-n4XCXwssioxBjSIxsDllP7dqpNgGes1t3mL8wINsUsgadx28FqoHmqLLan1fuX9OGLH6Fz4DcV3ZK+1XEdzXMg==
+"@types/web-push@^3.3.2":
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/@types/web-push/-/web-push-3.3.2.tgz#8c32434147c0396415862e86405c9edc9c50fc15"
+  integrity sha512-JxWGVL/m7mWTIg4mRYO+A6s0jPmBkr4iJr39DqJpRJAc+jrPiEe1/asmkwerzRon8ZZDxaZJpsxpv0Z18Wo9gw==
   dependencies:
     "@types/node" "*"
 
@@ -5264,10 +5264,10 @@ walker@^1.0.7:
   dependencies:
     makeerror "1.0.x"
 
-web-push@^3.4.4:
-  version "3.4.4"
-  resolved "https://registry.yarnpkg.com/web-push/-/web-push-3.4.4.tgz#b11523ada0f4b8c2481f65d1d059acd45ba27ca0"
-  integrity sha512-tB0F+ccobsfw5jTWBinWJKyd/YdCdRbKj+CFSnsJeEgFYysOULvWFYyeCxn9KuQvG/3UF1t3cTAcJzBec5LCWA==
+web-push@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/web-push/-/web-push-3.5.0.tgz#4576533746052eda3bd50414b54a1b0a21eeaeae"
+  integrity sha512-JC0V9hzKTqlDYJ+LTZUXtW7B175qwwaqzbbMSWDxHWxZvd3xY0C2rcotMGDavub2nAAFw+sXTsqR65/KY2A5AQ==
   dependencies:
     asn1.js "^5.3.0"
     http_ece "1.1.0"
