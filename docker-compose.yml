@@ -29,7 +29,7 @@ services:
       POSTGRES_DB: *POSTGRES_DB
 
   redis:
-    image: redis:5
+    image: redis:7
     restart: unless-stopped
     networks:
       - default
