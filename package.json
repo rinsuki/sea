@@ -35,7 +35,7 @@
         "sharp": "^0.27.0",
         "transform-ts": "^0.3.0",
         "typeorm": "^0.2.22",
-        "web-push": "^3.4.4",
+        "web-push": "^3.5.0",
         "ws": "^7.4.1"
     },
     "resolutions": {
@@ -54,7 +54,7 @@
         "@types/redis": "^2.8.32",
         "@types/sharp": "^0.27.1",
         "@types/supertest": "^2.0.11",
-        "@types/web-push": "^3.3.1",
+        "@types/web-push": "^3.3.2",
         "@types/ws": "^8.2.2",
         "jest": "^27.4.6",
         "prettier": "^2.1.2",
