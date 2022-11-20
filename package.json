@@ -17,7 +17,7 @@
         "@koa/router": "^9.4.0",
         "@linkage-community/bottlemail": "^3.0.0",
         "aws-sdk": "^2.1050.0",
-        "axios": "^0.21.1",
+        "axios": "^0.27.2",
         "bcrypt": "^5.0.0",
         "date-fns": "^2.16.1",
         "dotenv": "^9.0.0",
