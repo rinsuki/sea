@@ -5084,10 +5084,10 @@ transform-ts@^0.3.0:
   resolved "https://registry.yarnpkg.com/transform-ts/-/transform-ts-0.3.0.tgz#6bdd81abf79d3aebc03ef60ef7731ee378539b49"
   integrity sha512-8BGag7tLPt8FfNOTF1UCVyGQYv4RdbrdXxcTt6FdHSWHGAWAMwHiLjNbtxFfE057KNvs15Y7wvBHpK6r/c8LLA==
 
-ts-jest@^27.1.2:
-  version "27.1.2"
-  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-27.1.2.tgz#5991d6eb3fd8e1a8d4b8f6de3ec0a3cc567f3151"
-  integrity sha512-eSOiJOWq6Hhs6Khzk5wKC5sgWIXgXqOCiIl1+3lfnearu58Hj4QpE5tUhQcA3xtZrELbcvAGCsd6HB8OsaVaTA==
+ts-jest@^27.1.5:
+  version "27.1.5"
+  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-27.1.5.tgz#0ddf1b163fbaae3d5b7504a1e65c914a95cff297"
+  integrity sha512-Xv6jBQPoBEvBq/5i2TeSG9tt/nqkbpcurrEG1b+2yfBrcJelOZF9Ml6dmyMh7bcW9JyFbRYpR5rxROSlBLTZHA==
   dependencies:
     bs-logger "0.x"
     fast-json-stable-stringify "2.x"
