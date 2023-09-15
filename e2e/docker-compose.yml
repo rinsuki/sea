@@ -2,7 +2,7 @@ version: "2.4"
 
 services:
   postgres:
-    image: postgres:12
+    image: postgres:16
     environment:
       POSTGRES_PASSWORD: e2etest
       POSTGRES_DB: sea_e2e
