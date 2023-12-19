@@ -21,7 +21,7 @@
         "bcrypt": "^5.0.0",
         "date-fns": "^2.16.1",
         "dotenv": "^9.0.0",
-        "file-type": "^16.0.0",
+        "file-type": "^16.5.4",
         "http-errors": "^1.8.0",
         "koa": "^2.13.0",
         "koa-body": "^4.2.0",
