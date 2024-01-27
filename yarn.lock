@@ -959,10 +959,10 @@
   resolved "https://registry.yarnpkg.com/@types/cookiejar/-/cookiejar-2.1.1.tgz#90b68446364baf9efd8e8349bb36bd3852b75b80"
   integrity sha512-aRnpPa7ysx3aNW60hTiCtLHlQaIFsXFCgQlpakNgDNVFzbtusSY8PwjAQgRWfSk0ekNoBjO51eQRB6upA9uuyw==
 
-"@types/cookies@*", "@types/cookies@^0.7.7":
-  version "0.7.7"
-  resolved "https://registry.yarnpkg.com/@types/cookies/-/cookies-0.7.7.tgz#7a92453d1d16389c05a5301eef566f34946cfd81"
-  integrity sha512-h7BcvPUogWbKCzBR2lY4oqaZbO3jXZksexYJVFvkrFeLgbZjQkU4x8pRq6eg2MHXQhY0McQdqmmsxRWlVAHooA==
+"@types/cookies@*", "@types/cookies@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@types/cookies/-/cookies-0.9.0.tgz#a2290cfb325f75f0f28720939bee854d4142aee2"
+  integrity sha512-40Zk8qR147RABiQ7NQnBzWzDcjKzNrntB5BAmeGCb2p/MIyOE+4BVvc17wumsUqUw00bJYqoXFHYygQnEFh4/Q==
   dependencies:
     "@types/connect" "*"
     "@types/express" "*"
