@@ -30,7 +30,7 @@ jobs:
           DOCKER_CLI_EXPERIMENTAL: enabled
       - name: Save Docker Image
         run: docker save rinsuki/sea:latest | gzip > sea-docker-image.tgz
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: docker-image
           path: sea-docker-image.tgz
@@ -42,7 +42,7 @@ jobs:
         run: |
           docker run --name postgres -e POSTGRES_PASSWORD=onlyfortesting -d postgres:10-alpine
       - uses: actions/checkout@master
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
           name: docker-image
       - name: Load docker image
@@ -71,7 +71,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - run: cd e2e && docker-compose up -d postgres redis
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
           name: docker-image
       - name: Load docker image
@@ -82,7 +82,7 @@ jobs:
       - run: ./e2e/wait-for-up.sh
         timeout-minutes: 1
       - run: cd e2e && yarn start
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
           name: screenshot.png
@@ -96,7 +96,7 @@ jobs:
     if: success() && github.event_name == 'push' && github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@master
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
           name: docker-image
       - name: Load docker image
