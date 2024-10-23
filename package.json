@@ -5,7 +5,7 @@
     "main": "dist/index.js",
     "license": "MIT",
     "engines": {
-        "node": ">=12"
+        "node": ">=20.18.0"
     },
     "scripts": {
         "build": "tsc",
@@ -47,7 +47,7 @@
         "@types/jest": "^27.4.0",
         "@types/koa": "^2.11.5",
         "@types/koa__router": "^8.0.11",
-        "@types/node": "^14.18.5",
+        "@types/node": "^20.17.0",
         "@types/pug": "^2.0.6",
         "@types/react": "^16.9.53",
         "@types/react-dom": "^17.0.11",
