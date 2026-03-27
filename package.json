@@ -19,7 +19,7 @@
         "aws-sdk": "^2.1050.0",
         "axios": "^0.21.1",
         "bcrypt": "^5.0.0",
-        "date-fns": "^2.16.1",
+        "date-fns": "^2.30.0",
         "dotenv": "^9.0.0",
         "file-type": "^16.0.0",
         "http-errors": "^1.8.0",
